@@ -22,6 +22,7 @@
                 date_default_timezone_set('Asia/Jakarta');
             @endphp
             <h5 class="mb-4">Penjualan hari {{ date('D, d M Y') }}</h5>
+            <p>Pendapatan : <b>Rp {{ number_format($total,0,',','.') }}</b></p>
             <button type="button" class="btn btn-primary mb-4" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
             Tambah Pesanan
             </button>

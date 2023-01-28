@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Menu;
 use App\Models\Sales;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SalesController extends Controller
 {
@@ -15,6 +16,7 @@ class SalesController extends Controller
      */
     public function index(Request $request)
     {
+        date_default_timezone_set('Asia/Jakarta');
         $page = 'Penjualan';
         $menu = Menu::orderBy('name', 'ASC')->get();
         $data = Sales::query()
@@ -26,11 +28,27 @@ class SalesController extends Controller
             );
 
         if (isset($request->dateFilter)) {
-            $data = $data->where('sales.date', $request->dateFilter);   
+            $data = $data->where('sales.date', $request->dateFilter);
         }
 
         $data = $data->orderBy('sales.created_at', 'DESC')->get();
-        return view('sales', compact('data', 'page', 'menu'));
+
+        $total = Sales::query()
+            ->join('menus as m', 'm.id', 'sales.id_menu')
+            ->select(
+                'sales.*',
+                'm.name',
+                'm.price',
+            );
+
+        if (isset($request->dateFilter)) {
+            $total = $total->where('sales.date', $request->dateFilter);
+        } else {
+            $total = $total->where('sales.date', date('Y-m-d'));
+        }
+
+        $total = $total->sum(DB::raw('price * qty'));
+        return view('sales', compact('data', 'page', 'menu', 'total'));
     }
 
     /**
