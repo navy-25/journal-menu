@@ -76,7 +76,7 @@ class SalesController extends Controller
             'date' => date('Y-m-d'),
         ]);
 
-        return redirect()->back()->with('success', 'Berhasil');
+        return redirect()->route('sales.index')->with('success', 'Berhasil');
     }
 
     /**
