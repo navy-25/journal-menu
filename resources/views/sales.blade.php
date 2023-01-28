@@ -65,7 +65,7 @@
 
             <form action="{{ route('sales.index') }}" class="d-flex mb-3">
                 <div class="form-group me-2">
-                    <input type="date" value="{{ isset($_GET['date']) ? $_GET['date'] : date('Y-m-d') }}" class="form-control" name="dateFilter">
+                    <input type="date" value="{{ isset($_GET['dateFilter']) == true ? $_GET['dateFilter'] : date('Y-m-d') }}" class="form-control" name="dateFilter">
                 </div>
                 <button class="btn btn-primary" type="submit">Filter</button>
             </form>
