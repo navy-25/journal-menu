@@ -15,7 +15,7 @@ class MenuController extends Controller
     public function index()
     {
         $page = 'Stok';
-        $data = [];
+        $data = Menu::orderBy('id', 'DESC')->get();
         return view('stock', compact('data', 'page'));
     }
 
@@ -71,7 +71,12 @@ class MenuController extends Controller
      */
     public function update(Request $request, Menu $menu)
     {
-        //
+        $data = Menu::find($request->id);
+        $data->update([
+            'name' => $request->name,
+            'price' => $request->price,
+        ]);
+        return redirect()->route('stock.index')->with('success', 'memperbarui ' . $data->name);
     }
 
     /**

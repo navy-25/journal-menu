@@ -39,6 +39,5 @@ Route::controller(SpendController::class)->prefix('spend')->name('spend.')->grou
 
 Route::controller(MenuController::class)->prefix('stock')->name('stock.')->group(function () {
     Route::get('/', 'index')->name('index');
-    Route::post('/store', 'store')->name('store');
-    Route::get('/destroy', 'destroy')->name('destroy');
+    Route::post('/update', 'update')->name('update');
 });
