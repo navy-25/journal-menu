@@ -80,7 +80,7 @@
                             <p class="m-0 mb-2">Rp {{ number_format($item->price) }} @ {{ $item->qty }} </p>
                             <div class="d-flex align-items-center">
                                 <i data-feather="calendar" class="me-2" style="width: 14px"></i>
-                                <small>{{ dateTimeFormat($item->created_at) }}</small>
+                                <small>{{ date('d M Y H:i', strtotime($item->created_at)) }}</small>
                             </div>
                         </div>
                         <div class="col-5 d-flex align-items-center justify-content-end">
