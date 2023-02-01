@@ -77,7 +77,7 @@
                     <div class="row">
                         <div class="col-7">
                             <p class="fw-bold fs-5 m-0 text-capitalize">{{ $item->name }}</p>
-                            <p class="m-0 mb-2">Rp {{ numberFormat($item->price) }} @ {{ $item->qty }} </p>
+                            <p class="m-0 mb-2">Rp {{ number_format($item->price) }} @ {{ $item->qty }} </p>
                             <div class="d-flex align-items-center">
                                 <i data-feather="calendar" class="me-2" style="width: 14px"></i>
                                 <small>{{ dateTimeFormat($item->created_at) }}</small>
@@ -86,7 +86,7 @@
                         <div class="col-5 d-flex align-items-center justify-content-end">
                             <a href="#" class="fw-bold fs-3 m-0 d-flex align-items-center justify-content-center text-dark bg-warning p-3 py-4 text-decoration-none" style="border-radius: 100% !important;width: 90px !important; height: 90px"
                                 onclick="alert_confirm('{{ route('sales.destroy',['id'=>$item->id]) }}','{{ $item->name }}')">
-                                {{ numberFormat($item->price * $item->qty / 1000) }}K
+                                {{ number_format($item->price * $item->qty / 1000) }}K
                             </a>
                         </div>
                     </div>
@@ -115,7 +115,7 @@
                             <div class="row">
                                 <div class="col-7">
                                     <p class="fw-bold fs-5 m-0 text-capitalize">{{ $item->name }}</p>
-                                    <p class="m-0">Rp {{ numberFormat($item->price) }}</p>
+                                    <p class="m-0">Rp {{ number_format($item->price) }}</p>
                                     <input type="hidden" name="menu_id[]" value="{{ $item->id }}">
                                     <input type="hidden" name="qty[]" value="0" id="qty{{ $key }}">
                                 </div>
