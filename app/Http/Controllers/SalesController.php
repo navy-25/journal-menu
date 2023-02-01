@@ -29,6 +29,8 @@ class SalesController extends Controller
 
         if (isset($request->dateFilter)) {
             $data = $data->where('sales.date', $request->dateFilter);
+        } else {
+            $data = $data->where('sales.date', date('Y-m-d'));
         }
 
         $data = $data->orderBy('sales.created_at', 'DESC')->get();
