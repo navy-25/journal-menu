@@ -1,125 +1,183 @@
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{{ $page }} {{ config('app.name') }}</title>
+@extends('layouts.app')
 
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+@section('css')
+<style>
 
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
-        <link rel="stylesheet" href="{{ asset('css/datatables.css') }}">
+</style>
+@endsection
 
-    </head>
-    <body>
-        <div class="container py-3">
-            @if ($message = Session::get('success'))
-                <div class="alert alert-success" role="alert">
-                    {{ $message }}
-                </div>
-            @endif
-            @php
-                date_default_timezone_set('Asia/Jakarta');
-            @endphp
-            <h5 class="mb-4">Penjualan hari {{ date('D, d M Y') }}</h5>
-            <p>Pendapatan : <b>Rp {{ number_format($total,0,',','.') }}</b></p>
-            <button type="button" class="btn btn-primary mb-4" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-            Tambah Pesanan
-            </button>
-
-            <!-- Modal -->
-            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog
-                {{-- modal-dialog-centered --}}
-                ">
-                    <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Pesanan</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="{{ route('sales.store') }}" method="POST">
-                            @csrf
-                            <div class="form-group">
-                                <label for="" class="w-100">Pilih menu</label>
-                                <select name="id_menu" id="" class="form-select">
-                                    @foreach ($menu as $item)
-                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="" class="w-100">Jumlah</label>
-                                <input type="number" name="qty" value="1" class="form-control">
-                            </div>
-                            <button class="d-none" id="btn-submit" type="submit"></button>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" onclick="$('#btn-submit').trigger('click')" class="btn btn-primary">Tambah</button>
-                    </div>
-                    </div>
-                </div>
-            </div>
-
-            <form action="{{ route('sales.index') }}" class="d-flex mb-3">
-                <div class="form-group me-2">
-                    <input type="date" value="{{ isset($_GET['dateFilter']) == true ? $_GET['dateFilter'] : date('Y-m-d') }}" class="form-control" name="dateFilter">
-                </div>
-                <button class="btn btn-primary" type="submit">Filter</button>
-            </form>
-            <table id="myTable" class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Opsi</th>
-                        <th>Menu</th>
-                        <th>Harga</th>
-                        <th>Qty</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($data as $key => $value)
-                        <tr>
-                            <td>
-                                <button type="submit" onclick="alert_confirm('{{ route('sales.destroy',['id' => $value->id]) }}')" class="btn btn-danger">
-                                    Del
-                                </button>
-                            </td>
-                            <td>{{ $value->name }}</td>
-                            <td>{{ number_format($value->price,0,',','.') }}</td>
-                            <td>{{ $value->qty }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+@section('content')
+@php
+    date_default_timezone_set('Asia/Jakarta');
+@endphp
+<div class="px-4 mb-3">
+    <div style="position: fixed;bottom:120px;right:20px;">
+        <button type="button" class="btn bg-dark text-white d-flex align-items-center justify-content-center"
+            style="height: 60px;width: 60px;border-radius:100%">
+            <i data-feather="filter" style="width: 25px" data-bs-toggle="modal" data-bs-target="#filter"></i>
+        </button>
+    </div>
+    <h4 class="fw-bold mb-4">{{ $page }}</h4>
+    @if ($message = Session::get('success'))
+        <div class="alert border-0 alert-warning alert-dismissible fade show" role="alert">
+            <strong>Berhasil!</strong> {{ $message }}.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
+    @endif
+    @if ($message = Session::get('error'))
+        <div class="alert border-0 alert-dark alert-dismissible fade show" role="alert">
+            <strong>Gagal!</strong> {{ $message }}.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+    <div class="card rounded-4 border-0 mb-4"
+        style="box-shadow:5px 4px 30px rgba(53, 53, 53, 0.288);
+            background-image:url('app-assets/images/card-bg.jpg');
+            background-repeat: no-repeat;
+            background-position: right top;
+            background-size: cover;
+        ">
+        <div class="card-body p-4 text-white">
+            <p class="fs-5 mb-0">Pendapatan</p>
+            <p class="mb-3 d-flex align-items-center">
+                <i data-feather="calendar" class="me-2" style="width: 14px"></i>
+                {{ date('D, d M Y') }}
+            </p>
+            <h3 class="fw-bold mb-0">Rp {{ number_format($total,2,',','.') }}</h3>
+            <p class="m-0">{{ $qty }} pizza</p>
+        </div>
+    </div>
+</div>
+<div class="px-4">
+    <div class="row mb-4 px-0">
+        <div class="col-6 d-flex align-items-center">
+            <h6 class="fw-bold mb-2">Daftar pesanan</h6>
+        </div>
+        <div class="col-6 d-flex align-items-center justify-content-end">
+            <button type="button" class="btn btn-dark py-2 px-3 rounded-4 text-white"
+                data-bs-toggle="modal" data-bs-target="#modal">
+                <i data-feather="plus" style="width: 18px"></i>
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            @if (count($data) == 0)
+                <div class="py-5">
+                    <center>
+                        <img src="{{ asset('app-assets/images/wallet.png') }}" alt="wallet" class="mb-3" width="30%">
+                        <br>
+                        <p class="fw-bold fs-4 text-secondary">
+                            Belum ada pesanan
+                        </p>
+                    </center>
+                </div>
+            @else
+                @foreach ($data as $key => $item)
+                    <div class="row">
+                        <div class="col-7">
+                            <p class="fw-bold fs-5 m-0 text-capitalize">{{ $item->name }}</p>
+                            <p class="m-0 mb-2">Rp {{ numberFormat($item->price) }} @ {{ $item->qty }} </p>
+                            <div class="d-flex align-items-center">
+                                <i data-feather="calendar" class="me-2" style="width: 14px"></i>
+                                <small>{{ dateTimeFormat($item->created_at) }}</small>
+                            </div>
+                        </div>
+                        <div class="col-5 d-flex align-items-center justify-content-end">
+                            <a href="#" class="fw-bold fs-3 m-0 d-flex align-items-center justify-content-center text-dark bg-warning p-3 py-4 text-decoration-none" style="border-radius: 100% !important;width: 90px !important; height: 90px"
+                                onclick="alert_confirm('{{ route('sales.destroy',['id'=>$item->id]) }}','{{ $item->name }}')">
+                                {{ numberFormat($item->price * $item->qty / 1000) }}K
+                            </a>
+                        </div>
+                    </div>
+                    <hr style="opacity: 0.1">
+                @endforeach
+            @endif
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modal" data-bs-backdrop="static"
+    data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-start align-items-center">
+                <a href="#" data-bs-dismiss="modal" class="text-decoration-none text-dark me-3">
+                    <i data-feather="arrow-left" style="width: 18px"></i>
+                </a>
+                <p class="fs-6 m-0 fw-bold">Tambah Pesanan</p>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('sales.store') }}" method="POST">
+                    @csrf
+                    @foreach ($menu as $key => $item)
+                        <div class="card p-4 mb-2 rounded-4">
+                            <div class="row">
+                                <div class="col-7">
+                                    <p class="fw-bold fs-5 m-0 text-capitalize">{{ $item->name }}</p>
+                                    <p class="m-0">Rp {{ numberFormat($item->price) }}</p>
+                                    <input type="hidden" name="menu_id[]" value="{{ $item->id }}">
+                                    <input type="hidden" name="qty[]" value="0" id="qty{{ $key }}">
+                                </div>
+                                <div class="col-5 d-flex align-items-center justify-content-around">
+                                    <button class="btn btn-dark rounded-4 text-white" onclick="minus('{{ $key }}')" style="width: 40px;height: 40px" type="button" id="min{{ $key }}">
+                                        <i data-feather="minus" style="width: 12px"></i>
+                                    </button>
+                                    <p class="m-0" id="qty_text{{ $key }}">0</p>
+                                    <button class="btn btn-dark rounded-4 text-white" onclick="plus('{{ $key }}')" style="width: 40px;height: 40px" type="button" id="min{{ $key }}">
+                                        <i data-feather="plus" style="width: 12px"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                    <button class="d-none" id="btn-submit" type="submit"></button>
+                </form>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" onclick="$('#btn-submit').trigger('click')" class="btn btn-dark w-100 rounded-4 py-3">Tambah</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-        <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-        <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
-        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script>
-            $(document).ready( function () {
-                $('#myTable').DataTable({
-                    pageLength: 50,
-                    lengthMenu: [[5,10, 50, 100, -1], [5, 10, 50, 100, "Semua"]],
-                });
-                $('#myTable_length').remove();
-                $('#myTable_filter').remove();
-            });
-            function alert_confirm(url){
-                Swal.fire({
-                    title: 'Hapus data?',
-                    icon: 'error',
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                            window.location.href = url;
-                    }
-                })
-            }
-        </script>
-    </body>
-</html>
+<div class="modal fade" id="filter" data-bs-backdrop="static"
+    data-bs-keyboard="false" tabindex="-1" aria-labelledby="filterlLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 d-flex justify-content-start align-items-center">
+                <p class="fs-6 m-0 fw-bold">Filter by tanggal</p>
+                <a href="#" data-bs-dismiss="modal" class="text-decoration-none text-dark ms-auto">
+                    <i data-feather="x" style="width: 18px"></i>
+                </a>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('sales.index') }}" method="get">
+                    <input type="date" class="form-control" style="height: 50px !important" value="{{ date('Y-m-d') }}" name="dateFilter">
+                    <button class="d-none" id="btn-submit-filter" type="submit"></button>
+                </form>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" onclick="$('#btn-submit-filter').trigger('click')" class="btn btn-dark w-100 rounded-4 py-3">Terapkan</button>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
+@section('script')
+<script>
+    function minus(key){
+        var qty_text = parseInt($('#qty_text'+key).text())
+        if(qty_text > 0){
+            $('#qty_text'+key).text(qty_text-1)
+            $('#qty'+key).val(parseInt($('#qty_text'+key).text()))
+        }
+    }
+    function plus(key){
+        var qty_text = parseInt($('#qty_text'+key).text())
+        $('#qty_text'+key).text(qty_text+1)
+        $('#qty'+key).val(parseInt($('#qty_text'+key).text()))
+    }
+</script>
+@endsection

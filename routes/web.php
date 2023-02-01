@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\MenuController;
 use App\Http\Controllers\SalesController;
+use App\Http\Controllers\SpendController;
+use App\Http\Controllers\StatsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,10 +18,26 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Route::get('/', function () {
-//     return view('welcome');
+//     return route('sales.index');
 // });
 
-Route::controller(SalesController::class)->name('sales.')->group(function () {
+Route::controller(StatsController::class)->name('stats.')->group(function () {
+    Route::get('/', 'index')->name('index');
+});
+
+Route::controller(SalesController::class)->prefix('sales')->name('sales.')->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::post('/store', 'store')->name('store');
+    Route::get('/destroy', 'destroy')->name('destroy');
+});
+
+Route::controller(SpendController::class)->prefix('spend')->name('spend.')->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::post('/store', 'store')->name('store');
+    Route::get('/destroy', 'destroy')->name('destroy');
+});
+
+Route::controller(MenuController::class)->prefix('stock')->name('stock.')->group(function () {
     Route::get('/', 'index')->name('index');
     Route::post('/store', 'store')->name('store');
     Route::get('/destroy', 'destroy')->name('destroy');

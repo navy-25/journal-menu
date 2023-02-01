@@ -48,7 +48,23 @@ class SalesController extends Controller
         }
 
         $total = $total->sum(DB::raw('price * qty'));
-        return view('sales', compact('data', 'page', 'menu', 'total'));
+
+        $qty = Sales::query()
+            ->join('menus as m', 'm.id', 'sales.id_menu')
+            ->select(
+                'sales.*',
+                'm.name',
+                'm.price',
+            );
+
+        if (isset($request->dateFilter)) {
+            $qty = $qty->where('sales.date', $request->dateFilter);
+        } else {
+            $qty = $qty->where('sales.date', date('Y-m-d'));
+        }
+
+        $qty = $qty->sum('qty');
+        return view('sales', compact('data', 'page', 'menu', 'total', 'qty'));
     }
 
     /**
@@ -69,14 +85,25 @@ class SalesController extends Controller
      */
     public function store(Request $request)
     {
+        $menu_id    = $request->menu_id;
+        $qty        = $request->qty;
+        if (array_sum($qty) == 0) {
+            return redirect()->route('sales.index')->with('error', 'belum ada menu yang dipilih');
+        }
+        $qty_order  = 0;
         date_default_timezone_set('Asia/Jakarta');
-        Sales::create([
-            'id_menu' => $request->id_menu,
-            'qty' => $request->qty,
-            'date' => date('Y-m-d'),
-        ]);
-
-        return redirect()->route('sales.index')->with('success', 'Berhasil');
+        foreach ($menu_id as $key => $menu_id) {
+            if ($qty[$key] == 0) {
+                continue;
+            }
+            Sales::create([
+                'id_menu' => $menu_id,
+                'qty' => $qty[$key],
+                'date' => date('Y-m-d'),
+            ]);
+            $qty_order++;
+        }
+        return redirect()->route('sales.index')->with('success', 'menambahkan ' . $qty_order . ' pesanan baru');
     }
 
     /**
@@ -124,6 +151,6 @@ class SalesController extends Controller
         $data = Sales::find($request->id);
         $data->delete();
 
-        return redirect()->back()->with('success', 'Berhasil menghapus');
+        return redirect()->back()->with('success', 'dihapus');
     }
 }
