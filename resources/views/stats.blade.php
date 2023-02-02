@@ -72,7 +72,7 @@
         @endphp
     @endforeach
 </div>
-{{-- <br>
+<br>
 <div class="px-4">
     <div class="row px-0 mb-3">
         <div class="col-6 d-flex align-items-center">
@@ -105,7 +105,7 @@
             $index++
         @endphp
     @endforeach
-</div> --}}
+</div>
 <br>
 <div class="px-4">
     <div class="row px-0 mb-3">
@@ -116,7 +116,7 @@
     @foreach ($shift as $key => $value)
         <div class="row">
             <div class="col-4 d-flex justify-content-start align-items-top">
-                <i data-feather="clock" class="me-2" style="width: 15px"></i>
+                <i data-feather="users" class="me-2" style="width: 15px"></i>
                 <b>Shift {{ ++$key }} </b><br>
             </div>
             <div class="col-4 d-flexjustify-content-start align-items-top">
@@ -168,7 +168,7 @@
 </div>
 
 <!-- Modal -->
-{{-- <div class="modal fade" id="modalMenu" data-bs-backdrop="static"
+<div class="modal fade" id="modalMenu" data-bs-backdrop="static"
     data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalMenuLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
@@ -194,7 +194,7 @@
             </div>
         </div>
     </div>
-</div> --}}
+</div>
 @endsection
 
 @section('script')
