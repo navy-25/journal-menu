@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Sales;
 use App\Models\Stats;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class StatsController extends Controller
 {
@@ -15,8 +17,42 @@ class StatsController extends Controller
     public function index()
     {
         $page = 'Statistik';
-        $data = [];
-        return view('stats', compact('data', 'page'));
+        $data['weekly'] = Sales::query()
+            ->join('menus as m', 'm.id', 'sales.id_menu')
+            ->orderBy('sales.date', 'DESC')
+            ->get()
+            ->groupBy('date');
+        $data['all'] = Sales::query()
+            ->join('menus as m', 'm.id', 'sales.id_menu')
+            ->sum(DB::raw('sales.qty * m.price'));
+        $data['qty'] = Sales::query()
+            ->sum('sales.qty');
+        $data['menu'] = Sales::query()
+            ->join('menus as m', 'm.id', 'sales.id_menu')
+            ->select('m.name', DB::raw('count(m.id) as total_terjual'))
+            ->groupBy('m.id')
+            ->orderBy('total_terjual', 'DESC')
+            ->get();
+
+        $shift = [
+            [
+                'shift' => ['12:00', '14:59'],
+            ],
+            [
+                'shift' => ['15:00', '18:59'],
+            ],
+            [
+                'shift' => ['19:00', '22:59'],
+            ],
+        ];
+        $data['shift_1'] = Sales::query()->whereBetween(DB::raw('TIME(created_at)'), $shift[0]['shift'])->count();
+        $data['shift_2'] = Sales::query()->whereBetween(DB::raw('TIME(created_at)'), $shift[1]['shift'])->count();
+        $data['shift_3'] = Sales::query()->whereBetween(DB::raw('TIME(created_at)'), $shift[2]['shift'])->count();
+
+        $shift[0]['total_pembeli'] = $data['shift_1'];
+        $shift[1]['total_pembeli'] = $data['shift_2'];
+        $shift[2]['total_pembeli'] = $data['shift_3'];
+        return view('stats', compact('data', 'page', 'shift'));
     }
 
     /**

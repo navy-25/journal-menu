@@ -1,11 +1,35 @@
 <?php
 
 use App\Helpers\UserAccessHelper;
+use App\Models\Stock;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Intervention\Image\Facades\Image;
 
 date_default_timezone_set('Asia/Jakarta');
+
+if (!function_exists('minStock')) {
+    function minStock($id)
+    {
+        $stock = Stock::find($id);
+        $sisa = (int) $stock->qty_usage - 1;
+        $stock->update([
+            'qty_usage' => $sisa,
+        ]);
+    }
+}
+
+if (!function_exists('plusStock')) {
+    function plusStock($id)
+    {
+        $stock = Stock::find($id);
+        $sisa = (int) $stock->qty_usage + 1;
+        $stock->update([
+            'qty_usage' => $sisa,
+        ]);
+    }
+}
+
 
 // SIDEBAR
 if (!function_exists('activeMenu')) {
@@ -121,8 +145,19 @@ if (!function_exists('dateFormatDay')) {
         $month = date('m', strtotime($date));
         $year = date('Y', strtotime($date));
         $months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-        $day_names = ['mon' => 'Minggu', 'tue' => 'Selasa', 'wed' => 'Rabu', 'thu' => 'Kamis', 'fri' => 'Jumat', 'sat' => 'Sabtu',];
+        $day_names = ['mon' => 'Senin', 'sun' => 'Minggu', 'tue' => 'Selasa', 'wed' => 'Rabu', 'thu' => 'Kamis', 'fri' => 'Jumat', 'sat' => 'Sabtu',];
         $date =  $day_names[strtolower($day_name)] . ', ' . $day . ' ' . $months[(int)$month - 1] . ' ' . $year;
+        return $date;
+    }
+}
+
+if (!function_exists('formatDay')) {
+    function formatDay($date)
+    {
+        $day_name = date('D', strtotime($date));
+        $day = date('d', strtotime($date));
+        $day_names = ['mon' => 'Senin', 'sun' => 'Minggu', 'tue' => 'Selasa', 'wed' => 'Rabu', 'thu' => 'Kamis', 'fri' => 'Jumat', 'sat' => 'Sabtu',];
+        $date =  $day_names[strtolower($day_name)];
         return $date;
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Menu;
 use App\Models\Sales;
+use App\Models\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -103,6 +104,13 @@ class SalesController extends Controller
                 'qty' => $qty[$key],
                 'date' => date('Y-m-d'),
             ]);
+
+            for ($i = 0; $i < $qty[$key]; $i++) {
+                $list = [1, 2, 18, 20];
+                foreach ($list as $key => $value) {
+                    minStock($value);
+                }
+            }
             $qty_order++;
         }
         return redirect()->route('sales.index')->with('success', 'menambahkan ' . $qty_order . ' pesanan baru');
@@ -151,8 +159,14 @@ class SalesController extends Controller
     public function destroy(Sales $sales, Request $request)
     {
         $data = Sales::find($request->id);
-        $data->delete();
 
+        for ($i = 0; $i < $data->qty; $i++) {
+            $list = [1, 2, 18, 20];
+            foreach ($list as $key => $value) {
+                minStock($value);
+            }
+        }
+        $data->delete();
         return redirect()->back()->with('success', 'dihapus');
     }
 }

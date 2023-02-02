@@ -17,8 +17,8 @@ return [
         'route'     => 'spend.index',
     ],
     [
-        'name'      => 'Stok',
-        'icon'      => 'package',
-        'route'     => 'stock.index',
+        'name'      => 'Pengaturan',
+        'icon'      => 'settings',
+        'route'     => 'settings.index',
     ],
 ];

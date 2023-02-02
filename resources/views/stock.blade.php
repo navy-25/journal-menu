@@ -2,7 +2,9 @@
 
 @section('css')
 <style>
-
+    .container{
+        padding-top:0px !important;
+    }
 </style>
 @endsection
 
@@ -10,33 +12,56 @@
 @php
     date_default_timezone_set('Asia/Jakarta');
 @endphp
+{{-- NAV BACK --}}
+<div class="px-4 py-3 mb-3 bg-white shadow-mini fixed-top d-flex align-items-center">
+    <a href="{{ route('settings.index') }}" class="text-decoration-none text-dark">
+        <i data-feather="arrow-left" class="me-2 my-0 py-0" style="width: 18px"></i>
+    </a>
+    <p class="fw-bold m-0 p-0">{{ $page }}</p>
+</div>
+<div style="height: 80px !important"></div>
+{{-- END NAV BACK --}}
+
 <div class="px-4 mb-3">
-    <h4 class="fw-bold mb-4">{{ $page }}</h4>
-    @if ($message = Session::get('success'))
-        <div class="alert border-0 alert-warning alert-dismissible fade show" role="alert">
-            <strong>Berhasil!</strong> {{ $message }}.
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    @include('includes.alert')
+    <h6 class="fw-bold mb-4">Daftar {{ $page }}</h6>
+    {{-- <div class="row mb-4 px-0">
+        <div class="col-6 d-flex align-items-center">
+            <h6 class="fw-bold mb-2">Daftar {{ $page }}</h6>
         </div>
-    @endif
-    @if ($message = Session::get('error'))
-        <div class="alert border-0 alert-dark alert-dismissible fade show" role="alert">
-            <strong>Gagal!</strong> {{ $message }}.
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="col-6 d-flex align-items-center justify-content-end">
+            <button type="button" class="btn btn-dark py-2 px-3 rounded-4 text-white"
+                data-bs-toggle="modal" data-bs-target="#modal"
+                    onclick="create()"
+                    >
+                <i data-feather="plus" style="width: 18px"></i>
+            </button>
         </div>
-    @endif
+    </div> --}}
 </div>
 <div class="px-4">
     @foreach ($data as $key => $item)
-        <div class="row" onclick="edit('{{ $key }}')" data-bs-toggle="modal" data-bs-target="#edit">
-            <div class="col-3 d-flex justify-content-center align-items-center">
-                <img src="{{ asset('app-assets/images/empty.jpg') }}" width="100%" alt="">
+        <div class="row" onclick="edit('{{ $key }}','{{ route('stock.update') }}')" data-bs-toggle="modal" data-bs-target="#modal">
+            <div class="col-2 d-flex justify-content-center align-items-start py-2">
+                <div style="width: 50px !important;height: 50px !important" class="bg-warning rounded-circle d-flex justify-content-center align-items-center fw-bold text-capitalize">
+                    {{ $item->name[0] }}
+                </div>
             </div>
-            <div class="col-9 d-flex justify-content-start align-items-center">
+            <div class="col-7 d-flex justify-content-start align-items-center">
                 <div>
                     <p class="fw-bold fs-5 m-0 text-capitalize">{{ $item->name }}</p>
-                    <p class="m-0">Rp {{ number_format($item->price) }}</p>
+                    <p class="m-0 mb-2">{{ $item->qty }} {{ $item->unit }}</p>
+                    <small class="d-flex justify-content-start align-items-center">
+                        <i data-feather="calendar" class="me-2" style="width: 18px"></i>
+                        {{ dateTimeFormat($item->updated_at) }}
+                    </small>
                     <textarea  class="d-none" id="data{{ $key }}" cols="30" rows="10">{{ $item }}</textarea>
                 </div>
+            </div>
+            <div class="col-3 d-flex justify-content-center align-items-start fw-bold">
+                <p class="fs-1 m-0">
+                    {{ $item->qty_usage }}x
+                </p>
             </div>
         </div>
         <hr style="opacity: 0.1">
@@ -44,33 +69,49 @@
 </div>
 
 {{-- MDOAL EDIT --}}
-<div class="modal fade" id="edit" data-bs-backdrop="static"
-    data-bs-keyboard="false" tabindex="-1" aria-labelledby="editlLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header border-0 d-flex justify-content-start align-items-center">
-                <p class="fs-6 m-0 fw-bold">Form edit</p>
+<div class="modal fade" id="modal" data-bs-backdrop="static"
+    data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-bottom border-0">
+        <div class="modal-content modal-content-bottom">
+            <div class="modal-header border-0 d-flex justify-content-start align-items-center p-4">
+                <p class="fs-6 m-0 fw-bold">Tambahkan bahan baru</p>
                 <a href="#" data-bs-dismiss="modal" class="text-decoration-none text-dark ms-auto">
                     <i data-feather="x" style="width: 18px"></i>
                 </a>
             </div>
-            <div class="modal-body">
-                <form action="{{ route('stock.update') }}" method="post">
+            <div class="modal-body px-4">
+                <form id="form" action="{{ route('stock.store') }}" method="post">
                     @csrf
                     <div class="form-group mb-3">
-                        <label for="">Nama menu</label>
-                        <input type="text" class="form-control" style="height: 50px !important" value="" name="name" id="name">
+                        <label for="" class="mb-2">Nama bahan</label>
+                        <input type="text" class="form-control" placeholder="tulis disini" style="height: 50px !important" value="" name="name" id="name">
                     </div>
                     <div class="form-group mb-3">
-                        <label for="">Harga</label>
-                        <input type="number" class="form-control" style="height: 50px !important" value="" name="price" id="price">
+                        <label for="" class="mb-2">Berat/Jumlah</label>
+                        <input type="number" class="form-control" placeholder="10/100/400" style="height: 50px !important" value="" name="qty" id="qty">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="" class="mb-2">Satuan (gram/biji/dsb)</label>
+                        <input type="text" class="form-control" placeholder="gram/piece/liter" style="height: 50px !important" value="" name="unit" id="unit">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="" class="mb-2">Max. pemakaian (Sesuai takaran/pizza)</label>
+                        <input type="number" class="form-control" placeholder="5x/10x/40x" style="height: 50px !important" value="" name="qty_usage" id="qty_usage">
                     </div>
                     <input type="hidden" name="id" id="id">
-                    <button class="d-none" id="btn-submit-filter" type="submit"></button>
+                    <button class="d-none" id="btn-submit" type="submit"></button>
                 </form>
             </div>
-            <div class="modal-footer border-0">
-                <button type="button" onclick="$('#btn-submit-filter').trigger('click')" class="btn btn-dark w-100 rounded-4 py-3">Simpan</button>
+            <div class="modal-footer border-0 px-4" style="flex-wrap: inherit !important">
+                <button type="button" id="btn-submit-trigger"
+                    {{-- style="width: 70% !important" --}}
+                    onclick="$('#btn-submit').trigger('click')" class="btn btn-dark w-100 rounded-4 py-3">
+                    Tambah
+                </button>
+                {{-- <a type="button" id="btn-delete" style="width: 30% !important"
+                    class="btn bg-light-danger w-100 rounded-4 py-3">
+                    Hapus
+                </a> --}}
             </div>
         </div>
     </div>
@@ -79,12 +120,40 @@
 
 @section('script')
 <script>
-    function edit(key){
+    $(document).ready(function () {
+        $('#padding-bottom').remove();
+        $('#nav-bottom').remove();
+    });
+
+    // function create(){
+    //     $('#id').val('')
+    //     $('#name').val('')
+    //     $('#qty').val('')
+    //     $('#unit').val('')
+    //     $('#qty_usage').val('')
+
+    //     $('#btn-submit-trigger').css('width','100%')
+    //     $('#btn-delete').addClass('d-none')
+    //     $('#form').attr('action','{{ route('stock.store') }}')
+    //     $('#btn-submit-trigger').text('Tambah')
+    // }
+    function edit(key,url){
         var data = JSON.parse($('#data'+key).val())
 
         $('#id').val(data.id)
         $('#name').val(data.name)
-        $('#price').val(data.price)
+        $('#qty').val(data.qty)
+        $('#unit').val(data.unit)
+        $('#qty_usage').val(data.qty_usage)
+
+        $('#form').attr('action',url)
+        $('#btn-submit-trigger').text('Simpan')
+
+        $('#btn-submit-trigger').css('width','70%')
+        $('#btn-delete').removeClass('d-none')
+        $( "#btn-delete" ).click(function() {
+            alert_confirm('{{ route('stock.destroy') }}?id='+data.id, data.name)
+        });
     }
 </script>
 @endsection

@@ -42,10 +42,41 @@
             .swal2-title {
                 padding: 25px 0px !important;
             }
+            .bg-light-dark{
+                background: rgba(43, 43, 43, 0.1) !important;
+                color: rgb(43, 43, 43) !important;
+            }
+            .bg-light-warning{
+                background: rgba(255, 138, 4, 0.1) !important;
+                color: rgb(255, 155, 4) !important;
+            }
+            .bg-light-danger{
+                background: rgba(255, 12, 4, 0.1) !important;
+                color: rgb(255, 4, 4) !important;
+            }
+            .shadow{
+                box-shadow: 0px 30px 50px !important;
+            }
+            .shadow-mini{
+                box-shadow: 0px 0px 30px rgba(58, 58, 58, 0.144)
+            }
+            .modal-dialog-bottom{
+                position: fixed !important;
+                margin: 0px !important;
+                width: 100% !important;
+                bottom: 0px !important;
+                border-radius: 20px 20px 0px 0px !important;
+            }
+            .modal-content-bottom{
+                border-radius: 20px 20px 0px 0px !important;
+            }
+            .rounded-5{
+                border-radius: 15px !important
+            }
         </style>
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg bg-light fixed-bottom py-2 px-3" style="height: 75px !important;box-shadow: 0px 30px 50px;">
+        <nav id="nav-bottom" class="navbar navbar-expand-lg bg-light fixed-bottom py-2 px-3 shadow" style="height: 75px !important;">
             <div class="d-flex justify-content-around w-100 align-items-center">
                 @foreach (config('menu') as $value)
                     <a  href="{{ $value['route'] == '' ? '#' : route($value['route']) }}"
@@ -58,11 +89,7 @@
 
         <div class="container p-3 vh-100 px-0 bg-white">
             @yield('content')
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
+            <div id="padding-bottom"><br><br><br><br><br></div>
         </div>
 
         <script src="{{ asset('js/jquery-3.6.3.min.js') }}"></script>

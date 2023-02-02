@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Menu;
 use Illuminate\Http\Request;
 
-class MenuController extends Controller
+class SettingsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +13,21 @@ class MenuController extends Controller
      */
     public function index()
     {
-        $page = 'Menu';
-        $data = Menu::orderBy('id', 'DESC')->get();
-        return view('menu', compact('data', 'page'));
+        $page = 'Pengaturan';
+
+        $menu = [
+            [
+                'name'  => 'Menu',
+                'route' => route('menu.index'),
+                'icon'  => 'coffee',
+            ],
+            [
+                'name'  => 'Bahan',
+                'route' => route('stock.index'),
+                'icon'  => 'package',
+            ],
+        ];
+        return view('settings', compact('page', 'menu'));
     }
 
     /**
@@ -43,10 +54,10 @@ class MenuController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Menu  $menu
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Menu $menu)
+    public function show($id)
     {
         //
     }
@@ -54,10 +65,10 @@ class MenuController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Menu  $menu
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Menu $menu)
+    public function edit($id)
     {
         //
     }
@@ -66,33 +77,21 @@ class MenuController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Menu  $menu
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Menu $menu)
+    public function update(Request $request, $id)
     {
-        $this->validate(
-            $request,
-            [
-                'name'      => 'required',
-                'price'     => 'required|integer|max:9999999',
-            ],
-        );
-        $data = Menu::find($request->id);
-        $data->update([
-            'name' => $request->name,
-            'price' => $request->price,
-        ]);
-        return redirect()->route('menu.index')->with('success', 'memperbarui ' . $data->name);
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Menu  $menu
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Menu $menu)
+    public function destroy($id)
     {
         //
     }
