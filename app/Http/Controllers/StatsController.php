@@ -27,13 +27,13 @@ class StatsController extends Controller
             ->sum(DB::raw('sales.qty * m.price'));
         $data['qty'] = Sales::query()
             ->sum('sales.qty');
-        // $data['menu'] = Sales::query()
-        //     ->join('menus as m', 'm.id', 'sales.id_menu')
-        //     ->select('m.name', DB::raw('count(m.id) as total_terjual'))
-        //     ->groupBy('m.id')
-        //     ->orderBy('total_terjual', 'DESC')
-        //     ->get();
-
+        $data['menu'] = Sales::query()
+            ->join('menus as m', 'm.id', 'sales.id_menu')
+            ->select('m.name', DB::raw('count(m.id) as total_terjual'))
+            ->groupBy('m.id')
+            // ->orderBy('total_terjual', 'DESC')
+            ->get();
+        dd($data['menu']);
         $shift = [
             [
                 'shift' => ['12:00', '14:59'],
