@@ -33,7 +33,6 @@ class StatsController extends Controller
             ->groupBy('m.name')
             ->orderBy('total_terjual', 'DESC')
             ->get();
-        dd($data['menu']);
         $shift = [
             [
                 'shift' => ['12:00', '14:59'],
