@@ -30,8 +30,8 @@ class StatsController extends Controller
         $data['menu'] = Sales::query()
             ->join('menus as m', 'm.id', 'sales.id_menu')
             ->select('m.name', DB::raw('count(m.id) as total_terjual'))
-            ->groupBy('m.id')
-            // ->orderBy('total_terjual', 'DESC')
+            ->groupBy('m.name')
+            ->orderBy('total_terjual', 'DESC')
             ->get();
         dd($data['menu']);
         $shift = [
