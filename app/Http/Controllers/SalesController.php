@@ -19,7 +19,7 @@ class SalesController extends Controller
     {
         date_default_timezone_set('Asia/Jakarta');
         $page = 'Penjualan';
-        $menu = Menu::orderBy('name', 'ASC')->get();
+        $menu = Menu::orderBy('name', 'DESC')->get();
         $data = Sales::query()
             ->join('menus as m', 'm.id', 'sales.id_menu')
             ->select(
@@ -113,7 +113,7 @@ class SalesController extends Controller
             }
             $qty_order++;
         }
-        return redirect()->route('sales.index')->with('success', 'menambahkan ' . $qty_order . ' pesanan baru');
+        return redirect()->back()->with('success', 'menambahkan ' . $qty_order . ' pesanan baru');
     }
 
     /**

@@ -83,7 +83,7 @@ class MenuController extends Controller
             'name' => $request->name,
             'price' => $request->price,
         ]);
-        return redirect()->route('menu.index')->with('success', 'memperbarui ' . $data->name);
+        return redirect()->back()->with('success', 'memperbarui ' . $data->name);
     }
 
     /**

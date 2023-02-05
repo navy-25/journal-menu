@@ -30,9 +30,13 @@
             <p class="fs-5 mb-0">Pendapatan</p>
             <p class="mb-3 d-flex align-items-center">
                 <i data-feather="calendar" class="me-2" style="width: 14px"></i>
-                {{ date('D, d M Y') }}
+                @if (isset($_GET['dateFilter']))
+                    {{ customDate($_GET['dateFilter'], 'D, d M Y') }}
+                @else
+                    {{ date('D, d M Y') }}
+                @endif
             </p>
-            <h3 class="fw-bold mb-0">Rp {{ number_format($total,2,',','.') }}</h3>
+            <h3 class="fw-bold mb-0">IDR {{ number_format($total,2,',','.') }}</h3>
             <p class="m-0">{{ $qty }} pizza</p>
         </div>
     </div>
@@ -66,7 +70,7 @@
                     <div class="row">
                         <div class="col-7">
                             <p class="fw-bold fs-5 m-0 text-capitalize">{{ $item->name }}</p>
-                            <p class="m-0 mb-2">Rp {{ number_format($item->price) }} @ {{ $item->qty }} </p>
+                            <p class="m-0 mb-2">IDR {{ numberFormat($item->price) }} @ {{ $item->qty }} </p>
                             <div class="d-flex align-items-center">
                                 <i data-feather="calendar" class="me-2" style="width: 14px"></i>
                                 <small>{{ date('d M Y H:i', strtotime($item->created_at)) }}</small>
@@ -75,7 +79,7 @@
                         <div class="col-5 d-flex align-items-center justify-content-end">
                             <a href="#" class="fw-bold fs-3 m-0 d-flex align-items-center justify-content-center text-dark bg-warning p-3 py-4 text-decoration-none" style="border-radius: 100% !important;width: 90px !important; height: 90px"
                                 onclick="alert_confirm('{{ route('sales.destroy',['id'=>$item->id]) }}','{{ $item->name }}')">
-                                {{ number_format($item->price * $item->qty / 1000) }}K
+                                {{ numberFormat($item->price * $item->qty / 1000) }}K
                             </a>
                         </div>
                     </div>
@@ -100,25 +104,24 @@
                 <form action="{{ route('sales.store') }}" method="POST">
                     @csrf
                     @foreach ($menu as $key => $item)
-                        <div class="card p-4 mb-2 rounded-4">
-                            <div class="row">
-                                <div class="col-7">
-                                    <p class="fw-bold fs-5 m-0 text-capitalize">{{ $item->name }}</p>
-                                    <p class="m-0">Rp {{ number_format($item->price) }}</p>
-                                    <input type="hidden" name="menu_id[]" value="{{ $item->id }}">
-                                    <input type="hidden" name="qty[]" value="0" id="qty{{ $key }}">
-                                </div>
-                                <div class="col-5 d-flex align-items-center justify-content-around">
-                                    <button class="btn btn-dark rounded-4 text-white" onclick="minus('{{ $key }}')" style="width: 40px;height: 40px" type="button" id="min{{ $key }}">
-                                        <i data-feather="minus" style="width: 12px"></i>
-                                    </button>
-                                    <p class="m-0" id="qty_text{{ $key }}">0</p>
-                                    <button class="btn btn-dark rounded-4 text-white" onclick="plus('{{ $key }}')" style="width: 40px;height: 40px" type="button" id="min{{ $key }}">
-                                        <i data-feather="plus" style="width: 12px"></i>
-                                    </button>
-                                </div>
+                        <div class="row">
+                            <div class="col-7">
+                                <p class="fw-bold fs-5 m-0 text-capitalize">{{ $item->name }}</p>
+                                <p class="m-0">IDR {{ numberFormat($item->price) }}</p>
+                                <input type="hidden" name="menu_id[]" value="{{ $item->id }}">
+                                <input type="hidden" name="qty[]" value="0" id="qty{{ $key }}">
+                            </div>
+                            <div class="col-5 d-flex align-items-center justify-content-around">
+                                <button class="btn btn-dark rounded-4 text-white" onclick="minus('{{ $key }}')" style="width: 40px;height: 40px" type="button" id="min{{ $key }}">
+                                    <i data-feather="minus" style="width: 12px"></i>
+                                </button>
+                                <p class="m-0" id="qty_text{{ $key }}">0</p>
+                                <button class="btn btn-dark rounded-4 text-white" onclick="plus('{{ $key }}')" style="width: 40px;height: 40px" type="button" id="min{{ $key }}">
+                                    <i data-feather="plus" style="width: 12px"></i>
+                                </button>
                             </div>
                         </div>
+                        <hr style="opacity: 0.05 !important">
                     @endforeach
                     <button class="d-none" id="btn-submit" type="submit"></button>
                 </form>
@@ -132,8 +135,8 @@
 
 <div class="modal fade" id="filter" data-bs-backdrop="static"
     data-bs-keyboard="false" tabindex="-1" aria-labelledby="filterlLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
+    <div class="modal-dialog modal-dialog-bottom border-0">
+        <div class="modal-content modal-content-bottom">
             <div class="modal-header border-0 d-flex justify-content-start align-items-center">
                 <p class="fs-6 m-0 fw-bold">Filter by tanggal</p>
                 <a href="#" data-bs-dismiss="modal" class="text-decoration-none text-dark ms-auto">

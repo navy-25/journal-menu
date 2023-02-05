@@ -1,12 +1,24 @@
 <?php
 
-use App\Helpers\UserAccessHelper;
 use App\Models\Stock;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Intervention\Image\Facades\Image;
 
 date_default_timezone_set('Asia/Jakarta');
+
+if (!function_exists('spendType')) {
+    function spendType($type = '')
+    {
+        $list = [
+            1 => 'Keperluan Pegawai',
+            2 => 'Restock Bahan',
+            3 => 'Operasional',
+            4 => 'Kebutuhan Alat',
+            5 => 'Kebutuhan Outlet',
+            6 => 'Lainnya',
+        ];
+        return $type == '' ? $list : $list[$type];
+    }
+}
 
 if (!function_exists('minStock')) {
     function minStock($id)

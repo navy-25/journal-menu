@@ -45,7 +45,7 @@
             <div class="col-9 d-flex justify-content-start align-items-center">
                 <div>
                     <p class="fw-bold fs-5 m-0 text-capitalize">{{ $item->name }}</p>
-                    <p class="m-0">Rp {{ number_format($item->price) }}</p>
+                    <p class="m-0">IDR {{ numberFormat($item->price) }}</p>
                     <textarea  class="d-none" id="data{{ $key }}" cols="30" rows="10">{{ $item }}</textarea>
                 </div>
             </div>

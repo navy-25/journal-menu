@@ -22,6 +22,7 @@ Route::controller(SalesController::class)->prefix('sales')->name('sales.')->grou
 Route::controller(SpendController::class)->prefix('spend')->name('spend.')->group(function () {
     Route::get('/', 'index')->name('index');
     Route::post('/store', 'store')->name('store');
+    Route::post('/update', 'update')->name('update');
     Route::get('/destroy', 'destroy')->name('destroy');
 });
 

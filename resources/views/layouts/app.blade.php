@@ -12,6 +12,11 @@
 
         @yield('css')
         <style>
+            .form-select:focus {
+                border-color: #00000018 !important;
+                outline: 0 !important;
+                box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 0%) !important;
+            }
             .swal2-container.swal2-backdrop-show, .swal2-container.swal2-noanimation {
                 background: rgb(0 0 0 / 71%) !important;
             }

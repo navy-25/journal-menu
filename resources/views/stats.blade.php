@@ -24,7 +24,7 @@
         <div class="card-body p-4 text-white">
             <p class="fs-5 mb-0">Total Pendapatan</p>
             <p class="mb-3 fs-3 fw-bold d-flex align-items-center">
-                IDR {{ numberFormat($data['all']) }}
+                IDR  {{ numberFormat($data['all']) }}
             </p>
             <p class="fs-6 mb-0">Total Pizza </p>
             <p class="m-0 fs-5 fw-bold d-flex align-items-center">
@@ -38,7 +38,7 @@
 <div class="px-4">
     <div class="row px-0 mb-3">
         <div class="col-6 d-flex align-items-center">
-            <h6 class="fw-bold">Detail harian</h6>
+            <h6 class="fw-bold">Detail pemasukan</h6>
         </div>
         <div class="col-6 d-flex align-items-center justify-content-end">
             <a class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#modalIncome">Lihat semua</a>
@@ -63,7 +63,46 @@
                 {{ formatDay($key) }}, {{ customDate($key,'d M') }}
             </div>
             <div class="col-6 d-flex justify-content-end">
-                <p class="m-0 fw-bold text-success">+ IDR {{ numberFormat($total) }}</p>
+                <p class="m-0 fw-bold text-success">+ IDR  {{ numberFormat($total) }}</p>
+            </div>
+        </div>
+        <hr class="py-1 my-2" style="opacity: 0.05 !important">
+        @php
+            $index++
+        @endphp
+    @endforeach
+</div>
+
+<br>
+<div class="px-4">
+    <div class="row px-0 mb-3">
+        <div class="col-6 d-flex align-items-center">
+            <h6 class="fw-bold">Detail pengeluaran</h6>
+        </div>
+        <div class="col-6 d-flex align-items-center justify-content-end">
+            <a class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#modalOutcome">Lihat semua</a>
+        </div>
+    </div>
+    @php
+        $index = 1;
+    @endphp
+    @foreach ($data['weekly-spend'] as $key => $value)
+        @php
+            $total  = 0;
+            foreach ($value as $item) {
+                $total += $item->price;
+            }
+            if($index == 4){
+                break;
+            }
+        @endphp
+        <div class="row">
+            <div class="col-6 d-flex justify-content-start align-items-center">
+                <i data-feather="calendar" class="me-2" style="width: 15px"></i>
+                {{ formatDay($key) }}, {{ customDate($key,'d M') }}
+            </div>
+            <div class="col-6 d-flex justify-content-end">
+                <p class="m-0 fw-bold text-danger">- IDR  {{ numberFormat($total) }}</p>
             </div>
         </div>
         <hr class="py-1 my-2" style="opacity: 0.05 !important">
@@ -157,7 +196,42 @@
                             {{ formatDay($key) }}, {{ customDate($key,'d M') }}
                         </div>
                         <div class="col-6 d-flex justify-content-end">
-                            <p class="m-0 fw-bold text-success">+ IDR {{ numberFormat($total) }}</p>
+                            <p class="m-0 fw-bold text-success">+ IDR  {{ numberFormat($total) }}</p>
+                        </div>
+                    </div>
+                    <hr class="py-1 my-2" style="opacity: 0.05 !important">
+                @endforeach
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalOutcome" data-bs-backdrop="static"
+    data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalOutcomeLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header d-flex justify-content-start align-items-center">
+                <a href="#" data-bs-dismiss="modal" class="text-decoration-none text-dark me-3">
+                    <i data-feather="arrow-left" style="width: 18px"></i>
+                </a>
+                <p class="fs-6 m-0 fw-bold">Detail pengeluaran harian</p>
+            </div>
+            <div class="modal-body">
+                @foreach ($data['weekly-spend'] as $key => $value)
+                    @php
+                        $total  = 0;
+                        foreach ($value as $item) {
+                            $total += $item->price;
+                        }
+                    @endphp
+                    <div class="row">
+                        <div class="col-6 d-flex justify-content-start align-items-center">
+                            <i data-feather="calendar" class="me-2" style="width: 15px"></i>
+                            {{ formatDay($key) }}, {{ customDate($key,'d M') }}
+                        </div>
+                        <div class="col-6 d-flex justify-content-end">
+                            <p class="m-0 fw-bold text-danger">- IDR  {{ numberFormat($total) }}</p>
                         </div>
                     </div>
                     <hr class="py-1 my-2" style="opacity: 0.05 !important">
