@@ -37,21 +37,34 @@
     </div>
 </div>
 <div class="px-4">
-    @foreach ($data as $key => $item)
-        <div class="row px-2" onclick="edit('{{ $key }}','{{ route('note.update') }}')" data-bs-toggle="modal" data-bs-target="#modal">
-            <div class="col-12 d-flex justify-content-start align-items-center rounded-5 px-4 py-3" style="border: 1px solid rgba(0, 0, 0, 0.1)" >
-                <div>
-                    <p class="fw-bold m-0 text-capitalize">{{ $item->title }}</p>
-                    <p>{{ $item->description }}</p>
-                    <textarea  class="d-none" id="data{{ $key }}" cols="30" rows="10">{{ $item }}</textarea>
-                    <div class="d-flex align-items-center">
-                        <i data-feather="calendar" class="me-2" style="width: 14px"></i>
-                        <small>{{ date('d M Y H:i', strtotime($item->created_at)) }}</small>
+
+    @if (count($data) == 0)
+        <div class="py-5">
+            <center>
+                <img src="{{ asset('app-assets/images/empty-folder.png') }}" alt="wallet" class="mb-3" width="30%">
+                <br>
+                <p class="fw-bold fs-4 text-secondary">
+                    Belum ada catatan
+                </p>
+            </center>
+        </div>
+    @else
+        @foreach ($data as $key => $item)
+            <div class="row px-2" onclick="edit('{{ $key }}','{{ route('note.update') }}')" data-bs-toggle="modal" data-bs-target="#modal">
+                <div class="col-12 d-flex justify-content-start align-items-center rounded-5 px-4 py-3" style="border: 1px solid rgba(0, 0, 0, 0.1)" >
+                    <div>
+                        <p class="fw-bold m-0 text-capitalize">{{ $item->title }}</p>
+                        <p>{{ $item->description }}</p>
+                        <textarea  class="d-none" id="data{{ $key }}" cols="30" rows="10">{{ $item }}</textarea>
+                        <div class="d-flex align-items-center">
+                            <i data-feather="calendar" class="me-2" style="width: 14px"></i>
+                            <small>{{ date('d M Y H:i', strtotime($item->created_at)) }}</small>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    @endforeach
+        @endforeach
+    @endif
 </div>
 
 {{-- MDOAL MODAL --}}
