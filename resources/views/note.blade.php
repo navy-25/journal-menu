@@ -25,7 +25,7 @@
 <div class="px-4 mb-3">
     <div style="position: fixed;bottom:70px;right:20px;">
         <button type="button" class="btn btn-warning text-dark d-flex align-items-center justify-content-center"
-            style="height: 60px;width: 60px;border-radius:100%" disabled>
+            style="height: 60px;width: 60px;border-radius:100%" onclick="create()">
             <i data-feather="plus" style="width: 25px" data-bs-toggle="modal" data-bs-target="#modal"></i>
         </button>
     </div>
@@ -38,50 +38,50 @@
 </div>
 <div class="px-4">
     @foreach ($data as $key => $item)
-        <div class="row" onclick="edit('{{ $key }}')" data-bs-toggle="modal" data-bs-target="#edit">
-            <div class="col-3 d-flex justify-content-center align-items-center">
-                <img src="{{ asset('app-assets/images/empty.jpg') }}" width="100%" alt="">
-            </div>
-            <div class="col-9 d-flex justify-content-start align-items-center">
+        <div class="row px-2" onclick="edit('{{ $key }}','{{ route('note.update') }}')" data-bs-toggle="modal" data-bs-target="#modal">
+            <div class="col-12 d-flex justify-content-start align-items-center rounded-5 px-4 py-3" style="border: 1px solid rgba(0, 0, 0, 0.1)" >
                 <div>
-                    <p class="fw-bold fs-5 m-0 text-capitalize">{{ $item->name }}</p>
-                    <p class="m-0">IDR {{ numberFormat($item->price) }}</p>
+                    <p class="fw-bold m-0 text-capitalize">{{ $item->title }}</p>
+                    <p>{{ $item->description }}</p>
                     <textarea  class="d-none" id="data{{ $key }}" cols="30" rows="10">{{ $item }}</textarea>
+                    <div class="d-flex align-items-center">
+                        <i data-feather="calendar" class="me-2" style="width: 14px"></i>
+                        <small>{{ date('d M Y H:i', strtotime($item->created_at)) }}</small>
+                    </div>
                 </div>
             </div>
         </div>
-        <hr style="opacity: 0.1">
     @endforeach
 </div>
 
-{{-- MDOAL EDIT --}}
-<div class="modal fade" id="edit" data-bs-backdrop="static"
+{{-- MDOAL MODAL --}}
+<div class="modal fade" id="modal" data-bs-backdrop="static"
     data-bs-keyboard="false" tabindex="-1" aria-labelledby="editlLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-bottom border-0">
         <div class="modal-content modal-content-bottom">
             <div class="modal-header border-0 d-flex justify-content-start align-items-center">
-                <p class="fs-6 m-0 fw-bold">Form edit</p>
+                <p class="fs-6 m-0 fw-bold">Tambah catatan</p>
                 <a href="#" data-bs-dismiss="modal" class="text-decoration-none text-dark ms-auto">
                     <i data-feather="x" style="width: 18px"></i>
                 </a>
             </div>
             <div class="modal-body">
-                <form action="{{ route('menu.update') }}" method="post">
+                <form action="{{ route('note.store') }}" method="post" id="form">
                     @csrf
                     <div class="form-group mb-3">
-                        <label for="" class="mb-2">Nama menu</label>
-                        <input type="text" class="form-control" style="height: 50px !important" value="" name="name" id="name">
+                        <label for="title" class="mb-2">Judul</label>
+                        <input type="text" class="form-control" style="height: 50px !important" value="" name="title" id="title" placeholder="tulis judul catatan disini...">
                     </div>
                     <div class="form-group mb-3">
-                        <label for="" class="mb-2">Harga</label>
-                        <input type="number" class="form-control" style="height: 50px !important" value="" name="price" id="price">
+                        <label for="description" class="mb-2">Catatan</label>
+                        <textarea name="description" class="form-control" id="description" cols="10" rows="4"></textarea>
                     </div>
                     <input type="hidden" name="id" id="id">
-                    <button class="d-none" id="btn-submit-filter" type="submit"></button>
+                    <button class="d-none" id="btn-submit" type="submit"></button>
                 </form>
             </div>
             <div class="modal-footer border-0">
-                <button type="button" onclick="$('#btn-submit-filter').trigger('click')" class="btn btn-dark w-100 rounded-4 py-3">Simpan</button>
+                <button type="button" id="btn-submit-trigger" onclick="$('#btn-submit').trigger('click')" class="btn btn-dark w-100 rounded-4 py-3">Tambah</button>
             </div>
         </div>
     </div>
@@ -95,12 +95,22 @@
         $('#nav-bottom').remove();
     });
 
-    function edit(key){
-        var data = JSON.parse($('#data'+key).val())
+    function create(){
+        $('#id').val('')
+        $('#title').val('')
+        $('#description').val('')
 
+        $('#form').attr('action','{{ route('note.store') }}')
+        $('#btn-submit-trigger').text('Tambah')
+    }
+    function edit(key,url){
+        var data = JSON.parse($('#data'+key).val())
         $('#id').val(data.id)
-        $('#name').val(data.name)
-        $('#price').val(data.price)
+        $('#title').val(data.title)
+        $('#description').val(data.description)
+
+        $('#form').attr('action',url)
+        $('#btn-submit-trigger').text('Simpan')
     }
 </script>
 @endsection

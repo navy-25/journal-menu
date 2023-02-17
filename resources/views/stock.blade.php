@@ -25,36 +25,23 @@
 <div class="px-4 mb-3">
     @include('includes.alert')
     <h6 class="fw-bold mb-4">Daftar {{ $page }}</h6>
-    {{-- <div class="row mb-4 px-0">
-        <div class="col-6 d-flex align-items-center">
-            <h6 class="fw-bold mb-2">Daftar {{ $page }}</h6>
-        </div>
-        <div class="col-6 d-flex align-items-center justify-content-end">
-            <button type="button" class="btn btn-dark py-2 px-3 rounded-4 text-white"
-                data-bs-toggle="modal" data-bs-target="#modal"
-                    onclick="create()"
-                    >
-                <i data-feather="plus" style="width: 18px"></i>
-            </button>
-        </div>
-    </div> --}}
 </div>
 <div class="px-4">
     @foreach ($data as $key => $item)
         <div class="row" onclick="edit('{{ $key }}','{{ route('stock.update') }}')" data-bs-toggle="modal" data-bs-target="#modal">
-            <div class="col-2 d-flex justify-content-center align-items-start py-2">
+            <div class="col-3 d-flex justify-content-center align-items-start py-2">
                 <div style="width: 50px !important;height: 50px !important" class="bg-warning rounded-circle d-flex justify-content-center align-items-center fw-bold text-capitalize">
                     {{ $item->name[0] }}
                 </div>
             </div>
-            <div class="col-7 d-flex justify-content-start align-items-center">
+            <div class="col-6 d-flex justify-content-start align-items-center">
                 <div>
                     <p class="fw-bold fs-5 m-0 text-capitalize">{{ $item->name }}</p>
                     <p class="m-0 mb-2">{{ $item->qty }} {{ $item->unit }}</p>
-                    <small class="d-flex justify-content-start align-items-center">
+                    {{-- <small class="d-flex justify-content-start align-items-center">
                         <i data-feather="calendar" class="me-2" style="width: 18px"></i>
                         {{ dateTimeFormat($item->updated_at) }}
-                    </small>
+                    </small> --}}
                     <textarea  class="d-none" id="data{{ $key }}" cols="30" rows="10">{{ $item }}</textarea>
                 </div>
             </div>

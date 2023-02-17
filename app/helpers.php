@@ -5,8 +5,19 @@ use Illuminate\Support\Facades\Route;
 
 date_default_timezone_set('Asia/Jakarta');
 
-if (!function_exists('spendType')) {
-    function spendType($type = '')
+if (!function_exists('transactionStatus')) {
+    function transactionStatus($type = '')
+    {
+        $list = [
+            'out'   => 'Keluar',
+            'in'    => 'Masuk',
+        ];
+        return $type == '' ? $list : $list[$type];
+    }
+}
+
+if (!function_exists('transactionType')) {
+    function transactionType($type = '')
     {
         $list = [
             1 => 'Keperluan Pegawai',

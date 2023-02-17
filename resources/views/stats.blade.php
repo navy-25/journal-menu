@@ -11,6 +11,12 @@
     date_default_timezone_set('Asia/Jakarta');
 @endphp
 <div class="px-4 mb-3">
+    <div style="position: fixed;bottom:120px;right:20px;">
+        <button type="button" class="btn bg-dark text-white d-flex align-items-center justify-content-center"
+            style="height: 60px;width: 60px;border-radius:100%">
+            <i data-feather="filter" style="width: 25px" data-bs-toggle="modal" data-bs-target="#filter"></i>
+        </button>
+    </div>
     <h4 class="fw-bold mb-4">{{ config('app.name') }}</h4>
     @include('includes.alert')
 
@@ -22,7 +28,7 @@
             background-size: cover;
         ">
         <div class="card-body p-4 text-white">
-            <p class="fs-5 mb-0">Total Pendapatan</p>
+            <p class="fs-5 mb-0">Pendapatan bulan ini</p>
             <p class="mb-3 fs-3 fw-bold d-flex align-items-center">
                 IDR  {{ numberFormat($data['all']) }}
             </p>
@@ -38,7 +44,7 @@
 <div class="px-4">
     <div class="row px-0 mb-3">
         <div class="col-6 d-flex align-items-center">
-            <h6 class="fw-bold">Detail pemasukan</h6>
+            <h6 class="fw-bold">Detail penjualan</h6>
         </div>
         <div class="col-6 d-flex align-items-center justify-content-end">
             <a class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#modalIncome">Lihat semua</a>
@@ -77,7 +83,7 @@
 <div class="px-4">
     <div class="row px-0 mb-3">
         <div class="col-6 d-flex align-items-center">
-            <h6 class="fw-bold">Detail pengeluaran</h6>
+            <h6 class="fw-bold">Detail transaksi</h6>
         </div>
         <div class="col-6 d-flex align-items-center justify-content-end">
             <a class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#modalOutcome">Lihat semua</a>
@@ -86,11 +92,15 @@
     @php
         $index = 1;
     @endphp
-    @foreach ($data['weekly-spend'] as $key => $value)
+    @foreach ($data['weekly-transaction'] as $key => $value)
         @php
             $total  = 0;
             foreach ($value as $item) {
-                $total += $item->price;
+                if($item->status == 'in'){
+                    $total += $item->price;
+                }else{
+                    $total -= $item->price;
+                }
             }
             if($index == 4){
                 break;
@@ -180,7 +190,7 @@
                 <a href="#" data-bs-dismiss="modal" class="text-decoration-none text-dark me-3">
                     <i data-feather="arrow-left" style="width: 18px"></i>
                 </a>
-                <p class="fs-6 m-0 fw-bold">Detail pemasukann harian</p>
+                <p class="fs-6 m-0 fw-bold">Detail penjualan harian</p>
             </div>
             <div class="modal-body">
                 @foreach ($data['weekly'] as $key => $value)
@@ -215,14 +225,18 @@
                 <a href="#" data-bs-dismiss="modal" class="text-decoration-none text-dark me-3">
                     <i data-feather="arrow-left" style="width: 18px"></i>
                 </a>
-                <p class="fs-6 m-0 fw-bold">Detail pengeluaran harian</p>
+                <p class="fs-6 m-0 fw-bold">Detail transaksi harian</p>
             </div>
             <div class="modal-body">
-                @foreach ($data['weekly-spend'] as $key => $value)
+                @foreach ($data['weekly-transaction'] as $key => $value)
                     @php
                         $total  = 0;
                         foreach ($value as $item) {
-                            $total += $item->price;
+                            if($item->status == 'in'){
+                                $total += $item->price;
+                            }else{
+                                $total -= $item->price;
+                            }
                         }
                     @endphp
                     <div class="row">
@@ -240,7 +254,8 @@
         </div>
     </div>
 </div>
-
+<br>
+<br>
 <!-- Modal -->
 <div class="modal fade" id="modalMenu" data-bs-backdrop="static"
     data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalMenuLabel" aria-hidden="true">
@@ -265,6 +280,29 @@
                     </div>
                     <hr class="py-1 my-2" style="opacity: 0.05 !important">
                 @endforeach
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="filter" data-bs-backdrop="static"
+    data-bs-keyboard="false" tabindex="-1" aria-labelledby="filterlLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-bottom border-0">
+        <div class="modal-content modal-content-bottom">
+            <div class="modal-header border-0 d-flex justify-content-start align-items-center">
+                <p class="fs-6 m-0 fw-bold">Filter by bulan</p>
+                <a href="#" data-bs-dismiss="modal" class="text-decoration-none text-dark ms-auto">
+                    <i data-feather="x" style="width: 18px"></i>
+                </a>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('stats.index') }}" method="get">
+                    <input type="month" class="form-control" style="height: 50px !important" value="{{ isset($_GET['dateFilter']) ? customDate($_GET['dateFilter'], 'Y-m') : date('Y-m') }}" name="dateFilter">
+                    <button class="d-none" id="btn-submit-filter" type="submit"></button>
+                </form>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" onclick="$('#btn-submit-filter').trigger('click')" class="btn btn-dark w-100 rounded-4 py-3">Terapkan</button>
             </div>
         </div>
     </div>

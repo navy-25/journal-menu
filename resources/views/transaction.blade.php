@@ -17,6 +17,12 @@
             <i data-feather="filter" style="width: 25px" data-bs-toggle="modal" data-bs-target="#filter"></i>
         </button>
     </div>
+    <div style="position: fixed;bottom:200px;right:20px;">
+        <button type="button" class="btn btn-warning text-dark d-flex align-items-center justify-content-center"
+            style="height: 60px;width: 60px;border-radius:100%" onclick="create()">
+            <i data-feather="plus" style="width: 25px" data-bs-toggle="modal" data-bs-target="#modal"></i>
+        </button>
+    </div>
     <h4 class="fw-bold mb-4">{{ $page }}</h4>
     @include('includes.alert')
     <div class="card rounded-4 border-0 mb-4"
@@ -26,30 +32,42 @@
             background-position: right top;
             background-size: cover;
         ">
-        <div class="card-body p-4 text-white">
-            <p class="fs-5 mb-0">Pengeluaran</p>
-            <p class="mb-3 d-flex align-items-center">
-                <i data-feather="calendar" class="me-2" style="width: 14px"></i>
-                @if (isset($_GET['dateFilter']))
-                    {{ customDate($_GET['dateFilter'], 'D, d M Y') }}
-                @else
-                    {{ date('D, d M Y') }}
-                @endif
-            </p>
-            <h3 class="fw-bold mb-0">IDR {{ numberFormat($total) }}</h3>
+        <div class="card-body text-white p-4">
+            <div class="row">
+                <div class="col-12 text-white mb-3">
+                    <p class="mb-0">Saldo hari ini</p>
+                    <p class="fw-bold fs-1 ms-auto mb-1 text-warning">
+                        IDR {{ numberFormat($income-$outcome) }}
+                    </p>
+                </div>
+                <div class="col-6">
+                    <div class="card text-dark border-0 bg-warning p-3">
+                        <div class="d-flex align-items-center">
+                            <i data-feather="arrow-up" class="me-auto" style="width: 20px"></i>
+                            <p class="fw-bold fs-6 mb-0 ms-auto">{{ numberFormat($income) }}K</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card text-dark border-0 bg-white p-3">
+                        <div class="d-flex align-items-center">
+                            <i data-feather="arrow-down" class="me-auto" style="width: 20px"></i>
+                            <p class="fw-bold fs-6 mb-0 ms-auto">{{ numberFormat($outcome) }}K</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
 </div>
 <div class="px-4">
     <div class="row mb-4 px-0">
         <div class="col-6 d-flex align-items-center">
-            <h6 class="fw-bold mb-2">Daftar pegeluaran</h6>
+            <h6 class="fw-bold mb-2">Daftar transaksi</h6>
         </div>
         <div class="col-6 d-flex align-items-center justify-content-end">
-            <button type="button" class="btn btn-dark py-2 px-3 rounded-4 text-white"
-                data-bs-toggle="modal" data-bs-target="#modal" onclick="create()">
-                <i data-feather="plus" style="width: 18px"></i>
-            </button>
+            <a class="m-0 text-decoration-none text-dark" href="#">Selengkapnya</a>
         </div>
     </div>
     <div class="row">
@@ -60,7 +78,7 @@
                         <img src="{{ asset('app-assets/images/wallet.png') }}" alt="wallet" class="mb-3" width="30%">
                         <br>
                         <p class="fw-bold fs-4 text-secondary">
-                            Belum ada pesanan
+                            Belum ada transaksi<br>hari ini
                         </p>
                     </center>
                 </div>
@@ -72,16 +90,24 @@
                     <div class="row">
                         <div class="col-7" onclick="edit('{{ $key }}','{{ route('spend.update') }}')" data-bs-toggle="modal" data-bs-target="#modal" >
                             <p class="fw-bold fs-5 m-0 text-capitalize">{{ $item->name }}</p>
-                            <p class="m-0 mb-2">For: {{ transactionType($item->type) }} </p>
+                            <p class="m-0 mb-2">{{ transactionType($item->type) }} </p>
                             <div class="d-flex align-items-center">
                                 <i data-feather="calendar" class="me-2" style="width: 14px"></i>
                                 <small>{{ date('d M Y H:i', strtotime($item->created_at)) }}</small>
                             </div>
                         </div>
                         <div class="col-5 d-flex align-items-center justify-content-end">
-                            <a href="#" class="fw-bold fs-3 m-0 d-flex align-items-center justify-content-center text-dark bg-warning p-3 py-4 text-decoration-none" style="border-radius: 100% !important;width: 90px !important; height: 90px"
-                                onclick="alert_confirm('{{ route('spend.destroy',['id'=>$item->id]) }}','{{ $item->name }}')">
-                                {{ numberFormat($item->price / 1000) }}K
+                            <a href="#" class="fw-bold m-0 d-flex align-items-center justify-content-center text-dark bg-white p-3 py-4 text-decoration-none" style="border-radius: 100% !important;"
+                                onclick="alert_confirm('{{ route('transaction.destroy',['id'=>$item->id]) }}','{{ $item->name }}')">
+                                @if ($item->status == 'in')
+                                    <i data-feather="arrow-up" class="me-2 text-success fw-bold"></i>
+                                @endif
+                                @if ($item->status == 'out')
+                                    <i data-feather="arrow-down" class="me-2 text-danger fw-bold"></i>
+                                @endif
+                                <span class="fs-3">
+                                    {{ numberFormat($item->price / 1000) }}K
+                                </span>
                             </a>
                         </div>
                     </div>
@@ -98,31 +124,39 @@
     <div class="modal-dialog modal-dialog-bottom border-0">
         <div class="modal-content modal-content-bottom">
             <div class="modal-header border-0 d-flex justify-content-start align-items-center">
-                <p class="fs-6 m-0 fw-bold">Tambah Pengeluaran</p>
+                <p class="fs-6 m-0 fw-bold">Tambah transaksi</p>
                 <a href="#" data-bs-dismiss="modal" class="text-decoration-none text-dark ms-auto">
                     <i data-feather="x" style="width: 18px"></i>
                 </a>
             </div>
             <div class="modal-body">
-                <form action="{{ route('spend.store') }}" method="POST" id="form">
+                <form action="{{ route('transaction.store') }}" method="POST" id="form">
                     @csrf
                     <div class="form-group mb-3">
                         <label for="" class="mb-2">Nama pengeluaran</label>
                         <input type="text" class="form-control" style="height: 50px !important" value="" name="name" id="name" placeholder="ex. ongkos makan" autofocus>
                     </div>
                     <div class="form-group mb-3">
+                            <label for="" class="mb-2">Harga/Total</label>
+                            <input type="text" class="form-control money" style="height: 50px !important" value="" name="price" id="price" placeholder="ex. 15000">
+                    </div>
+                    <div class="form-group mb-3">
                         <div class="row">
                             <div class="col-6">
-                                <label for="" class="mb-2 w-100">Pilih tipe</label>
-                                <select name="type" id="type" class="form-select" style="height: 50px !important">
-                                    @foreach (transactionType() as $key => $value)
+                                <label for="" class="mb-2 w-100">Masuk/Keluar</label>
+                                <select name="status" id="status" class="form-select" style="height: 50px !important">
+                                    @foreach (transactionStatus() as $key => $value)
                                         <option value="{{ $key }}">{{ $value }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="col-6">
-                                <label for="" class="mb-2">Harga/Total</label>
-                                <input type="text" class="form-control" style="height: 50px !important" value="" name="price" id="price" placeholder="ex. 15000">
+                                <label for="" class="mb-2 w-100">Untuk keperluan</label>
+                                <select name="type" id="type" class="form-select" style="height: 50px !important">
+                                    @foreach (transactionType() as $key => $value)
+                                        <option value="{{ $key }}">{{ $value }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -152,8 +186,8 @@
                 </a>
             </div>
             <div class="modal-body">
-                <form action="{{ route('spend.index') }}" method="get">
-                    <input type="date" class="form-control" style="height: 50px !important" value="{{ date('Y-m-d') }}" name="dateFilter">
+                <form action="{{ route('transaction.index') }}" method="get">
+                    <input type="date" class="form-control" style="height: 50px !important" value="{{ isset($_GET['dateFilter']) ? customDate($_GET['dateFilter'], 'Y-m-d') : date('Y-m-d') }}" name="dateFilter">
                     <button class="d-none" id="btn-submit-filter" type="submit"></button>
                 </form>
             </div>
@@ -166,24 +200,29 @@
 @endsection
 
 @section('script')
+<script src="{{ asset('js/jquery.mask.min.js') }}"></script>
 <script>
+    $('.money').mask('000.000.000.000.000', {
+        reverse: true
+    });
     function create(){
         $('#id').val('')
         $('#name').val('')
         $('#type').val(1).trigger('change')
         $('#price').val('')
+        $('#status').val('out').trigger('change')
         $('#note').val('')
 
-        $('#form').attr('action','{{ route('spend.store') }}')
+        $('#form').attr('action','{{ route('transaction.store') }}')
         $('#btn-submit-trigger').text('Tambah')
     }
     function edit(key,url){
         var data = JSON.parse($('#data'+key).val())
-        console.log(url)
         $('#id').val(data.id)
         $('#name').val(data.name)
         $('#type').val(data.type).trigger('change')
         $('#price').val(data.price)
+        $('#status').val(data.status)
         $('#note').val(data.note)
 
         $('#form').attr('action',url)

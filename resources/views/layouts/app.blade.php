@@ -3,11 +3,14 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{{ $page }} - {{ config('app.name') }}</title>
+        <title>{{ $page }} {{ config('app.name') }}</title>
+
+        <link rel="icon" type="image/x-icon" href="{{ asset('logo-pizza.png') }}">
 
         <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ asset('css/datatables.css') }}">
         <link rel="stylesheet" href="{{ asset('css/jquery.dataTables.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/loader.css') }}">
         <script src="{{ asset('js/feather-icons.js') }}"></script>
 
         @yield('css')
@@ -78,9 +81,28 @@
             .rounded-5{
                 border-radius: 15px !important
             }
+            /* spinner */
+            #spinner{
+                position: fixed;
+                z-index: 9999999;
+                height: 100vh;
+                background: rgb(255, 255, 255);
+                width: 100vw !important;
+                padding-top: 40vh
+            }
         </style>
     </head>
     <body>
+        <div id="spinner" class="bg-white">
+            <center>
+                <div class="loadingio-spinner-bean-eater-ybl8jhu3zcq">
+                    <div class="ldio-63eo66kwxha">
+                        <div><div></div><div></div><div></div></div><div><div></div><div></div><div></div></div>
+                    </div>
+                </div>
+            </center>
+        </div>
+
         <nav id="nav-bottom" class="navbar navbar-expand-lg bg-light fixed-bottom py-2 px-3 shadow" style="height: 75px !important;">
             <div class="d-flex justify-content-around w-100 align-items-center">
                 @foreach (config('menu') as $value)
@@ -103,6 +125,7 @@
         <script src="{{ asset('js/sweetalert2@11.js') }}"></script>
         <script>
             $(document).ready( function () {
+                $('#spinner').fadeOut();
                 feather.replace()
             });
             function alert_confirm(url,title =''){

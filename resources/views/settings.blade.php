@@ -22,7 +22,7 @@
         <div class="col-auto">
             <p class="mb-0 fw-bold">Pizza Super Sidoarjo</p>
             <p class="fs-6">081216552199</p>
-            <p class="badge bg-light-warning fw-bold py-3 px-4 rounded-4">Pegawai</p>
+            {{-- <p class="badge bg-light-warning fw-bold py-3 px-4 rounded-4">Pegawai</p> --}}
         </div>
     </div>
 </div>

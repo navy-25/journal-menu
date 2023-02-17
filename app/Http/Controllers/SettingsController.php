@@ -26,6 +26,11 @@ class SettingsController extends Controller
                 'route' => route('stock.index'),
                 'icon'  => 'package',
             ],
+            [
+                'name'  => 'Catatan',
+                'route' => route('note.index'),
+                'icon'  => 'file-text',
+            ],
         ];
         return view('settings', compact('page', 'menu'));
     }

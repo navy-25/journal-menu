@@ -12,9 +12,9 @@ return [
         'route'     => 'sales.index',
     ],
     [
-        'name'      => 'Pembelian',
-        'icon'      => 'shopping-bag',
-        'route'     => 'spend.index',
+        'name'      => 'Transaksi',
+        'icon'      => 'repeat',
+        'route'     => 'transaction.index',
     ],
     [
         'name'      => 'Pengaturan',

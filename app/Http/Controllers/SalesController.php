@@ -91,7 +91,7 @@ class SalesController extends Controller
         $menu_id    = $request->menu_id;
         $qty        = $request->qty;
         if (array_sum($qty) == 0) {
-            return redirect()->route('sales.index')->with('error', 'belum ada menu yang dipilih');
+            return redirect()->route('sales.index')->with('error', 'oops, belum ada menu yang dipilih');
         }
         $qty_order  = 0;
         date_default_timezone_set('Asia/Jakarta');
@@ -113,7 +113,7 @@ class SalesController extends Controller
             }
             $qty_order++;
         }
-        return redirect()->back()->with('success', 'menambahkan ' . $qty_order . ' pesanan baru');
+        return redirect()->back()->with('success', 'berhasil menambahkan ' . $qty_order . ' pesanan baru');
     }
 
     /**
@@ -167,6 +167,6 @@ class SalesController extends Controller
             }
         }
         $data->delete();
-        return redirect()->back()->with('success', 'dihapus');
+        return redirect()->back()->with('success', 'data berhasil dihapus');
     }
 }

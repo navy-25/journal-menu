@@ -17,6 +17,12 @@
             <i data-feather="filter" style="width: 25px" data-bs-toggle="modal" data-bs-target="#filter"></i>
         </button>
     </div>
+    <div style="position: fixed;bottom:200px;right:20px;">
+        <button type="button" class="btn btn-warning text-dark d-flex align-items-center justify-content-center"
+            style="height: 60px;width: 60px;border-radius:100%">
+            <i data-feather="plus" style="width: 25px" data-bs-toggle="modal" data-bs-target="#modal"></i>
+        </button>
+    </div>
     <h4 class="fw-bold mb-4">{{ $page }}</h4>
     @include('includes.alert')
     <div class="card rounded-4 border-0 mb-4"
@@ -47,10 +53,7 @@
             <h6 class="fw-bold mb-2">Daftar pesanan</h6>
         </div>
         <div class="col-6 d-flex align-items-center justify-content-end">
-            <button type="button" class="btn btn-dark py-2 px-3 rounded-4 text-white"
-                data-bs-toggle="modal" data-bs-target="#modal">
-                <i data-feather="plus" style="width: 18px"></i>
-            </button>
+            <a class="m-0 text-decoration-none text-dark" href="#">Selengkapnya</a>
         </div>
     </div>
     <div class="row">
@@ -58,10 +61,10 @@
             @if (count($data) == 0)
                 <div class="py-5">
                     <center>
-                        <img src="{{ asset('app-assets/images/wallet.png') }}" alt="wallet" class="mb-3" width="30%">
+                        <img src="{{ asset('app-assets/images/shopping-bag.png') }}" alt="wallet" class="mb-3" width="30%">
                         <br>
                         <p class="fw-bold fs-4 text-secondary">
-                            Belum ada pesanan
+                            Belum ada pesanan <br> hari ini
                         </p>
                     </center>
                 </div>
@@ -77,7 +80,7 @@
                             </div>
                         </div>
                         <div class="col-5 d-flex align-items-center justify-content-end">
-                            <a href="#" class="fw-bold fs-3 m-0 d-flex align-items-center justify-content-center text-dark bg-warning p-3 py-4 text-decoration-none" style="border-radius: 100% !important;width: 90px !important; height: 90px"
+                            <a href="#" class="fw-bold fs-3 m-0 d-flex align-items-center justify-content-center text-dark bg-white p-3 py-4 text-decoration-none" style="border-radius: 100% !important;width: 90px !important; height: 90px"
                                 onclick="alert_confirm('{{ route('sales.destroy',['id'=>$item->id]) }}','{{ $item->name }}')">
                                 {{ numberFormat($item->price * $item->qty / 1000) }}K
                             </a>
@@ -145,7 +148,7 @@
             </div>
             <div class="modal-body">
                 <form action="{{ route('sales.index') }}" method="get">
-                    <input type="date" class="form-control" style="height: 50px !important" value="{{ date('Y-m-d') }}" name="dateFilter">
+                    <input type="date" class="form-control" style="height: 50px !important" value="{{ isset($_GET['dateFilter']) ? customDate($_GET['dateFilter'], 'Y-m-d') : date('Y-m-d') }}" name="dateFilter">
                     <button class="d-none" id="btn-submit-filter" type="submit"></button>
                 </form>
             </div>
@@ -156,7 +159,6 @@
     </div>
 </div>
 @endsection
-
 @section('script')
 <script>
     function minus(key){
