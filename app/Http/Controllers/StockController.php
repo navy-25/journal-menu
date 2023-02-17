@@ -17,7 +17,7 @@ class StockController extends Controller
     public function index()
     {
         $page = 'Bahan';
-        $data = Stock::orderBy('id', 'ASC')->whereIn('id', [1, 2, 18, 20])->get();
+        $data = Stock::orderBy('id', 'ASC')->whereIn('id', [1, 20])->get();
         return view('stock', compact('data', 'page'));
     }
 

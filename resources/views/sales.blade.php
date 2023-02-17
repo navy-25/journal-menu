@@ -27,7 +27,7 @@
             background-size: cover;
         ">
         <div class="card-body p-4 text-white">
-            <p class="fs-5 mb-0">Pendapatan</p>
+            <p class="fs-5 mb-0">Penjualan</p>
             <p class="mb-3 d-flex align-items-center">
                 <i data-feather="calendar" class="me-2" style="width: 14px"></i>
                 @if (isset($_GET['dateFilter']))

@@ -106,7 +106,7 @@ class SalesController extends Controller
             ]);
 
             for ($i = 0; $i < $qty[$key]; $i++) {
-                $list = [1, 2, 18, 20];
+                $list = [1, 20]; // ROTI DAN KOTAK
                 foreach ($list as $key => $value) {
                     minStock($value);
                 }
@@ -161,7 +161,7 @@ class SalesController extends Controller
         $data = Sales::find($request->id);
 
         for ($i = 0; $i < $data->qty; $i++) {
-            $list = [1, 2, 18, 20];
+            $list = [1, 20]; // ROTI DAN KOTAK
             foreach ($list as $key => $value) {
                 minStock($value);
             }
