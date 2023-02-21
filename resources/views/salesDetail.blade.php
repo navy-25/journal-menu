@@ -80,7 +80,7 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="heading_{{$key}}">
                                 <button class="accordion-button collapsed p-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{$key}}" aria-expanded="false" aria-controls="collapse_{{$key}}">
-                                    <p class="fw-bold m-0 mb-2 me-2">Pesanan ke {{ $index }}</p>
+                                    <p class="fw-bold m-0 mb-2 me-2">Pesanan ke {{ $index }} {{ $key == null ? '(old data)' : '' }}</p>
                                     <p class="fw-bold m-0 mb-2" id="total_order_{{$key}}">IDR 0</p>
                                 </button>
                             </h2>
@@ -122,8 +122,10 @@
                                 <i data-feather="calendar" class="me-2" style="width: 14px"></i>
                                 <small>{{ date('d M Y H:i', strtotime($date)) }}</small>
 
-                                <a href="#" class="text-dark ms-auto text-decoration-none me-4"  data-bs-toggle="modal" data-bs-target="#modalDetail" onclick="note('{{ $note }}')">Catatan</a>
-                                <a href="#" class="text-danger text-decoration-none" onclick="alert_confirm('{{ route('sales.destroy',['id'=>$key]) }}','Hapus pesanan ke {{ $index }}')">Hapus</a>
+                                <a href="#" class="text-dark ms-auto text-decoration-none "  data-bs-toggle="modal" data-bs-target="#modalDetail" onclick="note('{{ $note }}')">Catatan</a>
+                                @if ($key != null)
+                                    <a href="#" class="text-danger text-decoration-none ms-4" onclick="alert_confirm('{{ route('sales.destroy',['id'=>$key]) }}','Hapus pesanan ke {{ $index }}')">Hapus</a>
+                                @endif
                             </div>
 
                             <script>
