@@ -130,7 +130,7 @@
             });
             function alert_confirm(url,title =''){
                 Swal.fire({
-                    title: 'Hapus '+title+'?',
+                    title: title+'?',
                     icon: 'error',
                     showCancelButton: true,
                     confirmButtonText: 'Ya',

@@ -25,17 +25,18 @@ if (!function_exists('transactionType')) {
             3 => 'Operasional',
             4 => 'Kebutuhan Alat',
             5 => 'Kebutuhan Outlet',
-            6 => 'Lainnya',
+            6 => 'Kas Outlet',
+            7 => 'Lainnya',
         ];
         return $type == '' ? $list : $list[$type];
     }
 }
 
 if (!function_exists('minStock')) {
-    function minStock($id)
+    function minStock($id, $qty)
     {
         $stock = Stock::find($id);
-        $sisa = (int) $stock->qty_usage - 1;
+        $sisa = (int) $stock->qty_usage - $qty;
         $stock->update([
             'qty_usage' => $sisa,
         ]);

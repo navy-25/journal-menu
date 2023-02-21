@@ -69,7 +69,7 @@
                 {{ formatDay($key) }}, {{ customDate($key,'d M') }}
             </div>
             <div class="col-6 d-flex justify-content-end">
-                <p class="m-0 fw-bold text-success">+ IDR  {{ numberFormat($total) }}</p>
+                <p class="m-0 fw-bold text-success">IDR  {{ numberFormat($total) }}</p>
             </div>
         </div>
         <hr class="py-1 my-2" style="opacity: 0.05 !important">
@@ -112,7 +112,7 @@
                 {{ formatDay($key) }}, {{ customDate($key,'d M') }}
             </div>
             <div class="col-6 d-flex justify-content-end">
-                <p class="m-0 fw-bold text-danger">- IDR  {{ numberFormat($total) }}</p>
+                <p class="m-0 fw-bold {{ $total > 0 ? 'text-success' : 'text-danger' }}">IDR  {{ numberFormat($total) }}</p>
             </div>
         </div>
         <hr class="py-1 my-2" style="opacity: 0.05 !important">
@@ -146,7 +146,7 @@
                 {{ $value->name }}
             </div>
             <div class="col-6 d-flex justify-content-end">
-                <p class="m-0 fw-bold text-success">+ {{ numberFormat($value->total_terjual) }}</p>
+                <p class="m-0 fw-bold text-success">{{ numberFormat($value->total_terjual) }}</p>
             </div>
         </div>
         <hr class="py-1 my-2" style="opacity: 0.05 !important">
@@ -206,7 +206,7 @@
                             {{ formatDay($key) }}, {{ customDate($key,'d M') }}
                         </div>
                         <div class="col-6 d-flex justify-content-end">
-                            <p class="m-0 fw-bold text-success">+ IDR  {{ numberFormat($total) }}</p>
+                            <p class="m-0 fw-bold text-success">IDR  {{ numberFormat($total) }}</p>
                         </div>
                     </div>
                     <hr class="py-1 my-2" style="opacity: 0.05 !important">
@@ -245,7 +245,7 @@
                             {{ formatDay($key) }}, {{ customDate($key,'d M') }}
                         </div>
                         <div class="col-6 d-flex justify-content-end">
-                            <p class="m-0 fw-bold text-danger">- IDR  {{ numberFormat($total) }}</p>
+                            <p class="m-0 fw-bold {{ $total > 0 ? 'text-success' : 'text-danger' }}">IDR  {{ numberFormat($total) }}</p>
                         </div>
                     </div>
                     <hr class="py-1 my-2" style="opacity: 0.05 !important">
@@ -275,7 +275,7 @@
                             {{ $value->name }}
                         </div>
                         <div class="col-6 d-flex justify-content-end">
-                            <p class="m-0 fw-bold text-success">+ {{ numberFormat($value->total_terjual) }}</p>
+                            <p class="m-0 fw-bold text-success">{{ numberFormat($value->total_terjual) }}</p>
                         </div>
                     </div>
                     <hr class="py-1 my-2" style="opacity: 0.05 !important">

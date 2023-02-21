@@ -41,12 +41,17 @@ class StatsController extends Controller
             ->where(DB::raw("DATE_FORMAT(sales.date, '%Y-%m')"), '=', $date)
             ->sum(DB::raw('sales.qty * m.price'));
 
-        $trans_outcome = Transaction::where('status', 'out')->where(DB::raw("DATE_FORMAT(date, '%Y-%m')"), '=', $date)->sum('price');
-        $trans_intcome = Transaction::where('status', 'in')->where(DB::raw("DATE_FORMAT(date, '%Y-%m')"), '=', $date)->sum('price');
+        $trans_outcome = Transaction::where('status', 'out')
+            ->where(DB::raw("DATE_FORMAT(date, '%Y-%m')"), '=', $date)
+            ->sum('price');
+        $trans_intcome = Transaction::where('status', 'in')
+            ->where(DB::raw("DATE_FORMAT(date, '%Y-%m')"), '=', $date)
+            ->sum('price');
 
-        $data['all'] = ($income + $trans_intcome) - $trans_outcome;
+        $data['all'] = $trans_intcome - $trans_outcome;
+        // $data['all'] = ($income + $trans_intcome) - $trans_outcome;
         $data['qty'] = Sales::query()
-            ->where('date', '=', $date)
+            ->where(DB::raw("DATE_FORMAT(sales.date, '%Y-%m')"), '=', $date)
             ->sum('sales.qty');
         $data['menu'] = Sales::query()
             ->join('menus as m', 'm.id', 'sales.id_menu')

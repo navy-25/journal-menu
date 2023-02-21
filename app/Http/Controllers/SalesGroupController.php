@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SalesGroup;
 use Illuminate\Http\Request;
 
-class SettingsController extends Controller
+class SalesGroupController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,33 +14,7 @@ class SettingsController extends Controller
      */
     public function index()
     {
-        $page = 'Pengaturan';
-
-        $stock_menu = [
-            [
-                'name'  => 'Menu',
-                'route' => route('menu.index'),
-                'icon'  => 'coffee',
-            ],
-            [
-                'name'  => 'Bahan',
-                'route' => route('stock.index'),
-                'icon'  => 'package',
-            ],
-        ];
-        $more = [
-            [
-                'name'  => 'Catatan',
-                'route' => route('note.index'),
-                'icon'  => 'file-text',
-            ],
-            [
-                'name'  => 'Laporan',
-                'route' => route('note.index'),
-                'icon'  => 'printer',
-            ],
-        ];
-        return view('settings', compact('page', 'stock_menu', 'more'));
+        //
     }
 
     /**
@@ -66,10 +41,10 @@ class SettingsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\SalesGroup  $salesGroup
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(SalesGroup $salesGroup)
     {
         //
     }
@@ -77,10 +52,10 @@ class SettingsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\SalesGroup  $salesGroup
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(SalesGroup $salesGroup)
     {
         //
     }
@@ -89,10 +64,10 @@ class SettingsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\SalesGroup  $salesGroup
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, SalesGroup $salesGroup)
     {
         //
     }
@@ -100,10 +75,10 @@ class SettingsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\SalesGroup  $salesGroup
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(SalesGroup $salesGroup)
     {
         //
     }

@@ -80,7 +80,7 @@
                         </div>
                         <div class="col-5 d-flex align-items-center justify-content-end">
                             <a href="#" class="fw-bold fs-3 m-0 d-flex align-items-center justify-content-center text-dark bg-warning p-3 py-4 text-decoration-none" style="border-radius: 100% !important;width: 90px !important; height: 90px"
-                                onclick="alert_confirm('{{ route('spend.destroy',['id'=>$item->id]) }}','{{ $item->name }}')">
+                                onclick="alert_confirm('{{ route('spend.destroy',['id'=>$item->id]) }}','Hapus {{ $item->name }}')">
                                 {{ numberFormat($item->price / 1000) }}K
                             </a>
                         </div>

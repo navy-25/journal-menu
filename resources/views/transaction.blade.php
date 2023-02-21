@@ -91,14 +91,9 @@
                         <div class="col-7" onclick="edit('{{ $key }}','{{ route('spend.update') }}')" data-bs-toggle="modal" data-bs-target="#modal" >
                             <p class="fw-bold fs-5 m-0 text-capitalize">{{ $item->name }}</p>
                             <p class="m-0 mb-2">{{ transactionType($item->type) }} </p>
-                            <div class="d-flex align-items-center">
-                                <i data-feather="calendar" class="me-2" style="width: 14px"></i>
-                                <small>{{ date('d M Y H:i', strtotime($item->created_at)) }}</small>
-                            </div>
                         </div>
-                        <div class="col-5 d-flex align-items-center justify-content-end">
-                            <a href="#" class="fw-bold m-0 d-flex align-items-center justify-content-center text-dark bg-white p-3 py-4 text-decoration-none" style="border-radius: 100% !important;"
-                                onclick="alert_confirm('{{ route('transaction.destroy',['id'=>$item->id]) }}','{{ $item->name }}')">
+                        <div class="col-5 d-flex align-items-top justify-content-end">
+                            <a href="#" class="fw-bold m-0 d-flex align-items-center justify-content-center text-dark bg-white text-decoration-none" style="border-radius: 100% !important;">
                                 @if ($item->status == 'in')
                                     <i data-feather="arrow-up" class="me-2 text-success fw-bold"></i>
                                 @endif
@@ -109,6 +104,15 @@
                                     {{ numberFormat($item->price / 1000) }}K
                                 </span>
                             </a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 d-flex align-items-center">
+                            <i data-feather="calendar" class="me-2" style="width: 14px"></i>
+                            <small>{{ date('d M Y H:i', strtotime($item->created_at)) }}</small>
+                        </div>
+                        <div class="col-6 d-flex align-items-center">
+                            <a href="#" class="text-danger text-decoration-none ms-auto" onclick="alert_confirm('{{ route('transaction.destroy',['id'=>$item->id]) }}','Hapus {{ $item->name }}')">Hapus</a>
                         </div>
                     </div>
                     <hr style="opacity: 0.1">

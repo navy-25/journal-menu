@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('sales', function (Blueprint $table) {
+        Schema::create('sales_groups', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_menu');
+            $table->string('name');
             $table->string('date');
-            $table->integer('qty');
-            $table->integer('sales_group_id')->nullable();
+            $table->string('time');
+            $table->longText('note')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sales');
+        Schema::dropIfExists('sales_groups');
     }
 };

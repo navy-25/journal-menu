@@ -50,16 +50,20 @@
         </div>
     @else
         @foreach ($data as $key => $item)
-            <div class="row px-2" onclick="edit('{{ $key }}','{{ route('note.update') }}')" data-bs-toggle="modal" data-bs-target="#modal">
-                <div class="col-12 d-flex justify-content-start align-items-center rounded-5 px-4 py-3" style="border: 1px solid rgba(0, 0, 0, 0.1)" >
-                    <div>
-                        <p class="fw-bold m-0 text-capitalize">{{ $item->title }}</p>
-                        <p>{{ $item->description }}</p>
-                        <textarea  class="d-none" id="data{{ $key }}" cols="30" rows="10">{{ $item }}</textarea>
-                        <div class="d-flex align-items-center">
-                            <i data-feather="calendar" class="me-2" style="width: 14px"></i>
-                            <small>{{ date('d M Y H:i', strtotime($item->created_at)) }}</small>
+            <div class="row px-2 mb-3">
+                <div class="col-12 rounded-5 px-4 py-3" style="border: 1px solid rgba(0, 0, 0, 0.1)" >
+                    <div class="d-flex justify-content-start align-items-center" onclick="edit('{{ $key }}','{{ route('note.update') }}')" data-bs-toggle="modal" data-bs-target="#modal">
+                        <div>
+                            <p class="fw-bold m-0 text-capitalize">{{ $item->title }}</p>
+                            <p>{{ $item->description }}</p>
+                            <textarea  class="d-none" id="data{{ $key }}" cols="30" rows="10">{{ $item }}</textarea>
                         </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i data-feather="calendar" class="me-2" style="width: 14px"></i>
+                        <small>{{ date('d M Y H:i', strtotime($item->created_at)) }}</small>
+
+                        <a href="#" class="text-danger text-decoration-none ms-auto" onclick="alert_confirm('{{ route('note.destroy',['id'=>$item->id]) }}','Hapus  {{ $item->title }}')">Hapus</a>
                     </div>
                 </div>
             </div>

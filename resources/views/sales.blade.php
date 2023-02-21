@@ -2,7 +2,24 @@
 
 @section('css')
 <style>
-
+    .accordion-item {
+        border: rgba(255, 255, 255, 0) !important;
+    }
+    .accordion {
+        --bs-accordion-bg: #fff0 !important;
+    }
+    .accordion-button:not(.collapsed)::after {
+        filter: grayscale(1) !important;
+    }
+    .accordion-button:focus {
+        /* border-color: #86b7fe00 !important; */
+        box-shadow: none !important;
+    }
+    .accordion-button:not(.collapsed) {
+        color: #212529 !important;
+        background-color: #33333300 !important;
+        box-shadow: inset 0 calc(-1 * var(--bs-accordion-border-width)) 0 #dee2e600 !important;
+    }
 </style>
 @endsection
 
@@ -21,6 +38,12 @@
         <button type="button" class="btn btn-warning text-dark d-flex align-items-center justify-content-center"
             style="height: 60px;width: 60px;border-radius:100%">
             <i data-feather="plus" style="width: 25px" data-bs-toggle="modal" data-bs-target="#modal"></i>
+        </button>
+    </div>
+    <div style="position: fixed;bottom:280px;right:20px;">
+        <button type="button" class="btn btn-danger d-flex align-items-center justify-content-center"
+            style="height: 60px;width: 60px;border-radius:100%" onclick="closing()" {{ $isClosed == 1 ? 'disabled' : '' }}>
+            <i data-feather="arrow-right" style="width: 25px"></i>
         </button>
     </div>
     <h4 class="fw-bold mb-4">{{ $page }}</h4>
@@ -53,7 +76,7 @@
             <h6 class="fw-bold mb-2">Daftar pesanan</h6>
         </div>
         <div class="col-6 d-flex align-items-center justify-content-end">
-            <a class="m-0 text-decoration-none text-dark" href="#">Selengkapnya</a>
+            <a class="m-0 text-decoration-none text-dark" href="{{ route('sales.show') }}">Selengkapnya</a>
         </div>
     </div>
     <div class="row">
@@ -69,24 +92,70 @@
                     </center>
                 </div>
             @else
-                @foreach ($data as $key => $item)
-                    <div class="row">
-                        <div class="col-7">
-                            <p class="fw-bold fs-5 m-0 text-capitalize">{{ $item->name }}</p>
-                            <p class="m-0 mb-2">IDR {{ numberFormat($item->price) }} @ {{ $item->qty }} </p>
-                            <div class="d-flex align-items-center">
-                                <i data-feather="calendar" class="me-2" style="width: 14px"></i>
-                                <small>{{ date('d M Y H:i', strtotime($item->created_at)) }}</small>
+                @php
+                    $index = count($data);
+                @endphp
+                @foreach ($data as $key => $val)
+                    <div class="accordion p-3 mb-3" id="accordion_{{ $key }}" style="border: 1px solid #2125291e;border-radius:15px">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="heading_{{$key}}">
+                                <button class="accordion-button collapsed p-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{$key}}" aria-expanded="{{ $index == count($data) ? 'true' : 'false' }}" aria-controls="collapse_{{$key}}">
+                                    <p class="fw-bold m-0 mb-2 me-2">Pesanan ke {{ $index }}</p>
+                                    <p class="fw-bold m-0 mb-2" id="total_order_{{$key}}">IDR 0</p>
+                                </button>
+                            </h2>
+                            @php
+                                $date = '';
+                                $total = 0;
+                                $note = '';
+                            @endphp
+                            <div id="collapse_{{$key}}" class="accordion-collapse collapse {{ $index == count($data) ? 'show' : '' }}" aria-labelledby="heading_{{$key}}" data-bs-parent="#accordion">
+                                <div class="accordion-body p-0 pt-2">
+                                    @foreach ($val as $item)
+                                        <div class="row mb-2">
+                                            <div class="col-1">
+                                                -
+                                            </div>
+                                            <div class="col-11">
+                                                <p class="mb-0 text-capitalize">{{ $item->name }}</p>
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <p class="mb-0">{{ numberFormat($item->price) }} @ {{ $item->qty }} </p>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <p class="mb-0 text-end">IDR {{ numberFormat($item->price*$item->qty) }} </p>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @php
+                                            $total += $item->price*$item->qty;
+                                            $date = $item->created_at;
+                                            $note = $item->note;
+                                        @endphp
+                                    @endforeach
+                                    <p class="fw-bold text-end mb-3">IDR {{ numberFormat($total) }}</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-5 d-flex align-items-center justify-content-end">
-                            <a href="#" class="fw-bold fs-3 m-0 d-flex align-items-center justify-content-center text-dark bg-white p-3 py-4 text-decoration-none" style="border-radius: 100% !important;width: 90px !important; height: 90px"
-                                onclick="alert_confirm('{{ route('sales.destroy',['id'=>$item->id]) }}','{{ $item->name }}')">
-                                {{ numberFormat($item->price * $item->qty / 1000) }}K
-                            </a>
+                            <div class="d-flex align-items-center pt-2">
+                                <i data-feather="calendar" class="me-2" style="width: 14px"></i>
+                                <small>{{ date('d M Y H:i', strtotime($date)) }}</small>
+
+                                <a href="#" class="text-dark ms-auto text-decoration-none me-4"  data-bs-toggle="modal" data-bs-target="#modalDetail" onclick="note('{{ $note }}')">Catatan</a>
+                                <a href="#" class="text-danger text-decoration-none" onclick="alert_confirm('{{ route('sales.destroy',['id'=>$key]) }}','Hapus pesanan ke {{ $index }}')">Hapus</a>
+                            </div>
+
+                            <script>
+                                setTimeout(() => {
+                                    $('#total_order_{{$key}}').text('(IDR {{ numberFormat($total) }})')
+                                }, 100);
+                            </script>
                         </div>
                     </div>
-                    <hr style="opacity: 0.1">
+                    @php
+                        $index--;
+                    @endphp
                 @endforeach
             @endif
         </div>
@@ -109,7 +178,7 @@
                     @foreach ($menu as $key => $item)
                         <div class="row">
                             <div class="col-7">
-                                <p class="fw-bold fs-5 m-0 text-capitalize">{{ $item->name }}</p>
+                                <p class="fw-bold fs-6 m-0 text-capitalize">{{ $item->name }}</p>
                                 <p class="m-0">IDR {{ numberFormat($item->price) }}</p>
                                 <input type="hidden" name="menu_id[]" value="{{ $item->id }}">
                                 <input type="hidden" name="qty[]" value="0" id="qty{{ $key }}">
@@ -127,10 +196,32 @@
                         <hr style="opacity: 0.05 !important">
                     @endforeach
                     <button class="d-none" id="btn-submit" type="submit"></button>
+                    <textarea class="d-none" name="note" id="note"></textarea>
                 </form>
             </div>
             <div class="modal-footer border-0">
-                <button type="button" onclick="$('#btn-submit').trigger('click')" class="btn btn-dark w-100 rounded-4 py-3">Tambah</button>
+                <label for="note" class="me-auto">Catatan khusus</label>
+                <textarea class="form-control w-100" id="note-temp" rows="3"></textarea>
+                <button type="button" onclick="$('#note').val($('#note-temp').val());$('#btn-submit').trigger('click');" class="btn btn-dark w-100 rounded-4 py-3">Tambah</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalDetail" data-bs-backdrop="static"
+    data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-bottom border-0">
+        <div class="modal-content modal-content-bottom">
+            <div class="modal-header d-flex justify-content-start align-items-center">
+                <p class="fs-6 m-0 fw-bold">Catatan</p>
+                <a href="#" data-bs-dismiss="modal" class="text-decoration-none text-dark ms-auto">
+                    <i data-feather="x" style="width: 18px"></i>
+                </a>
+            </div>
+            <div class="modal-body">
+                <p id="note_text"></p>
+            </div>
+            <div class="modal-footer border-0">
             </div>
         </div>
     </div>
@@ -172,6 +263,25 @@
         var qty_text = parseInt($('#qty_text'+key).text())
         $('#qty_text'+key).text(qty_text+1)
         $('#qty'+key).val(parseInt($('#qty_text'+key).text()))
+    }
+
+    function note(note){
+        $('#note_text').text(note)
+    }
+
+    function closing(){
+        Swal.fire({
+            title: 'Tutup buku hari ini?',
+            icon: 'info',
+            text: 'tutup buku adalah migrasi data penjualan ke data transaksi secara keseluruhan',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, tutup buku',
+            cancelButtonText: 'Batal',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '{{ route('sales.migrate') }}';
+            }
+        })
     }
 </script>
 @endsection

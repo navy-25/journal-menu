@@ -18,6 +18,8 @@ Route::controller(SalesController::class)->prefix('sales')->name('sales.')->grou
     Route::get('/', 'index')->name('index');
     Route::post('/store', 'store')->name('store');
     Route::get('/destroy', 'destroy')->name('destroy');
+    Route::get('/show', 'show')->name('show');
+    Route::get('/migrate', 'migrate')->name('migrate');
 });
 
 Route::controller(SpendController::class)->prefix('spend')->name('spend.')->group(function () {
