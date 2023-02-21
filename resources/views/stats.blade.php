@@ -285,7 +285,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="filter" data-bs-backdrop="static"
+{{-- <div class="modal fade" id="filter" data-bs-backdrop="static"
     data-bs-keyboard="false" tabindex="-1" aria-labelledby="filterlLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-bottom border-0">
         <div class="modal-content modal-content-bottom">
@@ -298,6 +298,42 @@
             <div class="modal-body">
                 <form action="{{ route('stats.index') }}" method="get">
                     <input type="month" class="form-control" style="height: 50px !important" value="{{ isset($_GET['dateFilter']) ? customDate($_GET['dateFilter'], 'Y-m') : date('Y-m') }}" name="dateFilter">
+                    <button class="d-none" id="btn-submit-filter" type="submit"></button>
+                </form>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" onclick="$('#btn-submit-filter').trigger('click')" class="btn btn-dark w-100 rounded-4 py-3">Terapkan</button>
+            </div>
+        </div>
+    </div>
+</div> --}}
+
+<div class="modal fade" id="filter" data-bs-backdrop="static"
+    data-bs-keyboard="false" tabindex="-1" aria-labelledby="filterlLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-bottom border-0">
+        <div class="modal-content modal-content-bottom">
+            <div class="modal-header border-0 d-flex justify-content-start align-items-center">
+                <p class="fs-6 m-0 fw-bold">Filter by tanggal</p>
+                <a href="#" data-bs-dismiss="modal" class="text-decoration-none text-dark ms-auto">
+                    <i data-feather="x" style="width: 18px"></i>
+                </a>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('stats.index') }}" method="get">
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="" class="mb-2">Tanggal awal</label>
+                            <input type="date" class="form-control" style="height: 50px !important"
+                            value="{{ $dates['dateStartFilter'] }}"
+                            name="dateStartFilter">
+                        </div>
+                        <div class="col-6">
+                            <label for="" class="mb-2">Tanggal akhir</label>
+                            <input type="date" class="form-control" style="height: 50px !important"
+                            value="{{ $dates['dateEndFilter'] }}"
+                            name="dateEndFilter">
+                        </div>
+                    </div>
                     <button class="d-none" id="btn-submit-filter" type="submit"></button>
                 </form>
             </div>
