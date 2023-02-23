@@ -10,6 +10,7 @@ use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+date_default_timezone_set('Asia/Jakarta');
 class SalesController extends Controller
 {
     /**
@@ -19,64 +20,52 @@ class SalesController extends Controller
      */
     public function index(Request $request)
     {
-        date_default_timezone_set('Asia/Jakarta');
+        if (isset($request->dateFilter)) {
+            $dateFilter = $request->dateFilter;
+        } else {
+            $dateFilter = date('Y-m-d');
+        }
+
         $page = 'Penjualan';
         $menu = Menu::orderBy('name', 'DESC')->get();
         $data = Sales::query()
             ->join('menus as m', 'm.id', 'sales.id_menu')
             ->leftJoin('sales_groups as g', 'g.id', 'sales.sales_group_id')
+            ->where('sales.date', $dateFilter)
             ->select(
                 'sales.*',
                 'm.name',
-                'm.price',
+                // 'm.price',
                 'g.note',
-            );
-
-        if (isset($request->dateFilter)) {
-            $data = $data->where('sales.date', $request->dateFilter);
-        } else {
-            $data = $data->where('sales.date', date('Y-m-d'));
-        }
-
-        $data = $data
+            )
             ->orderBy('sales.created_at', 'DESC')
             ->get()
             ->groupBy('sales_group_id');
 
         $total = Sales::query()
             ->join('menus as m', 'm.id', 'sales.id_menu')
+            ->where('sales.date', $dateFilter)
             ->select(
                 'sales.*',
                 'm.name',
-                'm.price',
-            );
-
-        if (isset($request->dateFilter)) {
-            $total = $total->where('sales.date', $request->dateFilter);
-        } else {
-            $total = $total->where('sales.date', date('Y-m-d'));
-        }
-
-        $total = $total->sum(DB::raw('price * qty'));
+                // 'm.price',
+            )->sum(DB::raw('gross_profit * qty'));
 
         $qty = Sales::query()
             ->join('menus as m', 'm.id', 'sales.id_menu')
+            ->where('sales.date', $dateFilter)
             ->select(
                 'sales.*',
                 'm.name',
-                'm.price',
-            );
+                // 'm.price',
+            )
+            ->sum('qty');
 
-        if (isset($request->dateFilter)) {
-            $qty = $qty->where('sales.date', $request->dateFilter);
-        } else {
-            $qty = $qty->where('sales.date', date('Y-m-d'));
-        }
-
-        $qty = $qty->sum('qty');
-
-        $isClosed = Transaction::where('date', date('Y-m-d'))->where('name', 'Tutup buku')->count();
-        return view('sales', compact('data', 'page', 'menu', 'total', 'qty', 'isClosed'));
+        $isClosed = Transaction::query()
+            ->where('transactions.date', $dateFilter)
+            ->where('name', 'LIKE', "%Tutup Buku%")
+            ->count();
+        return view('sales', compact('data', 'page', 'menu', 'total', 'qty', 'isClosed', 'dateFilter'));
     }
 
     /**
@@ -103,7 +92,6 @@ class SalesController extends Controller
             return redirect()->route('sales.index')->with('error', 'oops, belum ada menu yang dipilih');
         }
         $qty_order  = 0;
-        date_default_timezone_set('Asia/Jakarta');
 
         $sales_group = SalesGroup::create([
             'name'  => '',
@@ -113,14 +101,17 @@ class SalesController extends Controller
         ]);
 
         foreach ($menu_id as $key => $menu_id) {
+            $menu = Menu::find($menu_id);
             if ($qty[$key] == 0) {
                 continue;
             }
             $sales = Sales::create([
-                'id_menu' => $menu_id,
+                'id_menu' => $menu->id,
                 'qty' => $qty[$key],
                 'date' => date('Y-m-d'),
                 'sales_group_id' => $sales_group->id,
+                'gross_profit' => $menu->price,
+                'net_profit' => $menu->hpp,
             ]);
 
             for ($i = 0; $i < $qty[$key]; $i++) {
@@ -133,21 +124,33 @@ class SalesController extends Controller
         }
         return redirect()->back()->with('success', 'berhasil menambahkan ' . $qty_order . ' pesanan baru');
     }
-    public function migrate()
+    public function migrate(Request $request)
     {
-        $total = Sales::query()
-            ->join('menus as m', 'm.id', 'sales.id_menu')
-            ->where('date', date('Y-m-d'))
-            ->sum(DB::raw('sales.qty * m.price'));
+        if (isset($request->dateFilter)) {
+            $dateFilter = $request->dateFilter;
+        } else {
+            $dateFilter = date('Y-m-d');
+        }
+
+        $total_kotor = Sales::query()
+            ->where('date', $dateFilter)
+            ->sum(DB::raw('qty * gross_profit'));
+        $total_bersih = Sales::query()
+            ->where('date', $dateFilter)
+            ->sum(DB::raw('qty * net_profit'));
+
+        if ($total_kotor == 0) {
+            return redirect()->back()->with('error', 'Belum ada penjualan hari ini');
+        }
+
         Transaction::create([
-            'name'      => 'Tutup buku',
-            'price'     => $total,
+            'name'      => 'Tutup buku ' . customDate($dateFilter, 'd M'),
+            'price'     => $total_kotor,
             'type'      => 6,
             'status'    => 'in',
-            'note'      => 'Catatan penjualan (tutup buku harian) pizza pada tanggal ' . dateFormat(date('Y-m-d')),
-            'date'      => date('Y-m-d'),
+            'note'      => 'Laba kotor : IDR ' . numberFormat($total_kotor, 0) . ', Laba bersih : IDR ' . numberFormat($total_bersih, 0),
+            'date'      => $dateFilter,
         ]);
-
         return redirect()->back()->with('success', 'berhasil menambahkan data penjualan hari ini (Tutup buku harian)');
     }
 
@@ -176,30 +179,43 @@ class SalesController extends Controller
                 'm.name',
                 'm.price',
                 'g.note',
-            );
-        $data = $data->whereBetween('sales.date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
+            )
+            ->whereBetween('sales.date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
             ->orderBy('sales.created_at', 'DESC')
             ->get()
             ->groupBy('sales_group_id');
 
-        $total = Sales::query()
+        $gross_profit = Sales::query()
             ->join('menus as m', 'm.id', 'sales.id_menu')
             ->select(
                 'sales.*',
                 'm.name',
                 'm.price',
-            );
+            )
+            ->whereBetween('sales.date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
+            ->sum(DB::raw('price * qty'));
 
-        $total = $total->whereBetween('sales.date', [$dates['dateStartFilter'], $dates['dateEndFilter']])->sum(DB::raw('price * qty'));
+        $net_profit = Sales::query()
+            ->join('menus as m', 'm.id', 'sales.id_menu')
+            ->select(
+                'sales.*',
+                'm.name',
+                'm.price',
+                'm.hpp',
+            )
+            ->whereBetween('sales.date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
+            ->sum(DB::raw('hpp * qty'));
+
         $qty = Sales::query()
             ->join('menus as m', 'm.id', 'sales.id_menu')
             ->select(
                 'sales.*',
                 'm.name',
                 'm.price',
-            );
-        $qty = $qty->whereBetween('sales.date', [$dates['dateStartFilter'], $dates['dateEndFilter']])->sum('qty');
-        return view('salesDetail', compact('page', 'data', 'dates', 'total', 'qty'));
+            )
+            ->whereBetween('sales.date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
+            ->sum('qty');
+        return view('salesDetail', compact('page', 'data', 'dates', 'gross_profit', 'qty', 'net_profit'));
     }
 
     /**

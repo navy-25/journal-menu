@@ -12,7 +12,6 @@
         <link rel="stylesheet" href="{{ asset('css/jquery.dataTables.min.css') }}">
         <link rel="stylesheet" href="{{ asset('css/loader.css') }}">
         <script src="{{ asset('js/feather-icons.js') }}"></script>
-
         @yield('css')
         <style>
             .form-select:focus {
@@ -75,7 +74,7 @@
                 bottom: 0px !important;
                 border-radius: 20px 20px 0px 0px !important;
             }
-            .modal-content-bottom{
+            .modal-content-bottom vw-100{
                 border-radius: 20px 20px 0px 0px !important;
             }
             .rounded-5{
@@ -90,6 +89,10 @@
                 width: 100vw !important;
                 padding-top: 40vh
             }
+
+            .form-select{
+                padding: 15px !important;
+            }
         </style>
     </head>
     <body>
@@ -102,6 +105,16 @@
                 </div>
             </center>
         </div>
+        @if (date('H:i') > '22:00' && date('H:i') < '23:59')
+            <div style="position: fixed;bottom:100px;left:20px;z-index:999">
+                <div class="alert alert-primary d-flex align-items-center border-0" role="alert">
+                    <i data-feather="smile" class="me-3"></i>
+                    <p class="m-0">
+                        jangan lupa <strong>tutup buku</strong> ya!
+                    </p>
+                </div>
+            </div>
+        @endif
 
         <nav id="nav-bottom" class="navbar navbar-expand-lg bg-light fixed-bottom py-2 px-3 shadow" style="height: 75px !important;">
             <div class="d-flex justify-content-around w-100 align-items-center">
@@ -116,7 +129,9 @@
 
         <div class="container p-3 vh-100 px-0 bg-white">
             @yield('content')
-            <div id="padding-bottom"><br><br><br><br><br></div>
+            <div id="padding-bottom">
+                <br><br><br><br><br><br><br><br><br><br><br>
+            </div>
         </div>
 
         <script src="{{ asset('js/jquery-3.6.3.min.js') }}"></script>

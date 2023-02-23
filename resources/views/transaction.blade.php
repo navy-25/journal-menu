@@ -10,19 +10,13 @@
 @php
     date_default_timezone_set('Asia/Jakarta');
 @endphp
+<div style="position: fixed;bottom:120px;right:20px;z-index:999">
+    <button type="button" class="btn btn-warning text-dark d-flex align-items-center justify-content-center"
+        style="height: 60px;width: 60px;border-radius:100%" onclick="create()">
+        <i data-feather="plus" style="width: 25px" data-bs-toggle="modal" data-bs-target="#modal"></i>
+    </button>
+</div>
 <div class="px-4 mb-3">
-    <div style="position: fixed;bottom:120px;right:20px;">
-        <button type="button" class="btn bg-dark text-white d-flex align-items-center justify-content-center"
-            style="height: 60px;width: 60px;border-radius:100%">
-            <i data-feather="filter" style="width: 25px" data-bs-toggle="modal" data-bs-target="#filter"></i>
-        </button>
-    </div>
-    <div style="position: fixed;bottom:200px;right:20px;">
-        <button type="button" class="btn btn-warning text-dark d-flex align-items-center justify-content-center"
-            style="height: 60px;width: 60px;border-radius:100%" onclick="create()">
-            <i data-feather="plus" style="width: 25px" data-bs-toggle="modal" data-bs-target="#modal"></i>
-        </button>
-    </div>
     <h4 class="fw-bold mb-4">{{ $page }}</h4>
     @include('includes.alert')
     <div class="card rounded-4 border-0 mb-4"
@@ -35,13 +29,21 @@
         <div class="card-body text-white p-4">
             <div class="row">
                 <div class="col-12 text-white mb-3">
-                    <p class="mb-0">Saldo hari ini</p>
-                    <p class="fw-bold fs-1 ms-auto mb-1 text-warning">
+                    <p class="fs-5 mb-0">Saldo hari ini</p>
+                    <p class="mb-3 d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#filter">
+                        <i data-feather="calendar" class="me-2" style="width: 14px"></i>
+                        @if (isset($_GET['dateFilter']))
+                            {{ customDate($_GET['dateFilter'], 'D, d M Y') }}
+                        @else
+                            {{ date('D, d M Y') }}
+                        @endif
+                    </p>
+                    <p class="fw-bold fs-4 ms-auto mb-1 text-warning">
                         IDR {{ numberFormat($income-$outcome) }}
                     </p>
                 </div>
                 <div class="col-6">
-                    <div class="card text-dark border-0 bg-warning p-3">
+                    <div class="card text-dark border-0 bg-warning p-2">
                         <div class="d-flex align-items-center">
                             <i data-feather="arrow-up" class="me-auto" style="width: 20px"></i>
                             <p class="fw-bold fs-6 mb-0 ms-auto">{{ numberFormat($income) }}K</p>
@@ -49,7 +51,7 @@
                     </div>
                 </div>
                 <div class="col-6">
-                    <div class="card text-dark border-0 bg-white p-3">
+                    <div class="card text-dark border-0 bg-white p-2">
                         <div class="d-flex align-items-center">
                             <i data-feather="arrow-down" class="me-auto" style="width: 20px"></i>
                             <p class="fw-bold fs-6 mb-0 ms-auto">{{ numberFormat($outcome) }}K</p>
@@ -67,7 +69,7 @@
             <h6 class="fw-bold mb-2">Daftar transaksi</h6>
         </div>
         <div class="col-6 d-flex align-items-center justify-content-end">
-            <a class="m-0 text-decoration-none text-dark" href="#">Selengkapnya</a>
+            <a class="m-0 text-decoration-none text-dark" href="{{ route('transaction.show') }}">Selengkapnya</a>
         </div>
     </div>
     <div class="row">
@@ -88,8 +90,8 @@
                         {{ $item }}
                     </textarea>
                     <div class="row">
-                        <div class="col-7" onclick="edit('{{ $key }}','{{ route('spend.update') }}')" data-bs-toggle="modal" data-bs-target="#modal" >
-                            <p class="fw-bold fs-5 m-0 text-capitalize">{{ $item->name }}</p>
+                        <div class="col-7" onclick="edit('{{ $key }}','{{ route('transaction.update') }}')" data-bs-toggle="modal" data-bs-target="#modal" >
+                            <p class="fw-bold fs-6 m-0 text-capitalize">{{ $item->name }}</p>
                             <p class="m-0 mb-2">{{ transactionType($item->type) }} </p>
                         </div>
                         <div class="col-5 d-flex align-items-top justify-content-end">
@@ -107,11 +109,17 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-6 d-flex align-items-center">
+                        <div class="col-8 d-flex align-items-center">
                             <i data-feather="calendar" class="me-2" style="width: 14px"></i>
+                            <small class="me-4">{{ date('d M Y', strtotime($item->date)) }}</small>
+
+                            <i data-feather="user-plus" class="me-2" style="width: 14px"></i>
                             <small>{{ date('d M Y H:i', strtotime($item->created_at)) }}</small>
                         </div>
-                        <div class="col-6 d-flex align-items-center">
+                        <div class="col-4 d-flex align-items-center">
+                            @if ($item->note != '')
+                                <a href="#" class="text-dark ms-auto text-decoration-none me-4"  data-bs-toggle="modal" data-bs-target="#modalDetail" onclick="note('{{ $item->note }}')">Catatan</a>
+                            @endif
                             <a href="#" class="text-danger text-decoration-none ms-auto" onclick="alert_confirm('{{ route('transaction.destroy',['id'=>$item->id]) }}','Hapus {{ $item->name }}')">Hapus</a>
                         </div>
                     </div>
@@ -126,7 +134,7 @@
 <div class="modal fade" id="modal" data-bs-backdrop="static"
     data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-bottom border-0">
-        <div class="modal-content modal-content-bottom">
+        <div class="modal-content modal-content-bottom vw-100">
             <div class="modal-header border-0 d-flex justify-content-start align-items-center">
                 <p class="fs-6 m-0 fw-bold">Tambah transaksi</p>
                 <a href="#" data-bs-dismiss="modal" class="text-decoration-none text-dark ms-auto">
@@ -141,9 +149,18 @@
                         <input type="text" class="form-control" style="height: 50px !important" value="" name="name" id="name" placeholder="ex. ongkos makan" autofocus>
                     </div>
                     <div class="form-group mb-3">
-                            <label for="" class="mb-2">Harga/Total</label>
-                            <input type="text" class="form-control money" style="height: 50px !important" value="" name="price" id="price" placeholder="ex. 15000">
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="" class="mb-2">Harga/Total</label>
+                                <input type="text" class="form-control money" style="height: 50px !important" value="" name="price" id="price" placeholder="ex. 15000">
+                            </div>
+                            <div class="col-6">
+                                <label for="" class="mb-2">Tanggal</label>
+                                <input type="date" class="form-control" style="height: 50px !important" value="{{ $dateFilter }}" name="date">
+                            </div>
+                        </div>
                     </div>
+
                     <div class="form-group mb-3">
                         <div class="row">
                             <div class="col-6">
@@ -179,10 +196,29 @@
     </div>
 </div>
 
+<div class="modal fade" id="modalDetail" data-bs-backdrop="static"
+    data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-bottom border-0">
+        <div class="modal-content modal-content-bottom vw-100">
+            <div class="modal-header d-flex justify-content-start align-items-center">
+                <p class="fs-6 m-0 fw-bold">Catatan</p>
+                <a href="#" data-bs-dismiss="modal" class="text-decoration-none text-dark ms-auto">
+                    <i data-feather="x" style="width: 18px"></i>
+                </a>
+            </div>
+            <div class="modal-body">
+                <p id="note_text"></p>
+            </div>
+            <div class="modal-footer border-0">
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="filter" data-bs-backdrop="static"
     data-bs-keyboard="false" tabindex="-1" aria-labelledby="filterlLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-bottom border-0">
-        <div class="modal-content modal-content-bottom">
+        <div class="modal-content modal-content-bottom vw-100">
             <div class="modal-header border-0 d-flex justify-content-start align-items-center">
                 <p class="fs-6 m-0 fw-bold">Filter by tanggal</p>
                 <a href="#" data-bs-dismiss="modal" class="text-decoration-none text-dark ms-auto">
@@ -191,7 +227,7 @@
             </div>
             <div class="modal-body">
                 <form action="{{ route('transaction.index') }}" method="get">
-                    <input type="date" class="form-control" style="height: 50px !important" value="{{ isset($_GET['dateFilter']) ? customDate($_GET['dateFilter'], 'Y-m-d') : date('Y-m-d') }}" name="dateFilter">
+                    <input type="date" class="form-control" style="height: 50px !important" value="{{ $dateFilter }}" name="dateFilter">
                     <button class="d-none" id="btn-submit-filter" type="submit"></button>
                 </form>
             </div>
@@ -231,6 +267,10 @@
 
         $('#form').attr('action',url)
         $('#btn-submit-trigger').text('Simpan')
+    }
+
+    function note(note){
+        $('#note_text').text(note)
     }
 </script>
 @endsection

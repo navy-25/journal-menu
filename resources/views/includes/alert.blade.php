@@ -11,7 +11,7 @@
             title:"Gagal!",
             text: "{{ join(', ',$list_error) }}",
             icon: "error",
-            timer: "1000",
+            timer: "3000",
         })
     </script>
 @endif
@@ -21,7 +21,7 @@
             title: "Berhasil!",
             text: "{{ $message }}",
             icon: "success",
-            timer: "1000",
+            timer: "3000",
         })
     </script>
 @endif
@@ -31,7 +31,7 @@
             title: "Gagal!",
             text: "{{ $message }}",
             icon: "error",
-            timer: "1000",
+            timer: "3000",
         })
     </script>
 @endif

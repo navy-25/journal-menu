@@ -27,16 +27,18 @@
 @php
     date_default_timezone_set('Asia/Jakarta');
 @endphp
+<div style="position: fixed;bottom:120px;right:20px;">
+    <button type="button" class="btn bg-dark text-white d-flex align-items-center justify-content-center"
+        style="height: 60px;width: 60px;border-radius:100%">
+        <i data-feather="filter" style="width: 25px" data-bs-toggle="modal" data-bs-target="#filter"></i>
+    </button>
+</div>
 <div class="px-4 mb-3">
-    <div style="position: fixed;bottom:120px;right:20px;">
-        <button type="button" class="btn bg-dark text-white d-flex align-items-center justify-content-center"
-            style="height: 60px;width: 60px;border-radius:100%">
-            <i data-feather="filter" style="width: 25px" data-bs-toggle="modal" data-bs-target="#filter"></i>
-        </button>
-    </div>
-    <h4 class="fw-bold mb-4">
+    <h4 class="fw-bold mb-4 d-flex align-items-center">
+        <a href="{{ route('sales.index') }}" class="text-decoration-none text-dark d-flex align-items-center">
+            <i data-feather="arrow-left" style="width: 25px" class="me-3"></i>
+        </a>
         {{ $page }}
-        {{ dateFormat($dates['dateStartFilter']) }} s/d {{ dateFormat($dates['dateEndFilter']) }}
     </h4>
     @include('includes.alert')
 </div>
@@ -44,18 +46,34 @@
 <div class="px-4">
     <div class="row">
         <div class="col-12 mb-4">
-            <div class="row">
+            <div class="row p-3 rounded-4 mb-3" style="background: rgba(140, 140, 140, 0.1)">
                 <div class="col-6">
-                    <p class="m-0">Total pizza</p>
-                    <p class="fw-bold fs-5">{{ numberFormat($qty) }} pizza</p>
-                    <p class="m-0">Total Pesanan</p>
-                    <p class="fw-bold fs-5">{{ count($data) }} pesanan</p>
+                    <small class="m-0 d-flex align-items-center">
+                        <i data-feather="calendar" class="me-2" style="width: 14px"></i>
+                        Tgl. Awal
+                    </small>
+                    <p class="fw-bold fs-6 mb-0">{{ dateFormat($dates['dateStartFilter']) }}</p>
                 </div>
                 <div class="col-6">
-                    <p class="m-0">Total Laba Kotor</p>
-                    <p class="fw-bold fs-5">IDR {{ numberFormat($total) }}</p>
-                    <p class="m-0">Asumsi Laba Bersih (40%)</p>
-                    <p class="fw-bold fs-5">IDR {{ numberFormat((40/100)*$total) }}</p>
+                    <small class="m-0 d-flex align-items-center">
+                        <i data-feather="calendar" class="me-2" style="width: 14px"></i>
+                        Tgl. Akhir
+                    </small>
+                    <p class="fw-bold fs-6 mb-0">{{ dateFormat($dates['dateEndFilter']) }}</p>
+                </div>
+            </div>
+            <div class="row p-3 rounded-4" style="background: rgba(140, 140, 140, 0.1)">
+                <div class="col-6">
+                    <small class="m-0">Total pizza</small>
+                    <p class="fw-bold fs-6">{{ numberFormat($qty) }} pizza</p>
+                    <small class="m-0">Total Pesanan</small>
+                    <p class="fw-bold fs-6 mb-0">{{ count($data) }} pesanan</p>
+                </div>
+                <div class="col-6">
+                    <small class="m-0">Total Laba Kotor</small>
+                    <p class="fw-bold fs-6">IDR {{ numberFormat($gross_profit) }}</p>
+                    <small class="m-0">Total Laba Bersih ({{ numberFormat((($gross_profit - $net_profit) / $gross_profit) * 100) }}%)</small>
+                    <p class="fw-bold fs-6 mb-0">IDR {{ numberFormat($net_profit) }}</p>
                 </div>
             </div>
         </div>
@@ -146,7 +164,7 @@
 <div class="modal fade" id="filter" data-bs-backdrop="static"
     data-bs-keyboard="false" tabindex="-1" aria-labelledby="filterlLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-bottom border-0">
-        <div class="modal-content modal-content-bottom">
+        <div class="modal-content modal-content-bottom vw-100">
             <div class="modal-header border-0 d-flex justify-content-start align-items-center">
                 <p class="fs-6 m-0 fw-bold">Filter by tanggal</p>
                 <a href="#" data-bs-dismiss="modal" class="text-decoration-none text-dark ms-auto">

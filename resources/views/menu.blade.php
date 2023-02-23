@@ -45,7 +45,7 @@
             <div class="col-9 d-flex justify-content-start align-items-center">
                 <div>
                     <p class="fw-bold fs-5 m-0 text-capitalize">{{ $item->name }}</p>
-                    <p class="m-0">IDR {{ numberFormat($item->price) }}</p>
+                    <p class="m-0">IDR {{ numberFormat($item->price) }} (HPP: {{ numberFormat($item->hpp) }})</p>
                     <textarea  class="d-none" id="data{{ $key }}" cols="30" rows="10">{{ $item }}</textarea>
                 </div>
             </div>
@@ -58,7 +58,7 @@
 <div class="modal fade" id="edit" data-bs-backdrop="static"
     data-bs-keyboard="false" tabindex="-1" aria-labelledby="editlLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-bottom border-0">
-        <div class="modal-content modal-content-bottom">
+        <div class="modal-content modal-content-bottom vw-100">
             <div class="modal-header border-0 d-flex justify-content-start align-items-center">
                 <p class="fs-6 m-0 fw-bold">Form edit</p>
                 <a href="#" data-bs-dismiss="modal" class="text-decoration-none text-dark ms-auto">
@@ -74,7 +74,11 @@
                     </div>
                     <div class="form-group mb-3">
                         <label for="" class="mb-2">Harga</label>
-                        <input type="number" class="form-control" style="height: 50px !important" value="" name="price" id="price">
+                        <input type="text" class="form-control money" style="height: 50px !important" value="" name="price" id="price">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="" class="mb-2">HPP</label>
+                        <input type="text" class="form-control money" style="height: 50px !important" value="" name="hpp" id="hpp">
                     </div>
                     <input type="hidden" name="id" id="id">
                     <button class="d-none" id="btn-submit-filter" type="submit"></button>
@@ -89,7 +93,11 @@
 @endsection
 
 @section('script')
+<script src="{{ asset('js/jquery.mask.min.js') }}"></script>
 <script>
+    $('.money').mask('000.000.000.000.000', {
+        reverse: true
+    });
     $(document).ready(function () {
         $('#padding-bottom').remove();
         $('#nav-bottom').remove();
@@ -101,6 +109,7 @@
         $('#id').val(data.id)
         $('#name').val(data.name)
         $('#price').val(data.price)
+        $('#hpp').val(data.hpp)
     }
 </script>
 @endsection

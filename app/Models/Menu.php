@@ -12,5 +12,6 @@ class Menu extends Model
         'thumbnail',
         'name',
         'price',
+        'hpp',
     ];
 }

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 
+date_default_timezone_set('Asia/Jakarta');
+
 class TransactionController extends Controller
 {
     /**
@@ -15,37 +17,30 @@ class TransactionController extends Controller
     public function index(Request $request)
     {
         $page = 'Transaksi';
-        $data = Transaction::query();
-
         if (isset($request->dateFilter)) {
-            $data = $data->where('transactions.date', $request->dateFilter);
+            $dateFilter = $request->dateFilter;
         } else {
-            $data = $data->where('transactions.date', date('Y-m-d'));
+            $dateFilter = date('Y-m-d');
         }
 
-        $data = $data->orderBy('transactions.created_at', 'DESC')->get();
+        $data = Transaction::query()
+            ->where('transactions.date', $dateFilter)
+            ->orderBy('transactions.created_at', 'DESC')->get();
 
-        $income = Transaction::query();
-        if (isset($request->dateFilter)) {
-            $income = $income->where('transactions.date', $request->dateFilter);
-        } else {
-            $income = $income->where('transactions.date', date('Y-m-d'));
-        }
-        $income = $income->where('status', 'in')->sum('price');
+        $income = Transaction::query()
+            ->where('transactions.date', $dateFilter)
+            ->where('status', 'in')->sum('price');
 
-        $outcome = Transaction::query();
-        if (isset($request->dateFilter)) {
-            $outcome = $outcome->where('transactions.date', $request->dateFilter);
-        } else {
-            $outcome = $outcome->where('transactions.date', date('Y-m-d'));
-        }
-        $outcome = $outcome->where('status', 'out')->sum('price');
+        $outcome = Transaction::query()
+            ->where('transactions.date', $dateFilter)
+            ->where('status', 'out')->sum('price');
 
         return view('transaction', compact(
             'page',
             'data',
             'outcome',
             'income',
+            'dateFilter'
         ));
     }
 
@@ -71,6 +66,7 @@ class TransactionController extends Controller
             $request,
             [
                 'name'      => 'required',
+                'date'      => 'required',
                 'status'    => 'required',
                 'price'     => 'required',
                 'type'      => 'required|integer',
@@ -78,13 +74,13 @@ class TransactionController extends Controller
         );
         $data = Transaction::create([
             'name'      => $request->name,
-            'price'     => str_replace('.', '', $request->price),
+            'price'     => str_to_int($request->price),
             'type'      => $request->type,
             'status'    => $request->status,
             'note'      => $request->note,
-            'date'      => date('Y-m-d'),
+            'date'      => $request->date,
         ]);
-        return redirect()->back()->with('success', 'berhasil menambahkan ' . $data->name);
+        return redirect()->route('transaction.index', ['dateFilter' => $request->date])->with('success', 'berhasil menambahkan ' . $data->name);
     }
 
     /**
@@ -93,9 +89,44 @@ class TransactionController extends Controller
      * @param  \App\Models\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function show(Transaction $transaction)
+    public function show(Transaction $transaction, Request $request)
     {
-        //
+        if ($request->all() == []) {
+            $dates['dateEndFilter']      = date('Y-m-d');
+            $dates['dateStartFilter']    = date('Y-m-d', strtotime('-1 month', strtotime($dates['dateEndFilter'])));
+        } else {
+            $dates['dateEndFilter']      = $request->dateEndFilter;
+            $dates['dateStartFilter']    = $request->dateStartFilter;
+        }
+
+        if ($request->order == null) {
+            $orderFilter = 'date';
+        } else {
+            $orderFilter = $request->order;
+        }
+        if ($request->type == 0) {
+            $type       = [1, 2, 3, 4, 5, 6];
+            $typeFilter = 0;
+        } else {
+            $type       = [$request->type];
+            $typeFilter = $request->type;
+        }
+        $page = 'Detail transaksi';
+        $data = Transaction::query()
+            ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
+            ->whereIn('type', $type)
+            ->orderBy($orderFilter, 'DESC')
+            ->get();
+        $income = Transaction::query()
+            ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
+            ->whereIn('type', $type)
+            ->where('status', 'in')->sum('price');
+
+        $outcome = Transaction::query()
+            ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
+            ->whereIn('type', $type)
+            ->where('status', 'out')->sum('price');
+        return view('transactionDetail', compact('page', 'data', 'dates', 'income', 'outcome', 'orderFilter', 'typeFilter'));
     }
 
     /**
@@ -125,18 +156,19 @@ class TransactionController extends Controller
                 'price'     => 'required',
                 'type'      => 'required|integer',
                 'status'    => 'required',
+                'date'      => 'required',
             ],
         );
         $data = Transaction::find($request->id);
         $data->update([
             'name'      => $request->name,
-            'price'     => str_replace('.', '', $request->price),
+            'price'     => str_to_int($request->price),
             'type'      => $request->type,
             'note'      => $request->note,
             'status'    => $request->status,
-            'date'      => date('Y-m-d'),
+            'date'      => $request->date,
         ]);
-        return redirect()->back()->with('success', 'berhasil memperbarui ' . $data->name);
+        return redirect()->route('transaction.index', ['dateFilter' => $request->date])->with('success', 'berhasil memperbarui ' . $data->name);
     }
 
     /**

@@ -59,7 +59,7 @@
 <div class="modal fade" id="modal" data-bs-backdrop="static"
     data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-bottom border-0">
-        <div class="modal-content modal-content-bottom">
+        <div class="modal-content modal-content-bottom vw-100">
             <div class="modal-header border-0 d-flex justify-content-start align-items-center p-4">
                 <p class="fs-6 m-0 fw-bold">Tambahkan bahan baru</p>
                 <a href="#" data-bs-dismiss="modal" class="text-decoration-none text-dark ms-auto">

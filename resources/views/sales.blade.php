@@ -27,25 +27,19 @@
 @php
     date_default_timezone_set('Asia/Jakarta');
 @endphp
+<div style="position: fixed;bottom:120px;right:20px;z-index:999">
+    <button type="button" class="btn btn-warning text-dark d-flex align-items-center justify-content-center"
+        style="height: 60px;width: 60px;border-radius:100%">
+        <i data-feather="plus" style="width: 25px" data-bs-toggle="modal" data-bs-target="#modal"></i>
+    </button>
+</div>
+<div style="position: fixed;bottom:200px;right:20px;z-index:999">
+    <button type="button" class="btn {{ $isClosed == 1 ? 'bg-dark text-white' : 'btn-danger ' }} d-flex align-items-center justify-content-center"
+        style="height: 60px;width: 60px;border-radius:100%" onclick="closing()" {{ $isClosed == 1 ? 'disabled' : '' }}>
+        <i data-feather="arrow-right" style="width: 25px"></i>
+    </button>
+</div>
 <div class="px-4 mb-3">
-    <div style="position: fixed;bottom:120px;right:20px;">
-        <button type="button" class="btn bg-dark text-white d-flex align-items-center justify-content-center"
-            style="height: 60px;width: 60px;border-radius:100%">
-            <i data-feather="filter" style="width: 25px" data-bs-toggle="modal" data-bs-target="#filter"></i>
-        </button>
-    </div>
-    <div style="position: fixed;bottom:200px;right:20px;">
-        <button type="button" class="btn btn-warning text-dark d-flex align-items-center justify-content-center"
-            style="height: 60px;width: 60px;border-radius:100%">
-            <i data-feather="plus" style="width: 25px" data-bs-toggle="modal" data-bs-target="#modal"></i>
-        </button>
-    </div>
-    <div style="position: fixed;bottom:280px;right:20px;">
-        <button type="button" class="btn btn-danger d-flex align-items-center justify-content-center"
-            style="height: 60px;width: 60px;border-radius:100%" onclick="closing()" {{ $isClosed == 1 ? 'disabled' : '' }}>
-            <i data-feather="arrow-right" style="width: 25px"></i>
-        </button>
-    </div>
     <h4 class="fw-bold mb-4">{{ $page }}</h4>
     @include('includes.alert')
     <div class="card rounded-4 border-0 mb-4"
@@ -57,7 +51,7 @@
         ">
         <div class="card-body p-4 text-white">
             <p class="fs-5 mb-0">Penjualan</p>
-            <p class="mb-3 d-flex align-items-center">
+            <p class="mb-3 d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#filter">
                 <i data-feather="calendar" class="me-2" style="width: 14px"></i>
                 @if (isset($_GET['dateFilter']))
                     {{ customDate($_GET['dateFilter'], 'D, d M Y') }}
@@ -65,7 +59,7 @@
                     {{ date('D, d M Y') }}
                 @endif
             </p>
-            <h3 class="fw-bold mb-0">IDR {{ number_format($total,2,',','.') }}</h3>
+            <h4 class="fw-bold mb-0 text-warning">IDR {{ number_format($total,2,',','.') }}</h4>
             <p class="m-0">{{ $qty }} pizza</p>
         </div>
     </div>
@@ -120,17 +114,17 @@
                                                 <p class="mb-0 text-capitalize">{{ $item->name }}</p>
                                                 <div class="row">
                                                     <div class="col-6">
-                                                        <p class="mb-0">{{ numberFormat($item->price) }} @ {{ $item->qty }} </p>
+                                                        <p class="mb-0">{{ numberFormat($item->gross_profit) }} @ {{ $item->qty }} </p>
                                                     </div>
                                                     <div class="col-6">
-                                                        <p class="mb-0 text-end">IDR {{ numberFormat($item->price*$item->qty) }} </p>
+                                                        <p class="mb-0 text-end">IDR {{ numberFormat($item->gross_profit*$item->qty) }} </p>
 
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         @php
-                                            $total += $item->price*$item->qty;
+                                            $total += $item->gross_profit*$item->qty;
                                             $date = $item->created_at;
                                             $note = $item->note;
                                         @endphp
@@ -211,7 +205,7 @@
 <div class="modal fade" id="modalDetail" data-bs-backdrop="static"
     data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-bottom border-0">
-        <div class="modal-content modal-content-bottom">
+        <div class="modal-content modal-content-bottom vw-100">
             <div class="modal-header d-flex justify-content-start align-items-center">
                 <p class="fs-6 m-0 fw-bold">Catatan</p>
                 <a href="#" data-bs-dismiss="modal" class="text-decoration-none text-dark ms-auto">
@@ -230,7 +224,7 @@
 <div class="modal fade" id="filter" data-bs-backdrop="static"
     data-bs-keyboard="false" tabindex="-1" aria-labelledby="filterlLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-bottom border-0">
-        <div class="modal-content modal-content-bottom">
+        <div class="modal-content modal-content-bottom vw-100">
             <div class="modal-header border-0 d-flex justify-content-start align-items-center">
                 <p class="fs-6 m-0 fw-bold">Filter by tanggal</p>
                 <a href="#" data-bs-dismiss="modal" class="text-decoration-none text-dark ms-auto">
@@ -239,7 +233,7 @@
             </div>
             <div class="modal-body">
                 <form action="{{ route('sales.index') }}" method="get">
-                    <input type="date" class="form-control" style="height: 50px !important" value="{{ isset($_GET['dateFilter']) ? customDate($_GET['dateFilter'], 'Y-m-d') : date('Y-m-d') }}" name="dateFilter">
+                    <input type="date" class="form-control" style="height: 50px !important" value="{{ $dateFilter }}" name="dateFilter">
                     <button class="d-none" id="btn-submit-filter" type="submit"></button>
                 </form>
             </div>
@@ -279,7 +273,7 @@
             cancelButtonText: 'Batal',
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = '{{ route('sales.migrate') }}';
+                window.location.href = '{{ route('sales.migrate') }}?dateFilter={{ $dateFilter }}';
             }
         })
     }

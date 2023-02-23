@@ -75,13 +75,15 @@ class MenuController extends Controller
             $request,
             [
                 'name'      => 'required',
+                'hpp'       => 'required',
                 'price'     => 'required|integer|max:9999999',
             ],
         );
         $data = Menu::find($request->id);
         $data->update([
-            'name' => $request->name,
-            'price' => $request->price,
+            'name'  => $request->name,
+            'price' => str_to_int($request->price),
+            'hpp'   => str_to_int($request->hpp),
         ]);
         return redirect()->back()->with('success', 'memperbarui ' . $data->name);
     }

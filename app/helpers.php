@@ -87,7 +87,7 @@ if (!function_exists('unNegativeNumber')) {
     }
 }
 if (!function_exists('numberFormat')) {
-    function numberFormat($number, $number_coma = 0, $sparator1 = '.', $sparator2 = ',')
+    function numberFormat($number, $number_coma = 1, $sparator1 = '.', $sparator2 = ',')
     {
         return number_format($number, $number_coma, $sparator2, $sparator1);
     }

@@ -13,5 +13,7 @@ class Sales extends Model
         'qty',
         'date',
         'sales_group_id',
+        'gross_profit',
+        'net_profit',
     ];
 }
