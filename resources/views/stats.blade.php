@@ -2,7 +2,9 @@
 
 @section('css')
 <style>
-
+    #padding-bottom{
+        display: none;
+    }
 </style>
 @endsection
 
@@ -11,12 +13,6 @@
     date_default_timezone_set('Asia/Jakarta');
 @endphp
 <div class="px-4 mb-3">
-    <div style="position: fixed;bottom:120px;right:20px;">
-        <button type="button" class="btn bg-dark text-white d-flex align-items-center justify-content-center"
-            style="height: 60px;width: 60px;border-radius:100%">
-            <i data-feather="filter" style="width: 25px" data-bs-toggle="modal" data-bs-target="#filter"></i>
-        </button>
-    </div>
     <h4 class="fw-bold mb-4">{{ config('app.name') }}</h4>
     @include('includes.alert')
     <div class="card rounded-4 border-0 mb-4"
@@ -30,10 +26,10 @@
             <p class="fs-5 mb-0">
                 Uang Kas
             </p>
-            <p class="mb-0 fs-4 fw-bold d-flex align-items-center text-warning">
+            <p class="mb-2 fs-5 fw-bold d-flex align-items-center text-warning">
                 IDR  {{ numberFormat($data['all']) }}
             </p>
-            <small class="d-flex align-items-center">
+            <small class="d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#filter">
                 <i data-feather="calendar" class="me-2" style="width: 14px"></i>
                 {{ dateFormat($dates['dateStartFilter']) }} s/d {{ dateFormat($dates['dateEndFilter']) }}
             </small>

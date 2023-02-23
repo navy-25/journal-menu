@@ -102,7 +102,7 @@
                     <textarea class="d-none" id="data{{ $key }}" cols="30" rows="10">
                         {{ $item }}
                     </textarea>
-                    <div class="row">
+                    <div class="row mb-2">
                         <div class="col-7" onclick="edit('{{ $key }}','{{ route('transaction.update') }}')" data-bs-toggle="modal" data-bs-target="#modal" >
                             <p class="fw-bold fs-6 m-0 text-capitalize">{{ $item->name }}</p>
                             <p class="m-0 mb-2">{{ transactionType($item->type) }} </p>
@@ -122,14 +122,14 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-8 d-flex align-items-center">
+                        <div class="col-6 d-flex align-items-center">
                             <i data-feather="calendar" class="me-2" style="width: 14px"></i>
                             <small class="me-4">{{ date('d M Y', strtotime($item->date)) }}</small>
 
-                            <i data-feather="user-plus" class="me-2" style="width: 14px"></i>
-                            <small>{{ date('d M Y H:i', strtotime($item->created_at)) }}</small>
+                            {{-- <i data-feather="user-plus" class="me-2" style="width: 14px"></i> --}}
+                            {{-- <small>{{ date('d M Y H:i', strtotime($item->created_at)) }}</small> --}}
                         </div>
-                        <div class="col-4 d-flex align-items-center">
+                        <div class="col-6 d-flex align-items-center">
                             @if ($item->note != '')
                                 <a href="#" class="text-dark ms-auto text-decoration-none me-4"  data-bs-toggle="modal" data-bs-target="#modalDetail" onclick="note('{{ $item->note }}')">Catatan</a>
                             @endif
