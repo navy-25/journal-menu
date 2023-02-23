@@ -37,7 +37,6 @@
     </div>
 </div>
 <div class="px-4">
-
     @if (count($data) == 0)
         <div class="py-5">
             <center>

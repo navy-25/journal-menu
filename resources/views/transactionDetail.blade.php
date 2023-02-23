@@ -27,23 +27,26 @@
 @php
     date_default_timezone_set('Asia/Jakarta');
 @endphp
+
+{{-- NAV BACK --}}
+<div class="px-4 py-3 mb-3 bg-white shadow-mini fixed-top d-flex align-items-center">
+    <a href="{{ route('transaction.index') }}" class="text-decoration-none text-dark">
+        <i data-feather="arrow-left" class="me-2 my-0 py-0" style="width: 18px"></i>
+    </a>
+    <p class="fw-bold m-0 p-0">{{ $page }}</p>
+</div>
+<div style="height: 60px !important"></div>
+{{-- END NAV BACK --}}
+
 <div style="position: fixed;bottom:120px;right:20px;">
     <button type="button" class="btn bg-dark text-white d-flex align-items-center justify-content-center"
         style="height: 60px;width: 60px;border-radius:100%">
         <i data-feather="filter" style="width: 25px" data-bs-toggle="modal" data-bs-target="#filter"></i>
     </button>
 </div>
-<div class="px-4 mb-3">
-    <h4 class="fw-bold mb-4 d-flex align-items-center">
-        <a href="{{ route('transaction.index') }}" class="text-decoration-none text-dark d-flex align-items-center">
-            <i data-feather="arrow-left" style="width: 25px" class="me-3"></i>
-        </a>
-        {{ $page }}
-    </h4>
-    @include('includes.alert')
-</div>
 
 <div class="px-4">
+    @include('includes.alert')
     <div class="row">
         <div class="col-12 mb-4">
             <div class="row p-3 rounded-4 mb-3" style="background: rgba(140, 140, 140, 0.1)">
