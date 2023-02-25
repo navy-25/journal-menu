@@ -8,8 +8,11 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('logo-pizza.png') }}">
 
         <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+
+        <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap5.min.css') }}">
         <link rel="stylesheet" href="{{ asset('css/datatables.css') }}">
         <link rel="stylesheet" href="{{ asset('css/jquery.dataTables.min.css') }}">
+
         <link rel="stylesheet" href="{{ asset('css/loader.css') }}">
         <script src="{{ asset('js/feather-icons.js') }}"></script>
         @yield('css')
@@ -130,9 +133,9 @@
         <div class="container p-3 vh-100 px-0 bg-white">
             @yield('content')
             <div id="padding-bottom">
-                <br><br><br><br><br><br><br><br><br>
+                <br><br><br><br><br><br>
             </div>
-            <br><br>
+            <br><br><br><br><br>
         </div>
 
         <script src="{{ asset('js/jquery-3.6.3.min.js') }}"></script>

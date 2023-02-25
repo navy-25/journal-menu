@@ -33,11 +33,11 @@ class SettingsController extends Controller
                 'route' => route('note.index'),
                 'icon'  => 'file-text',
             ],
-            // [
-            //     'name'  => 'Laporan',
-            //     'route' => route('note.index'),
-            //     'icon'  => 'printer',
-            // ],
+            [
+                'name'  => 'Laporan',
+                'route' => route('report.index'),
+                'icon'  => 'printer',
+            ],
         ];
         return view('settings', compact('page', 'stock_menu', 'more'));
     }

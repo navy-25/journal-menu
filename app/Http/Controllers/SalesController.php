@@ -204,7 +204,7 @@ class SalesController extends Controller
                 'm.hpp',
             )
             ->whereBetween('sales.date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
-            ->sum(DB::raw('hpp * qty'));
+            ->sum(DB::raw('(price-hpp) * qty'));
 
         $qty = Sales::query()
             ->join('menus as m', 'm.id', 'sales.id_menu')

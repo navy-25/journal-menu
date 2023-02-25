@@ -29,16 +29,16 @@
 @endphp
 
 {{-- NAV BACK --}}
-<div class="px-4 py-3 mb-3 bg-white shadow-mini fixed-top d-flex align-items-center">
+<div class="px-4 py-4 mb-3 bg-white shadow-mini fixed-top d-flex align-items-center">
     <a href="{{ route('transaction.index') }}" class="text-decoration-none text-dark">
         <i data-feather="arrow-left" class="me-2 my-0 py-0" style="width: 18px"></i>
     </a>
     <p class="fw-bold m-0 p-0">{{ $page }}</p>
 </div>
-<div style="height: 60px !important"></div>
+<div style="height: 80px !important"></div>
 {{-- END NAV BACK --}}
 
-<div style="position: fixed;bottom:120px;right:20px;">
+<div style="position: fixed;bottom:50px;right:20px;z-index:999">
     <button type="button" class="btn bg-dark text-white d-flex align-items-center justify-content-center"
         style="height: 60px;width: 60px;border-radius:100%">
         <i data-feather="filter" style="width: 25px" data-bs-toggle="modal" data-bs-target="#filter"></i>
@@ -125,9 +125,6 @@
                         <div class="col-6 d-flex align-items-center">
                             <i data-feather="calendar" class="me-2" style="width: 14px"></i>
                             <small class="me-4">{{ date('d M Y', strtotime($item->date)) }}</small>
-
-                            {{-- <i data-feather="user-plus" class="me-2" style="width: 14px"></i> --}}
-                            {{-- <small>{{ date('d M Y H:i', strtotime($item->created_at)) }}</small> --}}
                         </div>
                         <div class="col-6 d-flex align-items-center">
                             @if ($item->note != '')
@@ -239,5 +236,8 @@
     function note(note){
         $('#note_text').text(note)
     }
+
+    $('#padding-bottom').remove();
+    $('#nav-bottom').remove();
 </script>
 @endsection

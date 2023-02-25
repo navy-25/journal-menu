@@ -13,13 +13,13 @@
     date_default_timezone_set('Asia/Jakarta');
 @endphp
 {{-- NAV BACK --}}
-<div class="px-4 py-3 mb-3 bg-white shadow-mini fixed-top d-flex align-items-center">
+<div class="px-4 py-4 mb-3 bg-white shadow-mini fixed-top d-flex align-items-center">
     <a href="{{ route('settings.index') }}" class="text-decoration-none text-dark">
         <i data-feather="arrow-left" class="me-2 my-0 py-0" style="width: 18px"></i>
     </a>
     <p class="fw-bold m-0 p-0">{{ $page }}</p>
 </div>
-<div style="height: 80px !important"></div>
+<div style="height: 100px !important"></div>
 {{-- END NAV BACK --}}
 
 <div class="px-4 mb-3">

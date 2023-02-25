@@ -11,7 +11,7 @@
     date_default_timezone_set('Asia/Jakarta');
 @endphp
 <div class="px-4 mb-3">
-    <div style="position: fixed;bottom:120px;right:20px;">
+    <div style="position: fixed;bottom:120px;right:20px;z-index:999">
         <button type="button" class="btn bg-dark text-white d-flex align-items-center justify-content-center"
             style="height: 60px;width: 60px;border-radius:100%">
             <i data-feather="filter" style="width: 25px" data-bs-toggle="modal" data-bs-target="#filter"></i>
