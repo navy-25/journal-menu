@@ -70,9 +70,9 @@ class ReportController extends Controller
     }
     public function download(Request $request)
     {
-        $page                       = 'Laporan outlet ' . dateFormat($request->dateStartFilter) . ' - ' . dateFormat($request->dateEndFilter);
         $dates['dateEndFilter']     = $request->dateEndFilter;
         $dates['dateStartFilter']   = $request->dateStartFilter;
+        $page                       = 'Laporan outlet ' . dateFormat($dates['dateStartFilter']) . ' - ' . dateFormat($dates['dateEndFilter']);
         $sales = Sales::query()
             ->join('menus as m', 'm.id', 'sales.id_menu')
             ->leftJoin('sales_groups as g', 'g.id', 'sales.sales_group_id')
@@ -104,13 +104,14 @@ class ReportController extends Controller
         $pdf = PDF::loadView('reportPdf', compact('page', 'sales', 'transaction', 'dates', 'list_date'));
         $pdf->setPaper('a4', 'potrait');
 
-        if ($request->type == 'view') {
-            // open to view PDF browser
-            return $pdf->stream();
-        } else {
-            // download
-            return $pdf->download('Laporan outlet ' . dateFormat($request->dateStartFilter) . ' - ' . dateFormat($request->dateEndFilter) . ' .pdf');
-        }
+        // if ($request->type == 'view') {
+        //     // open to view PDF browser
+        //     return $pdf->stream();
+        // } else {
+        //     // download
+        //     return $pdf->download('Laporan outlet ' . dateFormat($request->dateStartFilter) . ' - ' . dateFormat($request->dateEndFilter) . ' .pdf');
+        // }
+        return $pdf->download('Laporan outlet ' . dateFormat($request->dateStartFilter) . ' - ' . dateFormat($request->dateEndFilter) . ' .pdf');
     }
 
 

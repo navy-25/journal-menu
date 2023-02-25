@@ -31,7 +31,25 @@
 
 {{-- NAV BOTTOM --}}
 <nav id="nav-bottom" class="navbar navbar-expand-lg bg-white fixed-bottom px-3" style="height: 100px !important;">
-    <button type="button" class="btn btn-warning rounded-4 py-3 px-4 w-100 fw-bold" data-bs-toggle="modal" data-bs-target="#download">Unduh laporan</button>
+    <form action="{{ route('report.download') }}" method="POST" class="d-none">
+        @csrf
+        <div class="row">
+            <div class="col-6 mb-3">
+                <label for="" class="mb-2">Tanggal awal</label>
+                <input type="date" class="form-control" style="height: 50px !important"
+                value="{{ $dates['dateStartFilter'] }}"
+                name="dateStartFilter">
+            </div>
+            <div class="col-6 mb-3">
+                <label for="" class="mb-2">Tanggal akhir</label>
+                <input type="date" class="form-control" style="height: 50px !important"
+                value="{{ $dates['dateEndFilter'] }}"
+                name="dateEndFilter">
+            </div>
+        </div>
+        <button class="d-none" id="btn-submit-download" type="submit"></button>
+    </form>
+    <button type="button" class="btn btn-warning rounded-4 py-3 px-4 w-100 fw-bold" onclick="$('#btn-submit-download').trigger('click');" >Unduh laporan</button>
 </nav>
 {{-- END NAV BOTTOM --}}
 
@@ -183,58 +201,6 @@
             </div>
             <div class="modal-footer border-0">
                 <button type="button" onclick="$('#btn-submit-filter').trigger('click')" class="btn btn-dark w-100 rounded-4 py-3">Terapkan</button>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="download" data-bs-backdrop="static"
-    data-bs-keyboard="false" tabindex="-1" aria-labelledby="downloadLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-bottom border-0">
-        <div class="modal-content modal-content-bottom vw-100">
-            <div class="modal-header border-0 d-flex justify-content-start align-items-center">
-                <p class="fs-6 m-0 fw-bold">Format Unduh laporan</p>
-                <a href="#" data-bs-dismiss="modal" class="text-decoration-none text-dark ms-auto">
-                    <i data-feather="x" style="width: 18px"></i>
-                </a>
-            </div>
-            <div class="modal-body">
-                <form action="{{ route('report.download') }}" method="POST">
-                    @csrf
-                    <div class="row">
-                        <div class="col-12 mb-3">
-                            <label for="" class="mb-2">Aksi</label>
-                            @php
-                                $type = [
-                                    'download'  => 'Unduh',
-                                    'view'      => 'Hanya lihat',
-                                ];
-                            @endphp
-                            <select name="type" class="form-select w-100">
-                                @foreach ($type as $key => $item)
-                                    <option value="{{ $key }}">{{ $item }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-6 mb-3">
-                            <label for="" class="mb-2">Tanggal awal</label>
-                            <input type="date" class="form-control" style="height: 50px !important"
-                            value="{{ $dates['dateStartFilter'] }}"
-                            name="dateStartFilter">
-                        </div>
-                        <div class="col-6 mb-3">
-                            <label for="" class="mb-2">Tanggal akhir</label>
-                            <input type="date" class="form-control" style="height: 50px !important"
-                            value="{{ $dates['dateEndFilter'] }}"
-                            name="dateEndFilter">
-                        </div>
-                    </div>
-                    <button class="d-none" id="btn-submit-download" type="submit"></button>
-                </form>
-            </div>
-            <div class="modal-footer border-0">
-                <button type="button" id="btn-view" onclick="$('#btn-submit-download').trigger('click');" class="btn btn-warning fw-bold w-100 rounded-4 py-3 text-dark d-flex align-items-center justify-content-center">
-                    Lanjutkan
-                </button>
             </div>
         </div>
     </div>
