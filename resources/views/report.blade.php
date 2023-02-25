@@ -201,36 +201,6 @@
                 <form action="{{ route('report.download') }}" method="POST">
                     @csrf
                     <div class="row">
-                        {{-- <div class="col-6 mb-3">
-                            <label for="" class="mb-2">Tipe</label>
-                            @php
-                                $tipe = [
-                                    'days'      => 'Harian',
-                                    'weeks'     => 'Mingguan',
-                                    'months'    => 'Bulanan',
-                                    'years'     => 'Tahunan',
-                                ];
-                            @endphp
-                            <select name="type" class="form-select w-100">
-                                @foreach ($tipe as $key => $item)
-                                    <option value="{{ $key }}">{{ $item }}</option>
-                                @endforeach
-                            </select>
-                        </div> --}}
-                        {{-- <div class="col-12 mb-3">
-                            <label for="" class="mb-2">Fromat</label>
-                            @php
-                                $format = [
-                                    'pdf'      => 'PDF',
-                                    'word'     => 'Word',
-                                ];
-                            @endphp
-                            <select name="format" class="form-select w-100">
-                                @foreach ($format as $key => $item)
-                                    <option value="{{ $key }}">{{ $item }}</option>
-                                @endforeach
-                            </select>
-                        </div> --}}
                         <div class="col-6 mb-3">
                             <label for="" class="mb-2">Tanggal awal</label>
                             <input type="date" class="form-control" style="height: 50px !important"
@@ -245,13 +215,21 @@
                         </div>
                     </div>
                     <input type="hidden" name="type" id="type" value="download">
-                    <button class="d-none" id="btn-submit-downnload" type="submit"></button>
+                    <button class="d-none" id="btn-submit-download" type="submit"></button>
                 </form>
             </div>
             <div class="modal-footer border-0">
                 <div class="w-100 d-flex">
-                    <button type="button" onclick="$('#type').val('view');$('#btn-submit-downnload').trigger('click');$(this).prop('disabled',true)" class="btn btn-light fw-bold w-50 rounded-4 py-3 text-dark me-4">Lihat</button>
-                    <button type="button" onclick="$('#type').val('download');$('#btn-submit-downnload').trigger('click');$(this).prop('disabled',true)" class="btn btn-warning fw-bold w-50 rounded-4 py-3">Unduh</button>
+                        <button type="button" id="btn-view" onclick="submitPrint('view','btn-view')" class="btn btn-light fw-bold w-50 rounded-4 py-3 text-dark me-4 d-flex align-items-center justify-content-center">
+                        <span class="me-3">Lihat</span>
+                        <div class="spinner-border text-dark d-none" role="status" id="loader-view">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </button>
+                    <button type="button" id="btn-download" onclick="submitPrint('download','btn-download')"
+                        class="btn btn-warning fw-bold w-50 rounded-4 py-3 d-flex align-items-center justify-content-center">
+                        <span class="me-3">Unduh</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -279,5 +257,15 @@
             info: false,
         });
     } );
+    function submitPrint(data,id_btn){
+        $('#type').val(data);
+        if(data == 'view'){
+            $('#loader-view').removeClass('d-none')
+            $('#'+id_btn).prop('disabled',true)
+        }
+        setTimeout(() => {
+            $('#btn-submit-download').trigger('click');
+        }, 500);
+    }
 </script>
 @endsection
