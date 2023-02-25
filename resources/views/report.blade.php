@@ -232,8 +232,8 @@
                 </form>
             </div>
             <div class="modal-footer border-0">
-                <button type="button" id="btn-view" onclick="$('#btn-submit-download').trigger('click');" class="btn btn-warning fw-bold w-100 rounded-4 py-3 text-dark me-4 d-flex align-items-center justify-content-center">
-                    <span class="me-3">Lanjutkan</span>
+                <button type="button" id="btn-view" onclick="$('#btn-submit-download').trigger('click');" class="btn btn-warning fw-bold w-100 rounded-4 py-3 text-dark d-flex align-items-center justify-content-center">
+                    Lanjutkan
                 </button>
             </div>
         </div>

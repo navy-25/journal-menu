@@ -137,7 +137,7 @@
             @endphp
             <p>- Keuangan Outlet</p>
             <div style="padding-left: 15px">
-                @if ($isSalesShow == 1)
+                @if ($isTransShow == 1)
                     <table class="table" style="width: 100%" cellpadding="5">
                         <thead>
                             <tr class="">
