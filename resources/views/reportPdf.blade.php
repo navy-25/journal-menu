@@ -75,95 +75,105 @@
         <br>
         <hr>
         <br>
-        <p class="fs-4 fw-bold my-0">{{ ++$key }}. Laporan penjualan {{ formatDay($val) }}, {{ dateFormat($val) }} {{ count($list_date) }}</p>
+        <p class="fs-4 fw-bold my-0">{{ ++$key }}. Laporan penjualan {{ formatDay($val) }}, {{ dateFormat($val) }}</p>
         <div style="padding-left: 20px">
-            <p>- Kuantitas Penjualan</p>
             @php
                 $qty_total = 0;
                 try {
                     $sales[$val];
+                    $isSalesShow = 1;
                 } catch (\Throwable $th) {
-                    continue;
+                    $isSalesShow = 0;
                 }
             @endphp
+            <p>- Kuantitas Penjualan</p>
             <div style="padding-left: 15px">
-                <table class="table" style="width: 100%" cellpadding="5">
-                    <thead>
-                        <tr class="">
-                            <td class="fw-bold" style="width: 40%">Nama menu</td>
-                            <td class="fw-bold" style="width: 30%">Jumlah</td>
-                            <td class="fw-bold" style="width: 30%">Satuan</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($sales[$val] as $key => $item)
-                            @php
-                                $qty = 0;
-                                foreach ($item as $value) {
-                                    $qty += $value->qty;
-                                }
-                            @endphp
-                            <tr>
-                                <td>{{ $key }}</td>
-                                <td>{{ numberFormat($qty,0) }}</td>
-                                <td>pieces</td>
+                @if ($isSalesShow == 1)
+                    <table class="table" style="width: 100%" cellpadding="5">
+                        <thead>
+                            <tr class="">
+                                <td class="fw-bold" style="width: 40%">Nama menu</td>
+                                <td class="fw-bold" style="width: 30%">Jumlah</td>
+                                <td class="fw-bold" style="width: 30%">Satuan</td>
                             </tr>
-                            @php
-                                $qty_total += $qty;
-                            @endphp
-                        @endforeach
-                        <tr>
-                            <td class="fw-bold">Total keseluruhan</td>
-                            <td class="fw-bold">{{ numberFormat($qty_total,0) }}</td>
-                            <td class="fw-bold">pieces</td>
-                        </tr>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach ($sales[$val] as $key => $item)
+                                @php
+                                    $qty = 0;
+                                    foreach ($item as $value) {
+                                        $qty += $value->qty;
+                                    }
+                                @endphp
+                                <tr>
+                                    <td>{{ $key }}</td>
+                                    <td>{{ numberFormat($qty,0) }}</td>
+                                    <td>pieces</td>
+                                </tr>
+                                @php
+                                    $qty_total += $qty;
+                                @endphp
+                            @endforeach
+                            <tr>
+                                <td class="fw-bold">Total keseluruhan</td>
+                                <td class="fw-bold">{{ numberFormat($qty_total,0) }}</td>
+                                <td class="fw-bold">pieces</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                @else
+                    Tidak ada data ...
+                @endif
             </div>
             <br>
-            <p>- Keuangan Outlet</p>
             @php
                 $total = 0;
                 try {
                     $transaction[$val];
+                    $isTransShow = 1;
                 } catch (\Throwable $th) {
-                    continue;
+                    $isTransShow = 0;
                 }
             @endphp
+            <p>- Keuangan Outlet</p>
             <div style="padding-left: 15px">
-                <table class="table" style="width: 100%" cellpadding="5">
-                    <thead>
-                        <tr class="">
-                            <td class="fw-bold" style="width: 60%">Nama transaksi</td>
-                            <td class="fw-bold text-end" style="width: 40%">Jumlah</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($transaction[$val] as  $key => $item)
-                            <tr>
-                                <td>{{ $item->name }}</td>
-                                <td class="text-end">
-                                    @if($item->type == 'in')
-                                        <span>IDR {{ numberFormat($item->price,0) }}</span>
-                                    @else
-                                        <span class="text-danger">(IDR {{ numberFormat($item->price,0) }})</span>
-                                    @endif
-                                </td>
+                @if ($isSalesShow == 1)
+                    <table class="table" style="width: 100%" cellpadding="5">
+                        <thead>
+                            <tr class="">
+                                <td class="fw-bold" style="width: 60%">Nama transaksi</td>
+                                <td class="fw-bold text-end" style="width: 40%">Jumlah</td>
                             </tr>
-                            @php
-                                if($item->type == 'in'){
-                                    $total += $item->price;
-                                }else{
-                                    $total -= $item->price;
-                                }
-                            @endphp
-                        @endforeach
-                        <tr>
-                            <td class="fw-bold">Total keseluruhan</td>
-                            <td class="fw-bold text-end">IDR {{ numberFormat($total,0) }}</td>
-                        </tr>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach ($transaction[$val] as  $key => $item)
+                                <tr>
+                                    <td>{{ $item->name }}</td>
+                                    <td class="text-end">
+                                        @if($item->type == 'in')
+                                            <span>IDR {{ numberFormat($item->price,0) }}</span>
+                                        @else
+                                            <span class="text-danger">(IDR {{ numberFormat($item->price,0) }})</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                                @php
+                                    if($item->type == 'in'){
+                                        $total += $item->price;
+                                    }else{
+                                        $total -= $item->price;
+                                    }
+                                @endphp
+                            @endforeach
+                            <tr>
+                                <td class="fw-bold">Total keseluruhan</td>
+                                <td class="fw-bold text-end">IDR {{ numberFormat($total,0) }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                @else
+                    Tidak ada data ...
+                @endif
             </div>
         </div>
         <br>
