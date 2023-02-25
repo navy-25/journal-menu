@@ -36,9 +36,9 @@ if (!function_exists('minStock')) {
     function minStock($id, $qty)
     {
         $stock = Stock::find($id);
-        $sisa = (int) $stock->qty_usage - $qty;
+        $sisa = (int) $stock->qty - $qty;
         $stock->update([
-            'qty_usage' => $sisa,
+            'qty' => $sisa,
         ]);
     }
 }

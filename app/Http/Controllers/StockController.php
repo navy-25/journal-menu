@@ -94,7 +94,7 @@ class StockController extends Controller
                 'name'      => 'required',
                 'qty'       => 'required|integer|max:9999999',
                 'unit'      => 'required',
-                'qty_usage' => 'required|integer|max:9999999',
+                // 'qty_usage' => 'required|integer|max:9999999',
             ],
         );
         $data = Stock::find($request->id);
@@ -102,7 +102,7 @@ class StockController extends Controller
             'name'      => $request->name,
             'qty'       => $request->qty,
             'unit'      => $request->unit,
-            'qty_usage' => $request->qty_usage,
+            // 'qty_usage' => $request->qty_usage,
         ]);
         return redirect()->back()->with('success', 'memperbarui bahan ' . $request->name);
     }

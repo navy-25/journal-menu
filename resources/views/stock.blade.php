@@ -38,16 +38,12 @@
                 <div>
                     <p class="fw-bold fs-5 m-0 text-capitalize">{{ $item->name }}</p>
                     <p class="m-0 mb-2">{{ $item->qty }} {{ $item->unit }}</p>
-                    {{-- <small class="d-flex justify-content-start align-items-center">
-                        <i data-feather="calendar" class="me-2" style="width: 18px"></i>
-                        {{ dateTimeFormat($item->updated_at) }}
-                    </small> --}}
                     <textarea  class="d-none" id="data{{ $key }}" cols="30" rows="10">{{ $item }}</textarea>
                 </div>
             </div>
-            <div class="col-3 d-flex justify-content-center align-items-start fw-bold">
+            <div class="col-3 d-flex justify-content-center align-items-center fw-bold">
                 <p class="fs-1 m-0">
-                    {{ $item->qty_usage }}x
+                    {{ $item->qty }}x
                 </p>
             </div>
         </div>
@@ -81,10 +77,10 @@
                         <label for="" class="mb-2">Satuan (gram/biji/dsb)</label>
                         <input type="text" class="form-control" placeholder="gram/piece/liter" style="height: 50px !important" value="" name="unit" id="unit">
                     </div>
-                    <div class="form-group mb-3">
+                    {{-- <div class="form-group mb-3">
                         <label for="" class="mb-2">Max. pemakaian (Sesuai takaran/pizza)</label>
                         <input type="number" class="form-control" placeholder="5x/10x/40x" style="height: 50px !important" value="" name="qty_usage" id="qty_usage">
-                    </div>
+                    </div> --}}
                     <input type="hidden" name="id" id="id">
                     <button class="d-none" id="btn-submit" type="submit"></button>
                 </form>
