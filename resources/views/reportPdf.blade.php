@@ -78,6 +78,14 @@
         <p class="fs-4 fw-bold my-0">{{ ++$key }}. Laporan penjualan {{ formatDay($val) }}, {{ dateFormat($val) }} {{ count($list_date) }}</p>
         <div style="padding-left: 20px">
             <p>- Kuantitas Penjualan</p>
+            @php
+                $qty_total = 0;
+                try {
+                    $sales[$val];
+                } catch (\Throwable $th) {
+                    continue;
+                }
+            @endphp
             <div style="padding-left: 15px">
                 <table class="table" style="width: 100%" cellpadding="5">
                     <thead>
@@ -88,14 +96,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @php
-                            $qty_total = 0;
-                            try {
-                                $sales[$val];
-                            } catch (\Throwable $th) {
-                                continue;
-                            }
-                        @endphp
                         @foreach ($sales[$val] as $key => $item)
                             @php
                                 $qty = 0;
@@ -122,6 +122,14 @@
             </div>
             <br>
             <p>- Keuangan Outlet</p>
+            @php
+                $total = 0;
+                try {
+                    $transaction[$val];
+                } catch (\Throwable $th) {
+                    continue;
+                }
+            @endphp
             <div style="padding-left: 15px">
                 <table class="table" style="width: 100%" cellpadding="5">
                     <thead>
@@ -131,14 +139,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @php
-                            $total = 0;
-                            try {
-                                $transaction[$val];
-                            } catch (\Throwable $th) {
-                                continue;
-                            }
-                        @endphp
                         @foreach ($transaction[$val] as  $key => $item)
                             <tr>
                                 <td>{{ $item->name }}</td>
