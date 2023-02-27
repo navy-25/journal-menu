@@ -17,7 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('thumbnail')->nullable();
             $table->string('name');
-            $table->string('price');
+            $table->bigInteger('price');
+            $table->bigInteger('hpp');
             $table->timestamps();
         });
     }

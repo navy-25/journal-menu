@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->integer('type')->comment('1:pegawai;2:bahan;3:operasional;4:alat;5:outlet;6:lainnya');
             $table->string('status')->comment('in/out');
-            $table->string('price');
+            $table->bigInteger('price');
             $table->string('date');
             $table->longText('note')->nullable();
             $table->string('image')->nullable();

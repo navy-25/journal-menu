@@ -39,10 +39,10 @@
 <div class="px-4">
     @foreach ($data as $key => $item)
         <div class="row" onclick="edit('{{ $key }}')" data-bs-toggle="modal" data-bs-target="#edit">
-            <div class="col-3 d-flex justify-content-center align-items-center">
+            {{-- <div class="col-3 d-flex justify-content-center align-items-center">
                 <img src="{{ asset('app-assets/images/empty.jpg') }}" width="100%" alt="">
-            </div>
-            <div class="col-9 d-flex justify-content-start align-items-center">
+            </div> --}}
+            <div class="col-12 d-flex justify-content-start align-items-center">
                 <div>
                     <p class="fw-bold fs-5 m-0 text-capitalize">{{ $item->name }}</p>
                     <p class="m-0">IDR {{ numberFormat($item->price) }} (HPP: {{ numberFormat($item->hpp) }})</p>

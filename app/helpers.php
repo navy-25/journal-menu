@@ -44,12 +44,12 @@ if (!function_exists('minStock')) {
 }
 
 if (!function_exists('plusStock')) {
-    function plusStock($id)
+    function plusStock($id, $qty)
     {
         $stock = Stock::find($id);
-        $sisa = (int) $stock->qty_usage + 1;
+        $sisa = (int) $stock->qty + $qty;
         $stock->update([
-            'qty_usage' => $sisa,
+            'qty' => $sisa,
         ]);
     }
 }

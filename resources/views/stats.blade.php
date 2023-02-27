@@ -88,30 +88,34 @@
             @php
                 $index = 1;
             @endphp
-            @foreach ($data['weekly'] as $key => $value)
-                @php
-                    $total  = 0;
-                    foreach ($value as $item) {
-                        $total += ($item->qty * $item->price);
-                    }
-                    if($index == 4){
-                        break;
-                    }
-                @endphp
-                <div class="row">
-                    <div class="col-6 d-flex justify-content-start align-items-center">
-                        <i data-feather="calendar" class="me-2" style="width: 15px"></i>
-                        {{ formatDay($key) }}, {{ customDate($key,'d M') }}
+            @if (count($data['weekly']) == 0)
+                <center>belum ada data</center>
+            @else
+                @foreach ($data['weekly'] as $key => $value)
+                    @php
+                        $total  = 0;
+                        foreach ($value as $item) {
+                            $total += ($item->qty * $item->price);
+                        }
+                        if($index == 4){
+                            break;
+                        }
+                    @endphp
+                    <div class="row">
+                        <div class="col-6 d-flex justify-content-start align-items-center">
+                            <i data-feather="calendar" class="me-2" style="width: 15px"></i>
+                            {{ formatDay($key) }}, {{ customDate($key,'d M') }}
+                        </div>
+                        <div class="col-6 d-flex justify-content-end">
+                            <p class="m-0 fw-bold text-success">IDR  {{ numberFormat($total) }}</p>
+                        </div>
                     </div>
-                    <div class="col-6 d-flex justify-content-end">
-                        <p class="m-0 fw-bold text-success">IDR  {{ numberFormat($total) }}</p>
-                    </div>
-                </div>
-                <hr class="py-1 mt-2 mb-0" style="opacity: 0.05 !important">
-                @php
-                    $index++
-                @endphp
-            @endforeach
+                    <hr class="py-1 mt-2 mb-0" style="opacity: 0.05 !important">
+                    @php
+                        $index++
+                    @endphp
+                @endforeach
+            @endif
         </div>
     </div>
 </div>
@@ -129,34 +133,38 @@
             @php
                 $index = 1;
             @endphp
-            @foreach ($data['weekly-transaction'] as $key => $value)
-                @php
-                    $total  = 0;
-                    foreach ($value as $item) {
-                        if($item->status == 'in'){
-                            $total += $item->price;
-                        }else{
-                            $total -= $item->price;
+            @if (count($data['weekly-transaction']) == 0)
+                <center>belum ada data</center>
+            @else
+                @foreach ($data['weekly-transaction'] as $key => $value)
+                    @php
+                        $total  = 0;
+                        foreach ($value as $item) {
+                            if($item->status == 'in'){
+                                $total += $item->price;
+                            }else{
+                                $total -= $item->price;
+                            }
                         }
-                    }
-                    if($index == 4){
-                        break;
-                    }
-                @endphp
-                <div class="row">
-                    <div class="col-6 d-flex justify-content-start align-items-center">
-                        <i data-feather="calendar" class="me-2" style="width: 15px"></i>
-                        {{ formatDay($key) }}, {{ customDate($key,'d M') }}
+                        if($index == 4){
+                            break;
+                        }
+                    @endphp
+                    <div class="row">
+                        <div class="col-6 d-flex justify-content-start align-items-center">
+                            <i data-feather="calendar" class="me-2" style="width: 15px"></i>
+                            {{ formatDay($key) }}, {{ customDate($key,'d M') }}
+                        </div>
+                        <div class="col-6 d-flex justify-content-end">
+                            <p class="m-0 fw-bold {{ $total > 0 ? 'text-success' : 'text-danger' }}">IDR  {{ numberFormat($total) }}</p>
+                        </div>
                     </div>
-                    <div class="col-6 d-flex justify-content-end">
-                        <p class="m-0 fw-bold {{ $total > 0 ? 'text-success' : 'text-danger' }}">IDR  {{ numberFormat($total) }}</p>
-                    </div>
-                </div>
-                <hr class="py-1 mt-2 mb-0" style="opacity: 0.05 !important">
-                @php
-                    $index++
-                @endphp
-            @endforeach
+                    <hr class="py-1 mt-2 mb-0" style="opacity: 0.05 !important">
+                    @php
+                        $index++
+                    @endphp
+                @endforeach
+            @endif
         </div>
     </div>
 </div>
@@ -174,26 +182,31 @@
             @php
                 $index = 1;
             @endphp
-            @foreach ($data['menu'] as $key => $value)
-                @php
-                    if($index == 4){
-                        break;
-                    }
-                @endphp
-                <div class="row">
-                    <div class="col-6 d-flex justify-content-start align-items-center">
-                        <i data-feather="shopping-bag" class="me-2" style="width: 15px"></i>
-                        {{ $value->name }}
+
+            @if (count($data['menu']) == 0)
+                <center>belum ada data</center>
+            @else
+                @foreach ($data['menu'] as $key => $value)
+                    @php
+                        if($index == 4){
+                            break;
+                        }
+                    @endphp
+                    <div class="row">
+                        <div class="col-6 d-flex justify-content-start align-items-center">
+                            <i data-feather="shopping-bag" class="me-2" style="width: 15px"></i>
+                            {{ $value->name }}
+                        </div>
+                        <div class="col-6 d-flex justify-content-end">
+                            <p class="m-0 fw-bold text-success">{{ numberFormat($value->total_terjual) }}</p>
+                        </div>
                     </div>
-                    <div class="col-6 d-flex justify-content-end">
-                        <p class="m-0 fw-bold text-success">{{ numberFormat($value->total_terjual) }}</p>
-                    </div>
-                </div>
-                <hr class="py-1 mt-2 mb-0" style="opacity: 0.05 !important">
-                @php
-                    $index++
-                @endphp
-            @endforeach
+                    <hr class="py-1 mt-2 mb-0" style="opacity: 0.05 !important">
+                    @php
+                        $index++
+                    @endphp
+                @endforeach
+            @endif
         </div>
     </div>
 </div>

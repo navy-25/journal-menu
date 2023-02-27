@@ -254,7 +254,7 @@ class SalesController extends Controller
         for ($i = 0; $i < count($sales); $i++) {
             $list = [1, 20]; // ROTI DAN KOTAK
             foreach ($list as $key => $value) {
-                minStock($value, $sales[$i]->qty);
+                plusStock($value, $sales[$i]->qty);
             }
             Sales::find($sales[$i]->id)->delete();
         }
