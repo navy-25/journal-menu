@@ -38,6 +38,7 @@
         box-shadow: 0 0 0 0.25rem rgb(98 98 98 / 0%) !important;
     }
     .swal2-title {
+        font-size: 1.3em !important;
         padding: 25px 0px !important;
     }
     .bg-light-dark{
@@ -87,5 +88,9 @@
 
     .text-gray{
         color : #21252994 !important;
+    }
+
+    .fs-7{
+        font-size: 12px  !important;
     }
 </style>

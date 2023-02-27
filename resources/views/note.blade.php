@@ -86,7 +86,7 @@
                     @csrf
                     <div class="form-group mb-3">
                         <label for="title" class="mb-2">Judul</label>
-                        <input type="text" class="form-control" style="height: 50px !important" value="" name="title" id="title" placeholder="tulis judul catatan disini...">
+                        <input type="text" class="form-control" value="" name="title" id="title" placeholder="tulis judul catatan disini...">
                     </div>
                     <div class="form-group mb-3">
                         <label for="description" class="mb-2">Catatan</label>

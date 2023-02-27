@@ -233,7 +233,7 @@
             </div>
             <div class="modal-body">
                 <form action="{{ route('sales.index') }}" method="get">
-                    <input type="date" class="form-control" style="height: 50px !important" value="{{ $dateFilter }}" name="dateFilter">
+                    <input type="date" class="form-control" value="{{ $dateFilter }}" name="dateFilter">
                     <button class="d-none" id="btn-submit-filter" type="submit"></button>
                 </form>
             </div>

@@ -70,15 +70,15 @@
                     @csrf
                     <div class="form-group mb-3">
                         <label for="" class="mb-2">Nama menu</label>
-                        <input type="text" class="form-control" style="height: 50px !important" value="" name="name" id="name">
+                        <input type="text" class="form-control" value="" name="name" id="name">
                     </div>
                     <div class="form-group mb-3">
                         <label for="" class="mb-2">Harga</label>
-                        <input type="text" class="form-control money" style="height: 50px !important" value="" name="price" id="price">
+                        <input type="text" class="form-control money" value="" name="price" id="price">
                     </div>
                     <div class="form-group mb-3">
                         <label for="" class="mb-2">HPP</label>
-                        <input type="text" class="form-control money" style="height: 50px !important" value="" name="hpp" id="hpp">
+                        <input type="text" class="form-control money" value="" name="hpp" id="hpp">
                     </div>
                     <input type="hidden" name="id" id="id">
                     <button class="d-none" id="btn-submit-filter" type="submit"></button>

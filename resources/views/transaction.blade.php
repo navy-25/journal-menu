@@ -146,17 +146,17 @@
                     @csrf
                     <div class="form-group mb-3">
                         <label for="" class="mb-2">Nama pengeluaran</label>
-                        <input type="text" class="form-control" style="height: 50px !important" value="" name="name" id="name" placeholder="ex. ongkos makan" autofocus>
+                        <input type="text" class="form-control" value="" name="name" id="name" placeholder="ex. ongkos makan" autofocus>
                     </div>
                     <div class="form-group mb-3">
                         <div class="row">
                             <div class="col-6">
                                 <label for="" class="mb-2">Harga/Total</label>
-                                <input type="text" class="form-control money" style="height: 50px !important" value="" name="price" id="price" placeholder="ex. 15000">
+                                <input type="text" class="form-control money" value="" name="price" id="price" placeholder="ex. 15000">
                             </div>
                             <div class="col-6">
                                 <label for="" class="mb-2">Tanggal</label>
-                                <input type="date" class="form-control" style="height: 50px !important" value="{{ $dateFilter }}" name="date">
+                                <input type="date" class="form-control" value="{{ $dateFilter }}" name="date">
                             </div>
                         </div>
                     </div>
@@ -165,7 +165,7 @@
                         <div class="row">
                             <div class="col-6">
                                 <label for="" class="mb-2 w-100">Masuk/Keluar</label>
-                                <select name="status" id="status" class="form-select" style="height: 50px !important">
+                                <select name="status" id="status" class="form-select">
                                     @foreach (transactionStatus() as $key => $value)
                                         <option value="{{ $key }}">{{ $value }}</option>
                                     @endforeach
@@ -173,7 +173,7 @@
                             </div>
                             <div class="col-6">
                                 <label for="" class="mb-2 w-100">Untuk keperluan</label>
-                                <select name="type" id="type" class="form-select" style="height: 50px !important">
+                                <select name="type" id="type" class="form-select">
                                     @foreach (transactionType() as $key => $value)
                                         <option value="{{ $key }}">{{ $value }}</option>
                                     @endforeach
@@ -227,7 +227,7 @@
             </div>
             <div class="modal-body">
                 <form action="{{ route('transaction.index') }}" method="get">
-                    <input type="date" class="form-control" style="height: 50px !important" value="{{ $dateFilter }}" name="dateFilter">
+                    <input type="date" class="form-control" value="{{ $dateFilter }}" name="dateFilter">
                     <button class="d-none" id="btn-submit-filter" type="submit"></button>
                 </form>
             </div>

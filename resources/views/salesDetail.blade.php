@@ -181,13 +181,13 @@
                     <div class="row">
                         <div class="col-6">
                             <label for="" class="mb-2">Tanggal awal</label>
-                            <input type="date" class="form-control" style="height: 50px !important"
+                            <input type="date" class="form-control"
                             value="{{ $dates['dateStartFilter'] }}"
                             name="dateStartFilter">
                         </div>
                         <div class="col-6">
                             <label for="" class="mb-2">Tanggal akhir</label>
-                            <input type="date" class="form-control" style="height: 50px !important"
+                            <input type="date" class="form-control"
                             value="{{ $dates['dateEndFilter'] }}"
                             name="dateEndFilter">
                         </div>

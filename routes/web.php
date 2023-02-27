@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\NoteController;
@@ -55,6 +56,13 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/store', 'store')->name('store');
         Route::post('/update', 'update')->name('update');
         Route::get('/destroy', 'destroy')->name('destroy');
+    });
+
+    Route::controller(AccountController::class)->prefix('account')->name('account.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('/update', 'update')->name('update');
+        Route::get('/password', 'password')->name('password');
+        Route::post('/update-password', 'updatePassword')->name('updatePassword');
     });
 
     Route::controller(SettingsController::class)->prefix('settings')->name('settings.')->group(function () {

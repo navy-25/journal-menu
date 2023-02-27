@@ -27,6 +27,23 @@ class SettingsController extends Controller
                 'icon'  => 'package',
             ],
         ];
+        $account = [
+            [
+                'name'  => 'Akun',
+                'route' => route('account.index'),
+                'icon'  => 'user',
+            ],
+            [
+                'name'  => 'Kata sandi',
+                'route' => route('account.password'),
+                'icon'  => 'key',
+            ],
+            [
+                'name'  => 'S&K',
+                'route' => '#',
+                'icon'  => 'file-text',
+            ],
+        ];
         $more = [
             [
                 'name'  => 'Catatan',
@@ -39,7 +56,7 @@ class SettingsController extends Controller
                 'icon'  => 'printer',
             ],
         ];
-        return view('settings', compact('page', 'stock_menu', 'more'));
+        return view('settings', compact('page', 'stock_menu', 'more', 'account'));
     }
 
     /**

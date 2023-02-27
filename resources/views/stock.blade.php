@@ -67,19 +67,19 @@
                     @csrf
                     <div class="form-group mb-3">
                         <label for="" class="mb-2">Nama bahan</label>
-                        <input type="text" class="form-control" placeholder="tulis disini" style="height: 50px !important" value="" name="name" id="name">
+                        <input type="text" class="form-control" placeholder="tulis disini" value="" name="name" id="name">
                     </div>
                     <div class="form-group mb-3">
                         <label for="" class="mb-2">Berat/Jumlah</label>
-                        <input type="number" class="form-control" placeholder="10/100/400" style="height: 50px !important" value="" name="qty" id="qty">
+                        <input type="number" class="form-control" placeholder="10/100/400" value="" name="qty" id="qty">
                     </div>
                     <div class="form-group mb-3">
                         <label for="" class="mb-2">Satuan (gram/biji/dsb)</label>
-                        <input type="text" class="form-control" placeholder="gram/piece/liter" style="height: 50px !important" value="" name="unit" id="unit">
+                        <input type="text" class="form-control" placeholder="gram/piece/liter" value="" name="unit" id="unit">
                     </div>
                     {{-- <div class="form-group mb-3">
                         <label for="" class="mb-2">Max. pemakaian (Sesuai takaran/pizza)</label>
-                        <input type="number" class="form-control" placeholder="5x/10x/40x" style="height: 50px !important" value="" name="qty_usage" id="qty_usage">
+                        <input type="number" class="form-control" placeholder="5x/10x/40x" value="" name="qty_usage" id="qty_usage">
                     </div> --}}
                     <input type="hidden" name="id" id="id">
                     <button class="d-none" id="btn-submit" type="submit"></button>
