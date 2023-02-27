@@ -1,4 +1,7 @@
 <style>
+    html,body{
+        font-family: 'Open Sans', sans-serif !important;
+    }
     .form-control{
         height: 50px !important;
     }

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $page }} {{ config('app.name') }}</title>
 
-    <link rel="icon" type="image/x-icon" href="{{ asset('logo-pizza.png') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('app-assets/images/logo-pizza.png') }}">
 
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
 
@@ -13,7 +13,10 @@
     <link rel="stylesheet" href="{{ asset('css/datatables.css') }}">
     <link rel="stylesheet" href="{{ asset('css/jquery.dataTables.min.css') }}">
 
-    {{-- <link rel="stylesheet" href="{{ asset('css/loader.css') }}"> --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+
     <script src="{{ asset('js/feather-icons.js') }}"></script>
     @include('includes.customCss')
     @yield('css')
