@@ -54,9 +54,12 @@
     </style>
 </head>
 <body>
+    @php
+        $index = 1;
+    @endphp
     @foreach ($list_date as $key => $val)
         <div style="width: 100vw !important;height: 100vh !important;position: fixed;z-index: -1;top:25%;left:17%;">
-            <img src="https://pizzasuper.viproject.net/logo-pizza.png" alt="" style="width: 450px;opacity: 0.01 !important">
+            <img src="https://pizzasuper.viproject.net/logo-pizza.png" alt="" style="width: 450px;opacity: 0.03 !important">
         </div>
         <table>
             <tbody>
@@ -65,9 +68,9 @@
                         <img src="https://pizzasuper.viproject.net/logo-pizza.png" alt="" style="width: 80px">
                     </td>
                     <td class="px-4">
-                        <p class="my-0 fw-bold fs-4">Pizza Super Sidoarjo</p>
-                        <p class="my-0">Depan Candi Mitra Jaya Auto Car Wash, Jl. Maritim, Balonggabus, <br> Kec. Candi, Kabupaten Sidoarjo, Jawa Timur 61271</p>
-                        <p class="my-0">Telp : 0812-1655-2199</p>
+                        <p class="my-0 fw-bold fs-4">{{ Auth::user()->name }}</p>
+                        <p class="my-0">{{ Auth::user()->address }}</p>
+                        <p class="my-0">Telp : {{ Auth::user()->phone }}</p>
                     </td>
                 </tr>
             </tbody>
@@ -182,20 +185,21 @@
             <tbody>
                 <tr>
                     <td style="width: 50% !important"></td>
-                    <td class="text-end" style="width: 50% !important">
-                        .......................,  {{ date('d M Y') }}
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        (.........................................)
+                    <td class="text-center" style="width: 50% !important">
+                        <center>
+                            .......................,  {{ date('d M Y') }}
+                            <br>
+                            <p>Mitra</p>
+                            <br>
+                            ({{ Auth::user()->owner }})
+                        </center>
                     </td>
                 </tr>
             </tbody>
         </table>
-        <div class="page_break"></div>
+        @if ($index <= $key)
+            <div class="page_break"></div>
+        @endif
     @endforeach
 </body>
 </html>

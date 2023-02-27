@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.master')
 
 @section('css')
 <style>
@@ -20,8 +20,8 @@
             </div>
         </div>
         <div class="col-auto">
-            <p class="mb-0 fw-bold">Pizza Super Sidoarjo</p>
-            <p class="fs-6">081216552199</p>
+            <p class="mb-0 fw-bold">{{ Auth::user()->name }}</p>
+            <p class="fs-6">{{ Auth::user()->phone }}</p>
             {{-- <p class="badge bg-light-warning fw-bold py-3 px-4 rounded-4">Pegawai</p> --}}
         </div>
     </div>
@@ -60,7 +60,7 @@
         <hr style="opacity: 0.05 !important">
     @endforeach
     <br>
-    <button type="button" onclick="alert_confirm('#','Yakin keluar?')" class="btn btn-danger w-100 rounded-4 py-3">Keluar</button>
+    <button type="button" onclick="alert_confirm('{{ route('login.logout') }}','Yakin keluar?')" class="btn btn-danger w-100 rounded-4 py-3">Keluar</button>
 </div>
 @endsection
 

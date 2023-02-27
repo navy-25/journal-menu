@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.master')
 
 @section('css')
 <style>
@@ -13,7 +13,7 @@
     date_default_timezone_set('Asia/Jakarta');
 @endphp
 <div class="px-4 mb-3">
-    <h4 class="fw-bold mb-4">{{ config('app.name') }}</h4>
+    <h4 class="fw-bold mb-4">{{ Auth::user()->name }}</h4>
     @include('includes.alert')
     <div class="card rounded-4 border-0 mb-4 bg-white shadow-mini"
         style="
