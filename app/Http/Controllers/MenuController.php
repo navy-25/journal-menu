@@ -76,7 +76,7 @@ class MenuController extends Controller
             [
                 'name'      => 'required',
                 'hpp'       => 'required',
-                'price'     => 'required|integer|max:9999999',
+                'price'     => 'required',
             ],
         );
         $data = Menu::find($request->id);
