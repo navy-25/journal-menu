@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{{ $page }} {{ config('app.name') }}</title>
+        <title>{{ $page }} - {{ config('app.name') }}</title>
 
         <link rel="icon" type="image/x-icon" href="{{ asset('app-assets/images/logo-pizza.png') }}">
 

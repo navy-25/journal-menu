@@ -36,7 +36,7 @@
     @if (count($data) == 0)
         <div class="py-5">
             <center>
-                <img src="{{ asset('app-assets/images/boy.png') }}" alt="wallet" class="mb-3" width="40%" style="opacity: 0.6">
+                <img src="{{ asset('app-assets/images/boy.png') }}" alt="wallet" class="mb-3" width="30%">
                 <br>
                 <p class="fw-bold fs-4 text-secondary">
                     Belum ada <br> pengguna

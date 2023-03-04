@@ -17,7 +17,7 @@ class LoginController extends Controller
         if (isset(Auth::user()->id) == true) {
             $role = Auth::user()->role;
             if ($role == 0) {
-                return redirect()->route('home.index');
+                return redirect()->route('dev.home.index');
             } else if ($role == 1) {
             } else {
                 return redirect()->route('stats.index');

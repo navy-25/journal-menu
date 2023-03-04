@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $page }} - {{ config('app.name') }}</title>
+    <title>500 - {{ config('app.name') }}</title>
 
     <link rel="icon" type="image/x-icon" href="{{ asset('app-assets/images/logo-pizza.png') }}">
 
@@ -27,7 +27,19 @@
             <div class="spinner-border text-warning mt-5" role="status"></div>
         </center>
     </div>
-    @yield('content')
+    <div class="vh-100 vw-100 d-flex align-items-center justify-content-center">
+        <div>
+            <center>
+                <img src="{{ asset('app-assets/images/pizza.png') }}" alt="wallet" class="mb-3" width="40%">
+                <br>
+                <p class="fw-bold fs-4 text-secondary">
+                    Opps, 500 <br>
+                    Server Error
+                </p>
+                <a href="{{ route('login.form') }}" class="btn btn-dark">Kembali</a>
+            </center>
+        </div>
+    </div>
 
     <script src="{{ asset('js/jquery-3.6.3.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>

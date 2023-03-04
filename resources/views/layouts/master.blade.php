@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{{ $page }} {{ config('app.name') }}</title>
+        <title>{{ $page }} - {{ config('app.name') }}</title>
 
         <link rel="icon" type="image/x-icon" href="{{ asset('app-assets/images/logo-pizza.png') }}">
 
@@ -24,11 +24,6 @@
     <body>
         <div id="spinner" class="bg-white">
             <center>
-                {{-- <div class="loadingio-spinner-bean-eater-ybl8jhu3zcq">
-                    <div class="ldio-63eo66kwxha">
-                        <div><div></div><div></div><div></div></div><div><div></div><div></div><div></div></div>
-                    </div>
-                </div> --}}
                 <center>
                     <div class="spinner-border text-warning mt-5" role="status"></div>
                 </center>
