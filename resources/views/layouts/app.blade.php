@@ -33,25 +33,7 @@
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('js/sweetalert2@11.js') }}"></script>
-    <script>
-        $(document).ready( function () {
-            $('#spinner').fadeOut();
-            feather.replace()
-        });
-        function alert_confirm(url,title =''){
-            Swal.fire({
-                title: title+'?',
-                icon: 'error',
-                showCancelButton: true,
-                confirmButtonText: 'Ya',
-                cancelButtonText: 'Tidak',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = url;
-                }
-            })
-        }
-    </script>
+    @include('includes.globalJs')
     @yield('script')
 </body>
 </html>

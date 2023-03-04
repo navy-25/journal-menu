@@ -43,9 +43,9 @@
                 <div class="form-group mb-4">
                     <input type="password" class="form-control rounded-4 w-100" value="" name="password" id="password" placeholder="kata sandi" required>
                 </div>
-                <div class="text-end fw-bold text-gray">
+                {{-- <div class="text-end fw-bold text-gray">
                     Lupa kata sandi?
-                </div>
+                </div> --}}
                 <br>
                 <button type="submit" class="btn btn-warning w-100 rounded-4 py-3 mb-5">Masuk</button>
             </form>
@@ -55,9 +55,5 @@
 @endsection
 
 @section('script')
-<script>
-    if('{{ isset(Auth::user()->id) }}' == 1){
-        window.location.href = "{{ route('stats.index') }}";
-    }
-</script>
+@include('includes.alert')
 @endsection

@@ -5,6 +5,29 @@ use Illuminate\Support\Facades\Route;
 
 date_default_timezone_set('Asia/Jakarta');
 
+if (!function_exists('roleUser')) {
+    function roleUser($type = '')
+    {
+        $list = [
+            2   => 'Mitra',
+            1   => 'Owner',
+            0   => 'Dev',
+        ];
+        return $type == '' ? $list : $list[$type];
+    }
+}
+
+if (!function_exists('statusUser')) {
+    function statusUser($type = '')
+    {
+        $list = [
+            1   => 'Aktif',
+            0   => 'Dibekukan',
+        ];
+        return $type == '' ? $list : $list[$type];
+    }
+}
+
 if (!function_exists('transactionStatus')) {
     function transactionStatus($type = '')
     {

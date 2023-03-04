@@ -153,7 +153,7 @@
                                 <tr>
                                     <td>{{ $item->name }}</td>
                                     <td class="text-end">
-                                        @if($item->type == 'in')
+                                        @if($item->status == 'in')
                                             <span>IDR {{ numberFormat($item->price,0) }}</span>
                                         @else
                                             <span class="text-danger">(IDR {{ numberFormat($item->price,0) }})</span>
@@ -161,7 +161,7 @@
                                     </td>
                                 </tr>
                                 @php
-                                    if($item->type == 'in'){
+                                    if($item->status == 'in'){
                                         $total += $item->price;
                                     }else{
                                         $total -= $item->price;

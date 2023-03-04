@@ -1,4 +1,4 @@
-@extends('layouts.dev')
+@extends('layouts.master')
 
 @section('css')
 <style>
@@ -14,7 +14,7 @@
 @endphp
 {{-- NAV BACK --}}
 <div class="px-4 py-4 mb-3 bg-white shadow-mini fixed-top d-flex align-items-center">
-    <a href="{{ route('settings.index') }}" class="text-decoration-none text-dark">
+    <a href="{{ route('dev.settings.index') }}" class="text-decoration-none text-dark">
         <i data-feather="arrow-left" class="me-2 my-0 py-0" style="width: 18px"></i>
     </a>
     <p class="fw-bold m-0 p-0">{{ $page }}</p>
@@ -37,7 +37,7 @@
     </div>
 </div>
 <div class="px-4">
-    <form action="{{ route('account.updatePassword') }}" method="post" id="form">
+    <form action="{{ route('dev.account.updatePassword') }}" method="post" id="form">
         @csrf
         <div class="form-group mb-3">
             <label for="" class="mb-2">Kata sandi baru</label>

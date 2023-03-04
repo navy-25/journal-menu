@@ -7,7 +7,7 @@ return [
         'route'     => 'stats.index',
     ],
     [
-        'name'      => 'Pennjualan',
+        'name'      => 'Penjualan',
         'icon'      => 'shopping-cart',
         'route'     => 'sales.index',
     ],

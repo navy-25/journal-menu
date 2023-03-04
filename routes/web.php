@@ -2,6 +2,10 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Dev\AccountController as DevAccountController;
+use App\Http\Controllers\Dev\HomeController;
+use App\Http\Controllers\Dev\SettingsController as DevSettingsController;
+use App\Http\Controllers\Dev\UsersController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\ReportController;
@@ -12,6 +16,10 @@ use App\Http\Controllers\StockController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/', function () {
+    return redirect()->route('login.form');
+});
+
 Route::controller(LoginController::class)->prefix('login')->name('login.')->group(function () {
     Route::get('/', 'index')->name('form');
     Route::get('/logout', 'logout')->name('logout');
@@ -19,7 +27,32 @@ Route::controller(LoginController::class)->prefix('login')->name('login.')->grou
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::controller(StatsController::class)->name('stats.')->group(function () {
+    Route::prefix('dev')->name('dev.')->group(function () {
+        Route::controller(HomeController::class)->prefix('home')->name('home.')->group(function () {
+            Route::get('/', 'index')->name('index');
+        });
+        Route::controller(UsersController::class)->prefix('user')->name('user.')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::post('/store', 'store')->name('store');
+            Route::get('/show', 'show')->name('show');
+            Route::post('/update', 'update')->name('update');
+            Route::get('/destroy', 'destroy')->name('destroy');
+        });
+        Route::controller(DevSettingsController::class)->prefix('settings')->name('settings.')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::post('/store', 'store')->name('store');
+            Route::get('/show', 'show')->name('show');
+            Route::post('/update', 'update')->name('update');
+            Route::get('/destroy', 'destroy')->name('destroy');
+        });
+        Route::controller(DevAccountController::class)->prefix('account')->name('account.')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::post('/update', 'update')->name('update');
+            Route::get('/password', 'password')->name('password');
+            Route::post('/update-password', 'updatePassword')->name('updatePassword');
+        });
+    });
+    Route::controller(StatsController::class)->prefix('stats')->name('stats.')->group(function () {
         Route::get('/', 'index')->name('index');
     });
 

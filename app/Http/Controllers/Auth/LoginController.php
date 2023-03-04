@@ -13,7 +13,18 @@ class LoginController extends Controller
     public function index()
     {
         $page = 'Login';
-        return view('auth.login', compact('page'));
+
+        if (isset(Auth::user()->id) == true) {
+            $role = Auth::user()->role;
+            if ($role == 0) {
+                return redirect()->route('home.index');
+            } else if ($role == 1) {
+            } else {
+                return redirect()->route('stats.index');
+            }
+        } else {
+            return view('auth.login', compact('page'));
+        }
     }
     public function store(Request $request)
     {
@@ -45,7 +56,14 @@ class LoginController extends Controller
             ];
         }
         if (Auth::attempt($credentials)) {
-            return redirect()->intended(route('stats.index'))->with('success', 'Berhasil Login');
+            $auth = Auth::user();
+            if ($auth->role == 0) {
+                return redirect()->intended(route('dev.user.index'))->with('success', 'Berhasil Login');
+            } else if ($auth->role == 0) {
+                dd('sedang di develop');
+            } else {
+                return redirect()->intended(route('stats.index'))->with('success', 'Berhasil Login');
+            }
         }
         return redirect()->back()->with('error', 'Kata sandi anda salah');
     }

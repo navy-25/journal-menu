@@ -26,5 +26,15 @@ class UserSeeder extends Seeder
             'email'     => 'nafimaulahakim123@gmail.com',
             'password'  => Hash::make('123'),
         ]);
+        User::create([
+            'name'      => 'Developer',
+            'phone'     => '250199',
+            'role'      => 0,
+            'owner'     => 'developer',
+            'status'    => 1,
+            'address'   => 'Unknown',
+            'email'     => 'developer@gmail.com',
+            'password'  => Hash::make('123'),
+        ]);
     }
 }
