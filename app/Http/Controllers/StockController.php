@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Stock;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 date_default_timezone_set('Asia/Jakarta');
 
@@ -17,7 +18,7 @@ class StockController extends Controller
     public function index()
     {
         $page = 'Bahan';
-        $data = Stock::orderBy('id', 'ASC')->whereIn('id', [1, 20])->get();
+        $data = Stock::orderBy('id', 'ASC')->where('id_user', Auth::user()->id)->get();
         return view('stock', compact('data', 'page'));
     }
 
@@ -102,6 +103,7 @@ class StockController extends Controller
             'name'      => $request->name,
             'qty'       => $request->qty,
             'unit'      => $request->unit,
+            'id_user'   => Auth::user()->id,
             // 'qty_usage' => $request->qty_usage,
         ]);
         return redirect()->back()->with('success', 'memperbarui bahan ' . $request->name);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 date_default_timezone_set('Asia/Jakarta');
 
@@ -25,13 +26,16 @@ class TransactionController extends Controller
 
         $data = Transaction::query()
             ->where('transactions.date', $dateFilter)
+            ->where('transactions.id_user', Auth::user()->id)
             ->orderBy('transactions.created_at', 'DESC')->get();
 
         $income = Transaction::query()
+            ->where('transactions.id_user', Auth::user()->id)
             ->where('transactions.date', $dateFilter)
             ->where('status', 'in')->sum('price');
 
         $outcome = Transaction::query()
+            ->where('transactions.id_user', Auth::user()->id)
             ->where('transactions.date', $dateFilter)
             ->where('status', 'out')->sum('price');
 
@@ -79,6 +83,7 @@ class TransactionController extends Controller
             'status'    => $request->status,
             'note'      => $request->note,
             'date'      => $request->date,
+            'id_user'   => Auth::user()->id,
         ]);
         return redirect()->route('transaction.index', ['dateFilter' => $request->date])->with('success', 'berhasil menambahkan ' . $data->name);
     }
@@ -115,16 +120,19 @@ class TransactionController extends Controller
         $data = Transaction::query()
             ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
             ->whereIn('type', $type)
+            ->where('id_user', Auth::user()->id)
             ->orderBy($orderFilter, 'DESC')
             ->get();
         $income = Transaction::query()
             ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
             ->whereIn('type', $type)
+            ->where('id_user', Auth::user()->id)
             ->where('status', 'in')->sum('price');
 
         $outcome = Transaction::query()
             ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
             ->whereIn('type', $type)
+            ->where('id_user', Auth::user()->id)
             ->where('status', 'out')->sum('price');
         return view('transactionDetail', compact('page', 'data', 'dates', 'income', 'outcome', 'orderFilter', 'typeFilter'));
     }
@@ -167,6 +175,7 @@ class TransactionController extends Controller
             'note'      => $request->note,
             'status'    => $request->status,
             'date'      => $request->date,
+            'id_user'   => Auth::user()->id,
         ]);
         return redirect()->route('transaction.index', ['dateFilter' => $request->date])->with('success', 'berhasil memperbarui ' . $data->name);
     }

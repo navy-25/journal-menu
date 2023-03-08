@@ -12,6 +12,7 @@ class Sales extends Model
         'id_menu',
         'qty',
         'date',
+        'id_user',
         'sales_group_id',
         'gross_profit',
         'net_profit',

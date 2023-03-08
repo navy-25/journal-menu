@@ -8,6 +8,7 @@ use App\Models\Stats;
 use App\Models\Stock;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class StatsController extends Controller
@@ -31,33 +32,40 @@ class StatsController extends Controller
         $data['weekly'] = Sales::query()
             ->join('menus as m', 'm.id', 'sales.id_menu')
             ->orderBy('sales.date', 'DESC')
+            ->where('sales.id_user', Auth::user()->id)
             ->whereBetween('sales.date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
             ->get()
             ->groupBy('date');
         $data['weekly-transaction'] = Transaction::query()
             ->orderBy('transactions.date', 'DESC')
+            ->where('transactions.id_user', Auth::user()->id)
             ->whereBetween('transactions.date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
             ->get()
             ->groupBy('date');
 
         $income = Sales::query()
             ->join('menus as m', 'm.id', 'sales.id_menu')
+            ->where('sales.id_user', Auth::user()->id)
             ->whereBetween('sales.date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
             ->sum(DB::raw('sales.qty * m.price'));
 
         $trans_outcome = Transaction::where('status', 'out')
+            ->where('transactions.id_user', Auth::user()->id)
             ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
             ->sum('price');
         $trans_intcome = Transaction::where('status', 'in')
+            ->where('transactions.id_user', Auth::user()->id)
             ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
             ->sum('price');
 
         $data['all'] = $trans_intcome - $trans_outcome;
         $data['qty'] = Sales::query()
+            ->where('sales.id_user', Auth::user()->id)
             ->whereBetween('sales.date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
             ->sum('sales.qty');
         $data['menu'] = Sales::query()
             ->join('menus as m', 'm.id', 'sales.id_menu')
+            ->where('sales.id_user', Auth::user()->id)
             ->select('m.name', DB::raw('count(m.id) as total_terjual'))
             ->groupBy('m.name')
             ->whereBetween('sales.date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
@@ -81,22 +89,27 @@ class StatsController extends Controller
             ],
         ];
         $data['shift_1'] = Sales::query()
+            ->where('sales.id_user', Auth::user()->id)
             ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
             ->whereBetween(DB::raw('TIME(created_at)'), $shift[0]['shift'])
             ->count();
         $data['shift_2'] = Sales::query()
+            ->where('sales.id_user', Auth::user()->id)
             ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
             ->whereBetween(DB::raw('TIME(created_at)'), $shift[1]['shift'])
             ->count();
         $data['shift_3'] = Sales::query()
+            ->where('sales.id_user', Auth::user()->id)
             ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
             ->whereBetween(DB::raw('TIME(created_at)'), $shift[2]['shift'])
             ->count();
         $data['shift_4'] = Sales::query()
+            ->where('sales.id_user', Auth::user()->id)
             ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
             ->whereBetween(DB::raw('TIME(created_at)'), $shift[3]['shift'])
             ->count();
         $data['shift_5'] = Sales::query()
+            ->where('sales.id_user', Auth::user()->id)
             ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
             ->whereBetween(DB::raw('TIME(created_at)'), $shift[4]['shift'])
             ->count();
@@ -107,7 +120,7 @@ class StatsController extends Controller
         $shift[3]['total_pembeli'] = $data['shift_4'];
         $shift[4]['total_pembeli'] = $data['shift_5'];
 
-        $data['stock'] = Stock::whereIn('id', [1, 20])->get();
+        $data['stock'] = Stock::whereIn('id', [1, 20])->where('id_user', Auth::user()->id)->get();
         return view('stats', compact('data', 'page', 'shift', 'dates'));
     }
 

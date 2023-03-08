@@ -3,6 +3,12 @@
 namespace App\Http\Controllers\Dev;
 
 use App\Http\Controllers\Controller;
+use App\Models\Menu;
+use App\Models\Note;
+use App\Models\Sales;
+use App\Models\SalesGroup;
+use App\Models\Stock;
+use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -63,6 +69,53 @@ class UsersController extends Controller
             'email'     => $request->email,
             'password'  => Hash::make($request->password),
         ]);
+
+        $menu   = ['choco strawberry', 'choco vanilla', 'choco greentea', 'choco mix', 'choco cheese', 'choco oreo', 'sosis', 'sosis keju', 'sosis mozzarella', 'super mozzarella komplit', 'special ayam mozzarella', 'smoke beef mozzarella', 'meat lovers', 'papperoni mozzarella',];
+        $hpp    = [6300, 6300, 6300, 6465, 7800, 7700, 6600, 8100, 9100, 9390, 11200, 10800, 10800, 10800,];
+        $price  = [10000, 10000, 10000, 11000, 15000, 15000, 10000, 15000, 15000, 15000, 20000, 18000, 18000, 18000,];
+        foreach ($menu as $key => $value) {
+            Menu::create([
+                'name'      => $value,
+                'price'     => $price[$key],
+                'hpp'       => $hpp[$key],
+                'id_user'   => $data->id
+            ]);
+        }
+
+
+        $name = [
+            'Roti',
+            // 'Saus Pasta',
+            // 'Sosis',
+            // 'Papperoni',
+            // 'Beef',
+            // 'Oreo',
+            // 'Glaze Coklat',
+            // 'Glaze Strawberry',
+            // 'Glaze Vanilla',
+            // 'Glaze Greentea',
+            // 'Meses',
+            // 'Keju',
+            // 'Saus Keju',
+            // 'Mozarella',
+            // 'Saus Tomat',
+            // 'Saus Pedas',
+            // 'Mayonise',
+            // 'Margarin',
+            // 'Saus Sachetan',
+            'Kotak Pizza',
+        ];
+
+        foreach ($name as $key => $value) {
+            Stock::create([
+                'id'        => ++$key,
+                'name'      => $value,
+                'qty'       => 0,
+                'unit'      => '',
+                'qty_usage' => 0,
+                'id_user'   => $data->id,
+            ]);
+        }
         return redirect()->back()->with('success', 'berhasil menambahkan ' . $data->name);
     }
 
@@ -137,6 +190,12 @@ class UsersController extends Controller
     public function destroy(Request $request)
     {
         User::find($request->id)->delete();
+        Sales::where('id_user', $request->id)->delete();
+        Transaction::where('id_user', $request->id)->delete();
+        Menu::where('id_user', $request->id)->delete();
+        Stock::where('id_user', $request->id)->delete();
+        Note::where('id_user', $request->id)->delete();
+        SalesGroup::where('id_user', $request->id)->delete();
         return redirect()->back()->with('success', 'akun berhasil dihapus');
     }
 }

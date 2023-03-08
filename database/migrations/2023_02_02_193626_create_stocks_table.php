@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('stocks', function (Blueprint $table) {
             $table->id();
+            $table->integer('id_user');
             $table->string('name');
             $table->integer('qty')->comment('berat/total/dsb');
             $table->string('unit')->comment('biji/gram/bungkus/dsb');

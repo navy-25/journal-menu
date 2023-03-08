@@ -11,6 +11,7 @@ class SalesGroup extends Model
     protected $fillable = [
         'name',
         'date',
+        'id_user',
         'time',
         'note',
     ];

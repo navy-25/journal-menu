@@ -3,7 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Menu;
+use App\Models\Note;
+use App\Models\Sales;
+use App\Models\SalesGroup;
+use App\Models\Stock;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MenuController extends Controller
 {
@@ -14,8 +20,15 @@ class MenuController extends Controller
      */
     public function index()
     {
+        $datas = SalesGroup::all();
+        foreach ($datas as $key => $value) {
+            $value->update([
+                'id_user' => Auth::user()->id,
+            ]);
+        }
+
         $page = 'Menu';
-        $data = Menu::orderBy('id', 'DESC')->get();
+        $data = Menu::orderBy('id', 'DESC')->where('id_user', Auth::user()->id)->get();
         return view('menu', compact('data', 'page'));
     }
 
@@ -81,9 +94,10 @@ class MenuController extends Controller
         );
         $data = Menu::find($request->id);
         $data->update([
-            'name'  => $request->name,
-            'price' => str_to_int($request->price),
-            'hpp'   => str_to_int($request->hpp),
+            'name'      => $request->name,
+            'price'     => str_to_int($request->price),
+            'hpp'       => str_to_int($request->hpp),
+            'id_user'   => Auth::user()->id,
         ]);
         return redirect()->back()->with('success', 'memperbarui ' . $data->name);
     }

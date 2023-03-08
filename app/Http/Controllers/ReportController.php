@@ -6,6 +6,7 @@ use App\Models\Report;
 use App\Models\Sales;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use PDF;
 
 class ReportController extends Controller
@@ -29,6 +30,7 @@ class ReportController extends Controller
 
         $sales = Sales::query()
             ->join('menus as m', 'm.id', 'sales.id_menu')
+            ->where('sales.id_user', Auth::user()->id)
             ->leftJoin('sales_groups as g', 'g.id', 'sales.sales_group_id')
             ->select(
                 'sales.*',
@@ -42,6 +44,7 @@ class ReportController extends Controller
             ->groupBy('name');
 
         $transaction = Transaction::query()
+            ->where('id_user', Auth::user()->id)
             ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
             ->orderBy('date', 'DESC')
             ->get();
@@ -74,6 +77,7 @@ class ReportController extends Controller
         $dates['dateStartFilter']   = $request->dateStartFilter;
         $page                       = 'Laporan outlet ' . dateFormat($dates['dateStartFilter']) . ' - ' . dateFormat($dates['dateEndFilter']);
         $sales = Sales::query()
+            ->where('sales.id_user', Auth::user()->id)
             ->join('menus as m', 'm.id', 'sales.id_menu')
             ->leftJoin('sales_groups as g', 'g.id', 'sales.sales_group_id')
             ->select(
@@ -87,6 +91,7 @@ class ReportController extends Controller
             ->get()
             ->groupBy(['date', 'name']);
         $transaction = Transaction::query()
+            ->where('id_user', Auth::user()->id)
             ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
             ->orderBy('date', 'DESC')
             ->get()

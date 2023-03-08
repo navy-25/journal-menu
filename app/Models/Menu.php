@@ -13,5 +13,6 @@ class Menu extends Model
         'name',
         'price',
         'hpp',
+        'id_user',
     ];
 }

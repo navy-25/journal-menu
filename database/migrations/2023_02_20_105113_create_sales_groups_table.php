@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('sales_groups', function (Blueprint $table) {
             $table->id();
+            $table->integer('id_user');
             $table->string('name');
             $table->string('date');
             $table->string('time');

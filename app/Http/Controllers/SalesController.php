@@ -8,6 +8,7 @@ use App\Models\SalesGroup;
 use App\Models\Stock;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 date_default_timezone_set('Asia/Jakarta');
@@ -32,10 +33,10 @@ class SalesController extends Controller
             ->join('menus as m', 'm.id', 'sales.id_menu')
             ->leftJoin('sales_groups as g', 'g.id', 'sales.sales_group_id')
             ->where('sales.date', $dateFilter)
+            ->where('sales.id_user', Auth::user()->id)
             ->select(
                 'sales.*',
                 'm.name',
-                // 'm.price',
                 'g.note',
             )
             ->orderBy('sales.created_at', 'DESC')
@@ -45,25 +46,26 @@ class SalesController extends Controller
         $total = Sales::query()
             ->join('menus as m', 'm.id', 'sales.id_menu')
             ->where('sales.date', $dateFilter)
+            ->where('sales.id_user', Auth::user()->id)
             ->select(
                 'sales.*',
                 'm.name',
-                // 'm.price',
             )->sum(DB::raw('gross_profit * qty'));
 
         $qty = Sales::query()
             ->join('menus as m', 'm.id', 'sales.id_menu')
             ->where('sales.date', $dateFilter)
+            ->where('sales.id_user', Auth::user()->id)
             ->select(
                 'sales.*',
                 'm.name',
-                // 'm.price',
             )
             ->sum('qty');
 
         $isClosed = Transaction::query()
             ->where('transactions.date', $dateFilter)
             ->where('name', 'LIKE', "%Tutup Buku%")
+            ->where('transactions.id_user', Auth::user()->id)
             ->count();
         return view('sales', compact('data', 'page', 'menu', 'total', 'qty', 'isClosed', 'dateFilter'));
     }
@@ -92,36 +94,35 @@ class SalesController extends Controller
             return redirect()->route('sales.index')->with('error', 'oops, belum ada menu yang dipilih');
         }
         $qty_order  = 0;
-
         $sales_group = SalesGroup::create([
-            'name'  => '',
-            'date'  => date('Y-m-d'),
-            'time'  => date('H:i:s'),
-            'note'  => $request->note,
+            'name'          => '',
+            'date'          => date('Y-m-d'),
+            'time'          => date('H:i:s'),
+            'note'          => $request->note,
+            'id_user'       => Auth::user()->id,
         ]);
-
+        $stock = Stock::where('id_user', Auth::user()->id)->get();
         foreach ($menu_id as $key => $menu_id) {
             $menu = Menu::find($menu_id);
             if ($qty[$key] == 0) {
                 continue;
             }
             $sales = Sales::create([
-                'id_menu' => $menu->id,
-                'qty' => $qty[$key],
-                'date' => date('Y-m-d'),
-                'sales_group_id' => $sales_group->id,
-                'gross_profit' => $menu->price,
-                'net_profit' => $menu->hpp,
+                'id_menu'           => $menu->id,
+                'id_user'           => Auth::user()->id,
+                'qty'               => $qty[$key],
+                'date'              => date('Y-m-d'),
+                'sales_group_id'    => $sales_group->id,
+                'gross_profit'      => $menu->price,
+                'net_profit'        => $menu->hpp,
             ]);
 
-            for ($i = 0; $i < $qty[$key]; $i++) {
-                $list = [1, 20]; // ROTI DAN KOTAK
-                foreach ($list as $key => $value) {
-                    minStock($value, $sales->qty);
-                }
+            foreach ($stock as $value) {
+                minStock($value->id, $sales->qty);
             }
             $qty_order++;
         }
+        // dd($list);
         return redirect()->back()->with('success', 'berhasil menambahkan ' . $qty_order . ' pesanan baru');
     }
     public function migrate(Request $request)
@@ -134,9 +135,11 @@ class SalesController extends Controller
 
         $total_kotor = Sales::query()
             ->where('date', $dateFilter)
+            ->where('id_user', Auth::user()->id)
             ->sum(DB::raw('qty * gross_profit'));
         $total_bersih = Sales::query()
             ->where('date', $dateFilter)
+            ->where('id_user', Auth::user()->id)
             ->sum(DB::raw('qty * net_profit'));
 
         if ($total_kotor == 0) {
@@ -147,6 +150,7 @@ class SalesController extends Controller
             'name'      => 'Tutup buku ' . customDate($dateFilter, 'd M'),
             'price'     => $total_kotor,
             'type'      => 6,
+            'id_user'   => Auth::user()->id,
             'status'    => 'in',
             'note'      => 'Laba kotor : IDR ' . numberFormat($total_kotor, 0) . ', Laba bersih : IDR ' . numberFormat($total_bersih, 0),
             'date'      => $dateFilter,
@@ -174,6 +178,7 @@ class SalesController extends Controller
         $data = Sales::query()
             ->join('menus as m', 'm.id', 'sales.id_menu')
             ->leftJoin('sales_groups as g', 'g.id', 'sales.sales_group_id')
+            ->where('sales.id_user', Auth::user()->id)
             ->select(
                 'sales.*',
                 'm.name',
@@ -187,6 +192,7 @@ class SalesController extends Controller
 
         $gross_profit = Sales::query()
             ->join('menus as m', 'm.id', 'sales.id_menu')
+            ->where('sales.id_user', Auth::user()->id)
             ->select(
                 'sales.*',
                 'm.name',
@@ -197,6 +203,7 @@ class SalesController extends Controller
 
         $net_profit = Sales::query()
             ->join('menus as m', 'm.id', 'sales.id_menu')
+            ->where('sales.id_user', Auth::user()->id)
             ->select(
                 'sales.*',
                 'm.name',
@@ -208,6 +215,7 @@ class SalesController extends Controller
 
         $qty = Sales::query()
             ->join('menus as m', 'm.id', 'sales.id_menu')
+            ->where('sales.id_user', Auth::user()->id)
             ->select(
                 'sales.*',
                 'm.name',
@@ -250,14 +258,15 @@ class SalesController extends Controller
     public function destroy(Sales $sales, Request $request)
     {
         $data = SalesGroup::find($request->id);
-        $sales = Sales::where('sales_group_id', $data->id)->get();
-        for ($i = 0; $i < count($sales); $i++) {
-            $list = [1, 20]; // ROTI DAN KOTAK
-            foreach ($list as $key => $value) {
-                plusStock($value, $sales[$i]->qty);
+        $sales = Sales::where('sales_group_id', $data->id)->where('id_user', Auth::user()->id)->get();
+
+        $stock = Stock::where('id_user', Auth::user()->id)->get();
+        foreach ($sales as $value) {
+            foreach ($stock as $val) {
+                plusStock($val->id, $value->qty);
             }
-            Sales::find($sales[$i]->id)->delete();
         }
+        $sales = Sales::where('sales_group_id', $data->id)->where('id_user', Auth::user()->id)->delete();
         $data->delete();
         return redirect()->back()->with('success', 'data berhasil dihapus');
     }

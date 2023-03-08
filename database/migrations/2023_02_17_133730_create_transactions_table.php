@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+            $table->integer('id_user');
             $table->string('name');
             $table->integer('type')->comment('1:pegawai;2:bahan;3:operasional;4:alat;5:outlet;6:lainnya');
             $table->string('status')->comment('in/out');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Note;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NoteController extends Controller
 {
@@ -15,7 +16,7 @@ class NoteController extends Controller
     public function index()
     {
         $page = 'Catatan';
-        $data = Note::orderBy('id', 'DESC')->get();
+        $data = Note::orderBy('id', 'DESC')->where('id_user', Auth::user()->id)->get();
         return view('note', compact('data', 'page'));
     }
 
@@ -47,6 +48,7 @@ class NoteController extends Controller
         $data = Note::create([
             'title'         => $request->title,
             'description'   => $request->description,
+            'id_user'       => Auth::user()->id,
         ]);
         return redirect()->back()->with('success', 'berhasil menambahkan ' . $data->title);
     }
@@ -93,6 +95,7 @@ class NoteController extends Controller
         $data->update([
             'title'         => $request->title,
             'description'   => $request->description,
+            'id_user'       => Auth::user()->id,
         ]);
         return redirect()->back()->with('success', 'berhasil memperbarui ' . $data->title);
     }

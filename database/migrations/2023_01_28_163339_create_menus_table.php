@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('menus', function (Blueprint $table) {
             $table->id();
+            $table->integer('id_user');
             $table->string('thumbnail')->nullable();
             $table->string('name');
             $table->bigInteger('price');
