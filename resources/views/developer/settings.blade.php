@@ -16,7 +16,7 @@
     <div class="row w-100 m-0 p-0 mt-3 mb-5">
         <div class="col-auto p-0">
             <div class="bg-warning d-flex justify-content-center align-items-center fw-bolder" style="width: 50px !important;height: 50px !important;border-radius:100% !important">
-                P
+                {{ Auth::user()->name[0] }}
             </div>
         </div>
         <div class="col-auto d-flex align-items-center">
