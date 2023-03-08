@@ -23,12 +23,6 @@
 {{-- END NAV BACK --}}
 
 <div class="px-4 mb-3">
-    <div style="position: fixed;bottom:70px;right:20px;">
-        <button type="button" class="btn btn-warning text-dark d-flex align-items-center justify-content-center"
-            style="height: 60px;width: 60px;border-radius:100%" onclick="create()">
-            <i data-feather="plus" style="width: 25px" data-bs-toggle="modal" data-bs-target="#modal"></i>
-        </button>
-    </div>
     @include('includes.alert')
     <div class="row mb-4 px-0">
         <div class="col-12 d-flex align-items-center">
