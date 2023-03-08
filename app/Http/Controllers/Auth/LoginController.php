@@ -59,7 +59,7 @@ class LoginController extends Controller
             $auth = Auth::user();
             if ($auth->role == 0) {
                 return redirect()->intended(route('dev.user.index'))->with('success', 'Berhasil Login');
-            } else if ($auth->role == 0) {
+            } else if ($auth->role == 1) {
                 dd('sedang di develop');
             } else {
                 return redirect()->intended(route('stats.index'))->with('success', 'Berhasil Login');
@@ -71,6 +71,6 @@ class LoginController extends Controller
     {
         Session::flush();
         Auth::logout();
-        return redirect()->back()->with('success', 'Berhasil keluar aplikasi');
+        return redirect()->route('login.form')->with('success', 'Berhasil keluar aplikasi');
     }
 }
