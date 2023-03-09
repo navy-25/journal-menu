@@ -20,13 +20,6 @@ class MenuController extends Controller
      */
     public function index()
     {
-        $datas = SalesGroup::all();
-        foreach ($datas as $key => $value) {
-            $value->update([
-                'id_user' => Auth::user()->id,
-            ]);
-        }
-
         $page = 'Menu';
         $data = Menu::orderBy('id', 'DESC')->where('id_user', Auth::user()->id)->get();
         return view('menu', compact('data', 'page'));
