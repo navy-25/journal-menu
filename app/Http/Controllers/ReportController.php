@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PDF;
 
+date_default_timezone_set('Asia/Jakarta');
 class ReportController extends Controller
 {
     /**

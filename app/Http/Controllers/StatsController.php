@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+date_default_timezone_set('Asia/Jakarta');
 class StatsController extends Controller
 {
     /**
@@ -23,7 +24,7 @@ class StatsController extends Controller
         $page = 'Statistik';
         if ($request->all() == []) {
             $dates['dateEndFilter']      = date('Y-m-d');
-            $dates['dateStartFilter']    = date('Y-m-d', strtotime('-1 weeks', strtotime($dates['dateEndFilter'])));
+            $dates['dateStartFilter']    = date('Y-m-d', strtotime('-6 day', strtotime($dates['dateEndFilter'])));
         } else {
             $dates['dateEndFilter']      = $request->dateEndFilter;
             $dates['dateStartFilter']    = $request->dateStartFilter;

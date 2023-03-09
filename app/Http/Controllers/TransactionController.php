@@ -98,7 +98,7 @@ class TransactionController extends Controller
     {
         if ($request->all() == []) {
             $dates['dateEndFilter']      = date('Y-m-d');
-            $dates['dateStartFilter']    = date('Y-m-d', strtotime('-1 month', strtotime($dates['dateEndFilter'])));
+            $dates['dateStartFilter']    = date('Y-m-d', strtotime('-6 day', strtotime($dates['dateEndFilter'])));
         } else {
             $dates['dateEndFilter']      = $request->dateEndFilter;
             $dates['dateStartFilter']    = $request->dateStartFilter;
