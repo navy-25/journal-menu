@@ -23,8 +23,11 @@ class StatsController extends Controller
     {
         $page = 'Statistik';
         if ($request->all() == []) {
-            $dates['dateEndFilter']      = date('Y-m-d');
-            $dates['dateStartFilter']    = date('Y-m-d', strtotime('-6 day', strtotime($dates['dateEndFilter'])));
+            // $dates['dateEndFilter']      = date('Y-m-d');
+            // $dates['dateStartFilter']    = date('Y-m-d', strtotime('-6 day', strtotime($dates['dateEndFilter'])));
+
+            $dates['dateEndFilter']      = date('Y-m-01');
+            $dates['dateStartFilter']    = date('Y-m-t');
         } else {
             $dates['dateEndFilter']      = $request->dateEndFilter;
             $dates['dateStartFilter']    = $request->dateStartFilter;
