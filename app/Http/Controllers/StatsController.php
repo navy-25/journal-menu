@@ -26,8 +26,8 @@ class StatsController extends Controller
             // $dates['dateEndFilter']      = date('Y-m-d');
             // $dates['dateStartFilter']    = date('Y-m-d', strtotime('-6 day', strtotime($dates['dateEndFilter'])));
 
-            $dates['dateEndFilter']      = date('Y-m-01');
-            $dates['dateStartFilter']    = date('Y-m-t');
+            $dates['dateEndFilter']      = date('Y-m-t');
+            $dates['dateStartFilter']    = date('Y-m-01');
         } else {
             $dates['dateEndFilter']      = $request->dateEndFilter;
             $dates['dateStartFilter']    = $request->dateStartFilter;
