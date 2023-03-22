@@ -22,13 +22,13 @@
         @yield('css')
     </head>
     <body>
-        {{-- <div id="spinner" class="bg-white">
+        <div id="spinner" class="bg-white">
             <center>
                 <center>
                     <div class="spinner-border text-warning mt-5" role="status"></div>
                 </center>
             </center>
-        </div> --}}
+        </div>
         @if (date('H:i') > '22:00' && date('H:i') < '23:59')
             @php
                 $is_closed = DB::table('transactions')->where('date',date('Y-m-d'))->where('id_user',Auth::user()->id)->where('type',6)->where("name", "LIKE", "%Tutup Buku%")->count();
