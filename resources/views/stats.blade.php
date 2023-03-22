@@ -453,7 +453,10 @@
             borderColor: [
                 'rgb(255, 159, 64)',
             ],
-            borderWidth: 1
+            borderWidth: 1,
+            pointBorderWidth: 2,
+            pointRadius: 8,
+            pointHitRadius: 4,
         }]
     };
     new Chart(sales_detail, {
@@ -512,7 +515,10 @@
             borderColor: [
                 'rgb(255, 99, 132)',
             ],
-            borderWidth: 1
+            borderWidth: 1,
+            pointBorderWidth: 2,
+            pointRadius: 8,
+            pointHitRadius: 4,
         }]
     };
     new Chart(transaction_detail, {
