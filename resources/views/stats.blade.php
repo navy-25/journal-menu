@@ -237,15 +237,15 @@
             </div>
             @foreach ($shift as $key => $value)
                 <div class="row">
-                    <div class="col-4 d-flex justify-content-start align-items-top">
-                        <i data-feather="users" class="me-2" style="width: 15px"></i>
-                        <b>Shift {{ ++$key }} </b><br>
+                    <div class="col-2 d-flex justify-content-start align-items-top">
+                        {{-- <i data-feather="users" class="me-2" style="width: 15px"></i> --}}
+                        <b>S{{ ++$key }} </b><br>
                     </div>
-                    <div class="col-4 d-flexjustify-content-start align-items-top">
-                        {{ implode(' s/d ', $value['shift']) }}
+                    <div class="col-5 d-flexjustify-content-start align-items-top">
+                        {{ implode(' - ', $value['shift']) }}
                     </div>
-                    <div class="col-4 d-flex justify-content-end">
-                        <p class="m-0 fw-bold text-dark">
+                    <div class="col-5 d-flex justify-content-end">
+                        <p class="m-0 fw-bold text-dark text-end">
                             {{ numberFormat($value['total_pembeli']) }} pizza
                         </p>
                     </div>
@@ -486,7 +486,11 @@
             var temp_total = 0
             label_transaction_stats.push(dateFormatDate(key))
             Object.entries(value).forEach(([x, y]) => {
-                temp_total += y.price
+                if(y.status  == 'in'){
+                    temp_total += y.price
+                }else{
+                    temp_total -= y.price
+                }
             })
             data_transaction_stats.push(temp_total)
         }
