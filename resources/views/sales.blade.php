@@ -174,11 +174,22 @@
                     @foreach ($menu as $key => $item)
                         <div class="row">
                             <div class="col-7">
-                                <p class="fw-bold fs-6 m-0 text-capitalize">{{ $item->name }}</p>
+                                @if ($item->is_promo == 1)
+                                    <p class="fw-bold fs-6 m-0 text-capitalize d-flex">
+                                        <span class="me-2">
+                                            {{ $item->name }}
+                                        </span>
+                                        <div class="bg-light-danger fs-7 p-1 rounded-3 px-2" style="width: fit-content !important">
+                                            Promo
+                                        </div>
+                                    </p>
+                                @else
+                                    <p class="fw-bold fs-6 m-0 text-capitalize">{{ $item->name }}</p>
+                                @endif
                                 <div class="d-flex">
                                     @if ($item->is_promo == 1)
-                                        <p class="m-0 me-2">IDR {{ numberFormat($item->price_promo) }}</p>
-                                        <p class="m-0 text-danger">
+                                        <p class="m-0 me-2">IDR {{ numberFormat($item->price_promo,0) }}</p>
+                                        <p class="m-0" style="opacity: 0.3">
                                             <strike>
                                                 {{ numberFormat($item->price,0) }}
                                             </strike>
