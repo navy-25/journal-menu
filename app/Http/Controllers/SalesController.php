@@ -28,7 +28,7 @@ class SalesController extends Controller
         }
 
         $page = 'Penjualan';
-        $menu = Menu::where('id_user', Auth::user()->id)->where('status', 1)->orderBy('is_promo', 'DESC')->orderBy('name', 'DESC')->get();
+        $menu = Menu::where('id_user', Auth::user()->id)->where('status', 1)->orderBy('is_promo', 'DESC')->orderBy('price', 'DESC')->orderBy('name', 'DESC')->get();
         $data = Sales::query()
             ->join('menus as m', 'm.id', 'sales.id_menu')
             ->leftJoin('sales_groups as g', 'g.id', 'sales.sales_group_id')
