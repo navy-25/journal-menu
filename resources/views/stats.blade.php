@@ -487,15 +487,16 @@
             label_transaction_stats.push(dateFormatDate(key))
             Object.entries(value).forEach(([x, y]) => {
                 if(y.status  == 'in'){
-                    temp_total += y.price
+                    temp_total = parseInt(temp_total) + parseInt(y.price)
                 }else{
-                    temp_total -= y.price
+                    temp_total = parseInt(temp_total) - parseInt(y.price)
                 }
             })
             data_transaction_stats.push(temp_total)
         }
         index++
     })
+    console.log(data_transaction_stats)
     data_transaction_stats.reverse()
     label_transaction_stats.reverse()
     const data_transaction_detail = {
