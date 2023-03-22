@@ -22,22 +22,27 @@
         @yield('css')
     </head>
     <body>
-        <div id="spinner" class="bg-white">
+        {{-- <div id="spinner" class="bg-white">
             <center>
                 <center>
                     <div class="spinner-border text-warning mt-5" role="status"></div>
                 </center>
             </center>
-        </div>
+        </div> --}}
         @if (date('H:i') > '22:00' && date('H:i') < '23:59')
-            <div style="position: fixed;bottom:100px;left:20px;z-index:999">
-                <div class="alert alert-primary d-flex align-items-center border-0" role="alert">
-                    <i data-feather="smile" class="me-3"></i>
-                    <p class="m-0">
-                        jangan lupa <strong>tutup buku</strong> ya!
-                    </p>
+            @php
+                $is_closed = DB::table('transactions')->where('date',date('Y-m-d'))->where('id_user',Auth::user()->id)->where('type',6)->where("name", "LIKE", "%Tutup Buku%")->count();
+            @endphp
+            @if ($is_closed == 0)
+                <div style="position: fixed;bottom:100px;left:20px;z-index:999">
+                    <div class="alert alert-primary d-flex align-items-center border-0" role="alert">
+                        <i data-feather="smile" class="me-3"></i>
+                        <p class="m-0">
+                            jangan lupa <strong>tutup buku</strong> ya!
+                        </p>
+                    </div>
                 </div>
-            </div>
+            @endif
         @endif
 
         <nav id="nav-bottom" class="navbar navbar-expand-lg bg-light fixed-bottom py-2 px-3 shadow" style="height: 75px !important;">
