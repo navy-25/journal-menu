@@ -5,6 +5,28 @@ use Illuminate\Support\Facades\Route;
 
 date_default_timezone_set('Asia/Jakarta');
 
+if (!function_exists('isPromo')) {
+    function isPromo($type = '')
+    {
+        $list = [
+            0   => 'Tanpa Promo',
+            1   => 'TPromo',
+        ];
+        return $type == '' ? $list : $list[$type];
+    }
+}
+
+if (!function_exists('yesNo')) {
+    function yesNo($type = '')
+    {
+        $list = [
+            0   => 'Tidak',
+            1   => 'Ya',
+        ];
+        return $type == '' ? $list : $list[$type];
+    }
+}
+
 if (!function_exists('roleUser')) {
     function roleUser($type = '')
     {
@@ -12,6 +34,17 @@ if (!function_exists('roleUser')) {
             2   => 'Mitra',
             1   => 'Owner',
             0   => 'Dev',
+        ];
+        return $type == '' ? $list : $list[$type];
+    }
+}
+
+if (!function_exists('isShow')) {
+    function isShow($type = '')
+    {
+        $list = [
+            1   => 'Tampil',
+            0   => 'Hide',
         ];
         return $type == '' ? $list : $list[$type];
     }

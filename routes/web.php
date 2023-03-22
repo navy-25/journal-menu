@@ -77,6 +77,8 @@ Route::middleware(['auth'])->group(function () {
         Route::controller(MenuController::class)->prefix('menu')->name('menu.')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::post('/update', 'update')->name('update');
+            Route::post('/store', 'store')->name('store');
+            Route::get('/destroy', 'destroy')->name('destroy');
         });
 
         Route::controller(NoteController::class)->prefix('note')->name('note.')->group(function () {

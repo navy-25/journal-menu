@@ -124,10 +124,13 @@
                                                 -
                                             </div>
                                             <div class="col-11">
-                                                <p class="mb-0 text-capitalize">{{ $item->name }}</p>
+                                                <p class="mb-0 text-capitalize">
+                                                    {{ $item->name }}
+                                                    {{ $item->is_promo == 1 ? '(Promo)' : '' }}
+                                                </p>
                                                 <div class="row">
                                                     <div class="col-6">
-                                                        <p class="mb-0">{{ numberFormat($item->price) }} @ {{ $item->qty }} </p>
+                                                        <p class="mb-0">{{ numberFormat($item->gross_profit) }} @ {{ $item->qty }} </p>
                                                     </div>
                                                     <div class="col-6">
                                                         <p class="mb-0 text-end">IDR {{ numberFormat($item->price*$item->qty) }} </p>
@@ -137,7 +140,7 @@
                                             </div>
                                         </div>
                                         @php
-                                            $total += $item->price*$item->qty;
+                                            $total += $item->gross_profit*$item->qty;
                                             $date = $item->created_at;
                                             $note = $item->note;
                                         @endphp

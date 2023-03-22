@@ -22,6 +22,7 @@ return new class extends Migration
             $table->bigInteger('gross_profit');
             $table->bigInteger('net_profit');
             $table->integer('sales_group_id')->nullable();
+            $table->integer('is_promo');
             $table->timestamps();
         });
     }

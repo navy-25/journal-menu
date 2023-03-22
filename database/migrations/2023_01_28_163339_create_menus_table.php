@@ -20,6 +20,9 @@ return new class extends Migration
             $table->string('name');
             $table->bigInteger('price');
             $table->bigInteger('hpp');
+            $table->integer('is_promo');
+            $table->integer('status')->comment('0:non aktif;1:aktif');
+            $table->bigInteger('price_promo');
             $table->timestamps();
         });
     }

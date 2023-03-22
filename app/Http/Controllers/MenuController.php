@@ -3,11 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Menu;
-use App\Models\Note;
 use App\Models\Sales;
-use App\Models\SalesGroup;
-use App\Models\Stock;
-use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -44,7 +40,31 @@ class MenuController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate(
+            $request,
+            [
+                'name'          => 'required',
+                'hpp'           => 'required',
+                'price'         => 'required',
+                'is_promo'      => 'required',
+                'status'        => 'required',
+            ],
+        );
+        if ($request->is_promo == 1) {
+            if ($request->price_promo == null || $request->price_promo == '') {
+                return redirect()->back()->with('error', 'harga promo belum di isi');
+            }
+        }
+        $data = Menu::create([
+            'name'          => $request->name,
+            'price'         => str_to_int($request->price),
+            'hpp'           => str_to_int($request->hpp),
+            'id_user'       => Auth::user()->id,
+            'is_promo'      => $request->is_promo,
+            'price_promo'   => str_to_int($request->price_promo),
+            'status'        => $request->status,
+        ]);
+        return redirect()->back()->with('success', 'berhasil menambahkan ' . $data->name);
     }
 
     /**
@@ -81,17 +101,27 @@ class MenuController extends Controller
         $this->validate(
             $request,
             [
-                'name'      => 'required',
-                'hpp'       => 'required',
-                'price'     => 'required',
+                'name'          => 'required',
+                'hpp'           => 'required',
+                'price'         => 'required',
+                'is_promo'      => 'required',
+                'status'        => 'required',
             ],
         );
         $data = Menu::find($request->id);
+        if ($request->is_promo == 1) {
+            if ($request->price_promo == null || $request->price_promo == '') {
+                return redirect()->back()->with('error', 'harga promo belum di isi');
+            }
+        }
         $data->update([
-            'name'      => $request->name,
-            'price'     => str_to_int($request->price),
-            'hpp'       => str_to_int($request->hpp),
-            'id_user'   => Auth::user()->id,
+            'name'          => $request->name,
+            'price'         => str_to_int($request->price),
+            'hpp'           => str_to_int($request->hpp),
+            'id_user'       => Auth::user()->id,
+            'is_promo'      => $request->is_promo,
+            'price_promo'   => str_to_int($request->price_promo),
+            'status'        => $request->status,
         ]);
         return redirect()->back()->with('success', 'memperbarui ' . $data->name);
     }
@@ -102,8 +132,14 @@ class MenuController extends Controller
      * @param  \App\Models\Menu  $menu
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Menu $menu)
+    public function destroy(Request $request, Menu $menu)
     {
-        //
+        $data = Menu::find($request->id);
+        $is_used = Sales::where('id_user', Auth::user()->id)->where('id_menu', $data->id)->count();
+        if ($is_used > 0) {
+            return redirect()->back()->with('error', 'data masih digunakan');
+        }
+        $data->delete();
+        return redirect()->back()->with('success', 'data berhasil dihapus');
     }
 }

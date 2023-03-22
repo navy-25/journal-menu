@@ -14,5 +14,8 @@ class Menu extends Model
         'price',
         'hpp',
         'id_user',
+        'is_promo',
+        'price_promo',
+        'status',
     ];
 }

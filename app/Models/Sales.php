@@ -16,5 +16,6 @@ class Sales extends Model
         'sales_group_id',
         'gross_profit',
         'net_profit',
+        'is_promo',
     ];
 }

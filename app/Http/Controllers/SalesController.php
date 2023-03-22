@@ -28,7 +28,7 @@ class SalesController extends Controller
         }
 
         $page = 'Penjualan';
-        $menu = Menu::orderBy('name', 'DESC')->where('id_user', Auth::user()->id)->get();
+        $menu = Menu::where('id_user', Auth::user()->id)->where('status', 1)->orderBy('is_promo', 'DESC')->orderBy('name', 'DESC')->get();
         $data = Sales::query()
             ->join('menus as m', 'm.id', 'sales.id_menu')
             ->leftJoin('sales_groups as g', 'g.id', 'sales.sales_group_id')
@@ -107,14 +107,21 @@ class SalesController extends Controller
             if ($qty[$key] == 0) {
                 continue;
             }
+
+            if ($menu->is_promo == 1) {
+                $price = str_to_int($menu->price_promo);
+            } else {
+                $price = str_to_int($menu->price);
+            }
             $sales = Sales::create([
                 'id_menu'           => $menu->id,
                 'id_user'           => Auth::user()->id,
                 'qty'               => $qty[$key],
                 'date'              => date('Y-m-d'),
                 'sales_group_id'    => $sales_group->id,
-                'gross_profit'      => $menu->price,
+                'gross_profit'      => $price,
                 'net_profit'        => $menu->hpp,
+                'is_promo'          => $menu->is_promo,
             ]);
 
             foreach ($stock as $value) {
@@ -122,7 +129,6 @@ class SalesController extends Controller
             }
             $qty_order++;
         }
-        // dd($list);
         return redirect()->back()->with('success', 'berhasil menambahkan ' . $qty_order . ' pesanan baru');
     }
     public function migrate(Request $request)
@@ -199,7 +205,7 @@ class SalesController extends Controller
                 'm.price',
             )
             ->whereBetween('sales.date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
-            ->sum(DB::raw('price * qty'));
+            ->sum(DB::raw('gross_profit * qty'));
 
         $net_profit = Sales::query()
             ->join('menus as m', 'm.id', 'sales.id_menu')
@@ -211,7 +217,7 @@ class SalesController extends Controller
                 'm.hpp',
             )
             ->whereBetween('sales.date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
-            ->sum(DB::raw('(price-hpp) * qty'));
+            ->sum(DB::raw('(gross_profit-hpp) * qty'));
 
         $qty = Sales::query()
             ->join('menus as m', 'm.id', 'sales.id_menu')

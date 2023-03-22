@@ -111,14 +111,16 @@
                                                 -
                                             </div>
                                             <div class="col-11">
-                                                <p class="mb-0 text-capitalize">{{ $item->name }}</p>
+                                                <p class="mb-0 text-capitalize">
+                                                    {{ $item->name }}
+                                                    {{ $item->is_promo == 1 ? '(Promo)' : '' }}
+                                                </p>
                                                 <div class="row">
                                                     <div class="col-6">
                                                         <p class="mb-0">{{ numberFormat($item->gross_profit) }} @ {{ $item->qty }} </p>
                                                     </div>
                                                     <div class="col-6">
                                                         <p class="mb-0 text-end">IDR {{ numberFormat($item->gross_profit*$item->qty) }} </p>
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -173,7 +175,18 @@
                         <div class="row">
                             <div class="col-7">
                                 <p class="fw-bold fs-6 m-0 text-capitalize">{{ $item->name }}</p>
-                                <p class="m-0">IDR {{ numberFormat($item->price) }}</p>
+                                <div class="d-flex">
+                                    @if ($item->is_promo == 1)
+                                        <p class="m-0 me-2">IDR {{ numberFormat($item->price_promo) }}</p>
+                                        <p class="m-0 text-danger">
+                                            <strike>
+                                                {{ numberFormat($item->price,0) }}
+                                            </strike>
+                                        </p>
+                                    @else
+                                        <p class="m-0">IDR {{ numberFormat($item->price,0) }}</p>
+                                    @endif
+                                </div>
                                 <input type="hidden" name="menu_id[]" value="{{ $item->id }}">
                                 <input type="hidden" name="qty[]" value="0" id="qty{{ $key }}">
                             </div>
