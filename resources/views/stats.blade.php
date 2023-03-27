@@ -109,7 +109,7 @@
                             @php
                                 $total  = 0;
                                 foreach ($value as $item) {
-                                    $total += ($item->qty * $item->price);
+                                    $total += ($item->qty * $item->gross_profit);
                                 }
                                 if($index == 4){
                                     break;
@@ -499,7 +499,6 @@
         }
         index++
     })
-    console.log(data_transaction_stats)
     data_transaction_stats.reverse()
     label_transaction_stats.reverse()
     const data_transaction_detail = {

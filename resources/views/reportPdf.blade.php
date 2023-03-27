@@ -59,13 +59,13 @@
     @endphp
     @foreach ($list_date as $key => $val)
         <div style="width: 100vw !important;height: 100vh !important;position: fixed;z-index: -1;top:25%;left:17%;">
-            <img src="https://pizzasuper.viproject.net/logo-pizza.png" alt="" style="width: 450px;opacity: 0.03 !important">
+            <img src="http://pizzasuper.viproject.net/app-assets/images/logo-pizza.png" alt="" style="width: 450px;opacity: 0.03 !important">
         </div>
         <table>
             <tbody>
                 <tr>
                     <td>
-                        <img src="https://pizzasuper.viproject.net/logo-pizza.png" alt="" style="width: 80px">
+                        <img src="http://pizzasuper.viproject.net/app-assets/images/logo-pizza.png" alt="" style="width: 80px">
                     </td>
                     <td class="px-4">
                         <p class="my-0 fw-bold fs-4">{{ Auth::user()->name }}</p>
