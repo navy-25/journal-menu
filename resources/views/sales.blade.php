@@ -90,12 +90,18 @@
                     $index = count($data);
                 @endphp
                 @foreach ($data as $key => $val)
+                    @php
+                        $total = 0;
+                        foreach ($val as $x) {
+                            $total += $x->gross_profit*$x->qty;
+                        }
+                    @endphp
                     <div class="accordion p-3 mb-3" id="accordion_{{ $key }}" style="border: 1px solid #2125291e;border-radius:15px">
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="heading_{{$key}}">
                                 <button class="accordion-button collapsed p-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{$key}}" aria-expanded="{{ $index == count($data) ? 'true' : 'false' }}" aria-controls="collapse_{{$key}}">
                                     <p class="fw-bold m-0 mb-2 me-2">Pesanan ke {{ $index }}</p>
-                                    <p class="fw-bold m-0 mb-2" id="total_order_{{$key}}">IDR 0</p>
+                                    <p class="fw-bold m-0 mb-2">IDR {{ numberFormat($total,0) }}</p>
                                 </button>
                             </h2>
                             @php
@@ -141,12 +147,6 @@
                                 <a href="#" class="text-dark ms-auto text-decoration-none me-4"  data-bs-toggle="modal" data-bs-target="#modalDetail" onclick="note('{{ $note }}')">Catatan</a>
                                 <a href="#" class="text-danger text-decoration-none" onclick="alert_confirm('{{ route('sales.destroy',['id'=>$key]) }}','Hapus pesanan ke {{ $index }}')">Hapus</a>
                             </div>
-
-                            <script>
-                                setTimeout(() => {
-                                    $('#total_order_{{$key}}').text('(IDR {{ numberFormat($total) }})')
-                                }, 100);
-                            </script>
                         </div>
                     </div>
                     @php
