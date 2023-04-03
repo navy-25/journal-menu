@@ -58,10 +58,10 @@
         $index = 1;
     @endphp
     @foreach ($list_date as $key => $val)
-        <div style="width: 100vw !important;height: 100vh !important;position: fixed;z-index: -1;top:25%;left:17%;">
+        {{-- <div style="width: 100vw !important;height: 100vh !important;position: fixed;z-index: -1;top:25%;left:17%;">
             <img src="http://pizzasuper.viproject.net/app-assets/images/logo-pizza-3.png" alt=""
             style="width: 450px;">
-        </div>
+        </div> --}}
         <table>
             <tbody>
                 <tr>
