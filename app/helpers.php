@@ -241,4 +241,12 @@ if (!function_exists('formatDay')) {
         return $date;
     }
 }
+
+if (!function_exists('month')) {
+    function month($month)
+    {
+        $months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+        return $months[$month-1];
+    }
+}
 // END CUSTOM DATE

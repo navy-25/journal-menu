@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sales;
-use App\Models\Spend;
 use App\Models\Stats;
 use App\Models\Stock;
 use App\Models\Transaction;
@@ -23,9 +22,6 @@ class StatsController extends Controller
     {
         $page = 'Statistik';
         if ($request->all() == []) {
-            // $dates['dateEndFilter']      = date('Y-m-d');
-            // $dates['dateStartFilter']    = date('Y-m-d', strtotime('-6 day', strtotime($dates['dateEndFilter'])));
-
             $dates['dateEndFilter']      = date('Y-m-t');
             $dates['dateStartFilter']    = date('Y-m-01');
         } else {

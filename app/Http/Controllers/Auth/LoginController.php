@@ -62,7 +62,7 @@ class LoginController extends Controller
             } else if ($auth->role == 1) {
                 dd('sedang di develop');
             } else {
-                return redirect()->intended(route('stats.index'))->with('success', 'Berhasil Login');
+                return redirect()->intended(route('home.index'))->with('success', 'Berhasil Login');
             }
         }
         return redirect()->back()->with('error', 'Kata sandi anda salah');

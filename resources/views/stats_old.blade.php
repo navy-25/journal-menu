@@ -12,10 +12,10 @@
 @php
     date_default_timezone_set('Asia/Jakarta');
 @endphp
-<div class="px-4">
-    <h4 class="fw-bold mb-4">{{ $page }}</h4>
+<div class="px-4 mb-3">
+    <h4 class="fw-bold mb-4">{{ Auth::user()->name }}</h4>
     @include('includes.alert')
-    <div class="card rounded-4 border-0 bg-white shadow-mini"
+    <div class="card rounded-4 border-0 mb-4 bg-white shadow-mini"
         style="
             background-image:url('app-assets/images/card-bg.jpg');
             background-repeat: no-repeat;
@@ -33,20 +33,25 @@
                 <i data-feather="calendar" class="me-2" style="width: 14px"></i>
                 {{ dateFormat($dates['dateStartFilter']) }} s/d {{ dateFormat($dates['dateEndFilter']) }}
             </small>
+            <p class="fs-6 mb-0 mt-3">Total Pizza </p>
+            <p class="m-0 fs-5 fw-bold d-flex align-items-center text-warning">
+                <i data-feather="shopping-bag" class="me-2" style="width: 20px;height: 20px"></i>
+                {{ numberFormat($data['qty']) }} terjual
+            </p>
         </div>
     </div>
 </div>
-<div class="px-0">
-    <div class="card rounded-4 border-0 mb-2">
-        <div class="card-body px-4">
-            <p class="fw-bold mb-3">Rangkuman</p>
+<div class="px-4">
+    <div class="card rounded-4 border-0 mb-4 bg-white shadow-mini">
+        <div class="card-body p-4">
+                <h6 class="fw-bold mb-3">Stock & bahan</h6>
             @php
                 $index = 1;
             @endphp
             @foreach ($data['stock'] as $key => $value)
                 <div class="row">
                     <div class="col-6 d-flex justify-content-start align-items-center">
-                        <i data-feather="package" class="me-2" style="width: 14px"></i>
+                        <i data-feather="package" class="me-2" style="width: 15px"></i>
                         {{ $value->name }}
                     </div>
                     <div class="col-6 d-flex justify-content-end">
@@ -66,35 +71,30 @@
                 </div>
                 <hr class="py-1 mt-2 mb-0" style="opacity: 0.05 !important">
             @endforeach
-            <div class="row">
-                <div class="col-6 d-flex justify-content-start align-items-center">
-                    <i data-feather="package" class="me-2" style="width: 14px"></i>
-                    Total pizza terjual
-                </div>
-                <div class="col-6 d-flex justify-content-end">
-                    <p class="m-0 fw-bold text-dark">{{ numberFormat($data['qty'],0) }} pcs</p>
-                </div>
-            </div>
         </div>
     </div>
-    <div class="card rounded-4 border-0 mb-2">
+</div>
+<div class="px-4">
+    <div class="card rounded-4 border-0 mb-4 bg-white shadow-mini">
         <div class="card-body p-4">
-            <div class="row mb-3">
-                <div class="col-4">
-                    <p class="fw-bold mb-3">Statistik</p>
-                </div>
-                <div class="col-8">
-                    <div class="form-group">
-                        <select id="stats" onchange="getChartType()" class="form-select"
-                            style="padding:5px 10px !important;font-size:14px !important">
-                            <option class="fs-7" value="penjualan">Penjualan</option>
-                            <option class="fs-7" value="transaksi">Transaksi</option>
-                            <option class="fs-7" value="menu">Menu</option>
-                        </select>
+            <div class="form-group">
+                <label for="" class="mb-2">Pilih data</label>
+                <select id="stats" onchange="getChartType()" class="form-select">
+                    <option value="penjualan">Penjualan</option>
+                    <option value="transaksi">Transaksi</option>
+                    <option value="menu">Menu</option>
+                </select>
+            </div>
+            <hr class="mx-0 my-4" style="opacity: 0.1 !important;">
+            <div id="chart_penjualan">
+                <div class="row px-0 mb-3">
+                    <div class="col-7 d-flex align-items-center">
+                        <h6 class="fw-bold">Statistik penjualan</h6>
+                    </div>
+                    <div class="col-5 d-flex align-items-center justify-content-end">
+                        <a class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#modalIncome">Semua</a>
                     </div>
                 </div>
-            </div>
-            <div id="chart_penjualan">
                 <div class="mb-4">
                     <canvas id="sales_detail"></canvas>
                 </div>
@@ -117,11 +117,11 @@
                             @endphp
                             <div class="row">
                                 <div class="col-6 d-flex justify-content-start align-items-center">
-                                    <i data-feather="calendar" class="me-2" style="width: 14px"></i>
+                                    <i data-feather="calendar" class="me-2" style="width: 15px"></i>
                                     {{ formatDay($key) }}, {{ customDate($key,'d M') }}
                                 </div>
                                 <div class="col-6 d-flex justify-content-end">
-                                    <p class="m-0 fw-bold text-success">IDR  {{ numberFormat($total,0) }}</p>
+                                    <p class="m-0 fw-bold text-success">IDR  {{ numberFormat($total) }}</p>
                                 </div>
                             </div>
                             <hr class="py-1 mt-2 mb-0" style="opacity: 0.05 !important">
@@ -130,13 +130,17 @@
                             @endphp
                         @endforeach
                     @endif
-                    <br>
-                    <center>
-                        <a class="text-decoration-none text-white bg-dark rounded-3 py-2 px-3" data-bs-toggle="modal" data-bs-target="#modalIncome">Lihat Semua Data</a>
-                    </center>
                 </div>
             </div>
             <div id="chart_transaksi">
+                <div class="row px-0 mb-3">
+                    <div class="col-7 d-flex align-items-center">
+                        <h6 class="fw-bold">Statistik transaksi</h6>
+                    </div>
+                    <div class="col-5 d-flex align-items-center justify-content-end">
+                        <a class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#modalOutcome">Semua</a>
+                    </div>
+                </div>
                 <div class="mb-4">
                     <canvas id="transactionn_detail"></canvas>
                 </div>
@@ -163,11 +167,11 @@
                             @endphp
                             <div class="row">
                                 <div class="col-6 d-flex justify-content-start align-items-center">
-                                    <i data-feather="calendar" class="me-2" style="width: 14px"></i>
+                                    <i data-feather="calendar" class="me-2" style="width: 15px"></i>
                                     {{ formatDay($key) }}, {{ customDate($key,'d M') }}
                                 </div>
                                 <div class="col-6 d-flex justify-content-end">
-                                    <p class="m-0 fw-bold {{ $total > 0 ? 'text-success' : 'text-danger' }}">IDR  {{ numberFormat($total,0) }}</p>
+                                    <p class="m-0 fw-bold {{ $total > 0 ? 'text-success' : 'text-danger' }}">IDR  {{ numberFormat($total) }}</p>
                                 </div>
                             </div>
                             <hr class="py-1 mt-2 mb-0" style="opacity: 0.05 !important">
@@ -176,13 +180,17 @@
                             @endphp
                         @endforeach
                     @endif
-                    <br>
-                    <center>
-                        <a class="text-decoration-none text-white bg-dark rounded-3 py-2 px-3" data-bs-toggle="modal" data-bs-target="#modalOutcome">Lihat Semua Data</a>
-                    </center>
                 </div>
             </div>
             <div id="chart_menu">
+                <div class="row px-0 mb-3">
+                    <div class="col-7 d-flex align-items-center">
+                        <h6 class="fw-bold">Sering dibeli</h6>
+                    </div>
+                    <div class="col-5 d-flex align-items-center justify-content-end">
+                        <a class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#modalMenu">Semua</a>
+                    </div>
+                </div>
                 <div class="mb-4">
                     <canvas id="buy_detail"></canvas>
                 </div>
@@ -201,11 +209,11 @@
                             @endphp
                             <div class="row">
                                 <div class="col-8 d-flex justify-content-start align-items-center">
-                                    <i data-feather="shopping-bag" class="me-2" style="width: 14px"></i>
+                                    <i data-feather="shopping-bag" class="me-2" style="width: 15px"></i>
                                     {{ $value->name }}
                                 </div>
                                 <div class="col-4 d-flex justify-content-end">
-                                    <p class="m-0 fw-bold text-success">{{ numberFormat($value->total_terjual,0) }}</p>
+                                    <p class="m-0 fw-bold text-success">{{ numberFormat($value->total_terjual) }}</p>
                                 </div>
                             </div>
                             <hr class="py-1 mt-2 mb-0" style="opacity: 0.05 !important">
@@ -214,34 +222,31 @@
                             @endphp
                         @endforeach
                     @endif
-                    <br>
-                    <center>
-                        <a class="text-decoration-none text-white bg-dark rounded-3 py-2 px-3" data-bs-toggle="modal" data-bs-target="#modalMenu">Lihat Semua Data</a>
-                    </center>
                 </div>
             </div>
         </div>
     </div>
-    <div class="card rounded-4 border-0 mb-2">
+</div>
+<div class="px-4">
+    <div class="card rounded-4 border-0 mb-4 bg-white shadow-mini">
         <div class="card-body p-4">
-            <div class="row px-0">
+            <div class="row px-0 mb-3">
                 <div class="col-12 d-flex align-items-center">
-                    <p class="fw-bold mb-3">Berdasarkan shift</p>
+                    <h6 class="fw-bold">Ketegori shift</h6>
                 </div>
             </div>
             @foreach ($shift as $key => $value)
                 <div class="row">
-                    <div class="col-8 d-flex justify-content-start align-items-center">
-                        <i data-feather="clock" class="me-2" style="width: 14px"></i>
-                        <span class="me-2">{{ $value['shift'][0] }} &nbsp; -</span>
-
-                        <i data-feather="clock" class="me-2" style="width: 14px"></i>
-                        <span>{{ $value['shift'][1] }}</span>
-                        {{-- {{ implode(' s/d ', $value['shift']) }} --}}
+                    <div class="col-2 d-flex justify-content-start align-items-top">
+                        {{-- <i data-feather="users" class="me-2" style="width: 15px"></i> --}}
+                        <b>S{{ ++$key }} </b><br>
                     </div>
-                    <div class="col-4 d-flex justify-content-end align-items-center">
+                    <div class="col-5 d-flexjustify-content-start align-items-top">
+                        {{ implode(' - ', $value['shift']) }}
+                    </div>
+                    <div class="col-5 d-flex justify-content-end">
                         <p class="m-0 fw-bold text-dark text-end">
-                            {{ numberFormat($value['total_pembeli'],0) }} pcs
+                            {{ numberFormat($value['total_pembeli']) }} pizza
                         </p>
                     </div>
                 </div>
@@ -250,6 +255,8 @@
         </div>
     </div>
 </div>
+<br>
+<br>
 <!-- Modal -->
 <div class="modal fade" id="modalIncome" data-bs-backdrop="static"
     data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalIncomeLabel" aria-hidden="true">

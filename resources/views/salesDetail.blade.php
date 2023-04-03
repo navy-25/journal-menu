@@ -103,12 +103,18 @@
                     $index = count($data);
                 @endphp
                 @foreach ($data as $key => $val)
+                    @php
+                        $total = 0;
+                        foreach ($val as $x) {
+                            $total += $x->gross_profit*$x->qty;
+                        }
+                    @endphp
                     <div class="accordion p-3 mb-3" id="accordion_{{ $key }}" style="border: 1px solid #2125291e;border-radius:15px">
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="heading_{{$key}}">
                                 <button class="accordion-button collapsed p-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{$key}}" aria-expanded="false" aria-controls="collapse_{{$key}}">
                                     <p class="fw-bold m-0 mb-2 me-2">Pesanan ke {{ $index }} {{ $key == null ? '(old data)' : '' }}</p>
-                                    <p class="fw-bold m-0 mb-2" id="total_order_{{$key}}">IDR 0</p>
+                                    <p class="fw-bold m-0 mb-2">IDR {{ numberFormat($total) }}</p>
                                 </button>
                             </h2>
                             @php
@@ -157,12 +163,6 @@
                                     <a href="#" class="text-danger text-decoration-none ms-4" onclick="alert_confirm('{{ route('sales.destroy',['id'=>$key]) }}','Hapus pesanan ke {{ $index }}')">Hapus</a>
                                 @endif
                             </div>
-
-                            <script>
-                                setTimeout(() => {
-                                    $('#total_order_{{$key}}').text('(IDR {{ numberFormat($total) }})')
-                                }, 100);
-                            </script>
                         </div>
                     </div>
                     @php

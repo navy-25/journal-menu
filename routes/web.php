@@ -6,6 +6,7 @@ use App\Http\Controllers\Dev\AccountController as DevAccountController;
 use App\Http\Controllers\Dev\HomeController;
 use App\Http\Controllers\Dev\SettingsController as DevSettingsController;
 use App\Http\Controllers\Dev\UsersController;
+use App\Http\Controllers\HomeController as PartnerHomeController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\ReportController;
@@ -54,6 +55,9 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::middleware(['can:isPartner'])->group(function () {
+        Route::controller(PartnerHomeController::class)->prefix('home')->name('home.')->group(function () {
+            Route::get('/', 'index')->name('index');
+        });
         Route::controller(StatsController::class)->prefix('stats')->name('stats.')->group(function () {
             Route::get('/', 'index')->name('index');
         });
