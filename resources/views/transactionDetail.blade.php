@@ -229,6 +229,72 @@
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="modal" data-bs-backdrop="static"
+    data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-bottom border-0">
+        <div class="modal-content modal-content-bottom vw-100">
+            <div class="modal-header border-0 d-flex justify-content-start align-items-center">
+                <p class="fs-6 m-0 fw-bold">Tambah transaksi</p>
+                <a href="#" data-bs-dismiss="modal" class="text-decoration-none text-dark ms-auto">
+                    <i data-feather="x" style="width: 18px"></i>
+                </a>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('transaction.store') }}" method="POST" id="form">
+                    @csrf
+                    <div class="form-group mb-3">
+                        <label for="" class="mb-2">Nama pengeluaran</label>
+                        <input type="text" class="form-control" value="" name="name" id="name" placeholder="ex. ongkos makan" autofocus>
+                    </div>
+                    <div class="form-group mb-3">
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="" class="mb-2">Harga/Total</label>
+                                <input type="text" class="form-control money" value="" name="price" id="price" placeholder="ex. 15000">
+                            </div>
+                            <div class="col-6">
+                                <label for="" class="mb-2">Tanggal</label>
+                                <input type="date" class="form-control" value="" name="date" id="date">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="" class="mb-2 w-100">Masuk/Keluar</label>
+                                <select name="status" id="status" class="form-select">
+                                    @foreach (transactionStatus() as $key => $value)
+                                        <option value="{{ $key }}">{{ $value }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <label for="" class="mb-2 w-100">Untuk keperluan</label>
+                                <select name="type" id="type" class="form-select">
+                                    @foreach (transactionType() as $key => $value)
+                                        <option value="{{ $key }}">{{ $value }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="" class="mb-2">Catatan (Optional)</label>
+                        <textarea class="form-control" name="note" id="note" cols="30" rows="3" placeholder="ex. pakai uangku dulu 200.000"></textarea>
+                    </div>
+                    <input type="hidden" id="id" name="id">
+                    <button class="d-none" id="btn-submit" type="submit"></button>
+                </form>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" onclick="$('#btn-submit').trigger('click')" class="btn btn-dark w-100 rounded-4 py-3" id="btn-submit-trigger">Tambah</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('script')
@@ -239,5 +305,20 @@
 
     $('#padding-bottom').remove();
     $('#nav-bottom').remove();
+
+
+    function edit(key,url){
+        var data = JSON.parse($('#data'+key).val())
+        $('#id').val(data.id)
+        $('#name').val(data.name)
+        $('#type').val(data.type).trigger('change')
+        $('#price').val(data.price)
+        $('#date').val(data.date)
+        $('#status').val(data.status)
+        $('#note').val(data.note)
+
+        $('#form').attr('action',url)
+        $('#btn-submit-trigger').text('Simpan')
+    }
 </script>
 @endsection

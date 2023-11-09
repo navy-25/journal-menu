@@ -1,9 +1,35 @@
 <?php
 
 use App\Models\Stock;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 date_default_timezone_set('Asia/Jakarta');
+
+if (!function_exists('isOwner')) {
+    function isOwner()
+    {
+        $user = Auth::user();
+        if($user->role == 1){
+            return True;
+        }
+        return False;
+    }
+}
+
+if (!function_exists('getUserID')) {
+    function getUserID()
+    {
+        $user = Auth::user();
+        if($user->role == 1){
+            return $user->id;
+        }
+        if($user->role == 2){
+            return $user->id_owner;
+        }
+        return 'Dalam tahap pengembangan';
+    }
+}
 
 if (!function_exists('isPromo')) {
     function isPromo($type = '')

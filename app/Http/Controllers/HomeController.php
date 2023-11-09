@@ -22,21 +22,21 @@ class HomeController extends Controller
         $dates['dateEndFilter']      = date('Y-m-t');
         $dates['dateStartFilter']    = date('Y-m-01');
         $trans_outcome = Transaction::where('status', 'out')
-            ->where('transactions.id_user', Auth::user()->id)
+            ->where('transactions.id_user', getUserID())
             ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
             ->sum('price');
         $trans_intcome = Transaction::where('status', 'in')
-            ->where('transactions.id_user', Auth::user()->id)
+            ->where('transactions.id_user', getUserID())
             ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
             ->sum('price');
 
         $data['month'] = $trans_intcome - $trans_outcome;
 
         $trans_outcome = Transaction::where('status', 'out')
-            ->where('transactions.id_user', Auth::user()->id)
+            ->where('transactions.id_user', getUserID())
             ->sum('price');
         $trans_intcome = Transaction::where('status', 'in')
-            ->where('transactions.id_user', Auth::user()->id)
+            ->where('transactions.id_user', getUserID())
             ->sum('price');
         $data['all'] = $trans_intcome - $trans_outcome;
 
@@ -45,41 +45,49 @@ class HomeController extends Controller
                 'name'      => 'Statistik',
                 'icon'      => 'pie-chart',
                 'route'     => 'stats.index',
+                'access'    => [1]
             ],
             [
                 'name'      => 'Kasir',
                 'icon'      => 'shopping-cart',
                 'route'     => 'sales.index',
+                'access'    => [1,2]
             ],
             [
                 'name'      => 'Keuangan',
                 'icon'      => 'repeat',
                 'route'     => 'transaction.index',
+                'access'    => [1,2]
             ],
             [
                 'name'      => 'Menu',
                 'icon'      => 'coffee',
                 'route'     => 'menu.index',
+                'access'    => [1,2]
             ],
             [
                 'name'      => 'Bahan',
                 'icon'      => 'box',
                 'route'     => 'stock.index',
+                'access'    => [1]
             ],
             [
                 'name'      => 'Laporan',
                 'icon'      => 'printer',
                 'route'     => 'report.index',
+                'access'    => [1,2]
             ],
             [
                 'name'      => 'Catatan',
                 'icon'      => 'file',
                 'route'     => 'note.index',
+                'access'    => [1,2]
             ],
             [
                 'name'      => 'Akun',
                 'icon'      => 'user',
                 'route'     => 'account.index',
+                'access'    => [1,2]
             ],
         ];
         return view('home', compact('data', 'page', 'dates', 'menu'));

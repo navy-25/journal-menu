@@ -22,12 +22,14 @@
 <div style="height: 100px !important"></div>
 {{-- END NAV BACK --}}
 
-<div style="position: fixed;bottom:100px;right:20px;z-index:999">
-    <button type="button" class="btn bg-dark text-white d-flex align-items-center justify-content-center"
-        style="height: 60px;width: 60px;border-radius:100%">
-        <i data-feather="filter" style="width: 25px" data-bs-toggle="modal" data-bs-target="#filter"></i>
-    </button>
-</div>
+@if (isOwner())
+    <div style="position: fixed;bottom:100px;right:20px;z-index:999">
+        <button type="button" class="btn bg-dark text-white d-flex align-items-center justify-content-center"
+            style="height: 60px;width: 60px;border-radius:100%">
+            <i data-feather="filter" style="width: 25px" data-bs-toggle="modal" data-bs-target="#filter"></i>
+        </button>
+    </div>
+@endif
 
 {{-- NAV BOTTOM --}}
 <nav id="nav-bottom" class="navbar navbar-expand-lg bg-white fixed-bottom px-3" style="height: 100px !important;">

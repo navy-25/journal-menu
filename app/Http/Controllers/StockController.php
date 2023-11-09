@@ -18,7 +18,7 @@ class StockController extends Controller
     public function index()
     {
         $page = 'Bahan';
-        $data = Stock::orderBy('id', 'ASC')->where('id_user', Auth::user()->id)->get();
+        $data = Stock::orderBy('id', 'ASC')->where('id_user', getUserID())->get();
         return view('stock', compact('data', 'page'));
     }
 
@@ -103,7 +103,7 @@ class StockController extends Controller
             'name'      => $request->name,
             'qty'       => $request->qty,
             'unit'      => $request->unit,
-            'id_user'   => Auth::user()->id,
+            'id_user'   => getUserID(),
             // 'qty_usage' => $request->qty_usage,
         ]);
         return redirect()->back()->with('success', 'memperbarui bahan ' . $request->name);

@@ -31,4 +31,8 @@ class UserPolicy
     {
         return $user->role == 2;
     }
+    public function isOwnerPartner($user)
+    {
+        return $user->role == 1 || $user->role == 2;
+    }
 }

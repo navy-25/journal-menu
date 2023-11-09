@@ -15,31 +15,37 @@
 <div class="px-4">
     <h4 class="fw-bold mb-4">{{ $page }}</h4>
     @include('includes.alert')
-    <div class="card rounded-4 border-0 bg-white shadow-mini"
-        style="
-            background-image:url('app-assets/images/card-bg.jpg');
-            background-repeat: no-repeat;
-            background-position: right top;
-            background-size: cover;"
-        >
-        <div class="card-body p-4 text-white">
-            <p class="fs-5 mb-0">
-                Uang Kas
-            </p>
-            <p class="mb-2 fs-5 fw-bold d-flex align-items-center text-warning">
-                IDR  {{ numberFormat($data['all']) }}
-            </p>
-            <small class="d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#filter">
-                <i data-feather="calendar" class="me-2" style="width: 14px"></i>
-                {{ dateFormat($dates['dateStartFilter']) }} s/d {{ dateFormat($dates['dateEndFilter']) }}
-            </small>
+    @if (isOwner())
+        <div class="card rounded-4 border-0 bg-white shadow-mini"
+            style="
+                background-image:url('app-assets/images/card-bg.jpg');
+                background-repeat: no-repeat;
+                background-position: right top;
+                background-size: cover;"
+            >
+            <div class="card-body p-4 text-white">
+                <p class="fs-5 mb-0">
+                    Uang Kas
+                </p>
+                <p class="mb-2 fs-5 fw-bold d-flex align-items-center text-warning">
+                    IDR  {{ numberFormat($data['all']) }}
+                </p>
+                <small class="d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#filter">
+                    <i data-feather="calendar" class="me-2" style="width: 14px"></i>
+                    {{ dateFormat($dates['dateStartFilter']) }} s/d {{ dateFormat($dates['dateEndFilter']) }}
+                </small>
+            </div>
         </div>
-    </div>
+    @endif
 </div>
 <div class="px-0">
     <div class="card rounded-4 border-0 mb-2">
         <div class="card-body px-4">
-            <p class="fw-bold mb-3">Rangkuman</p>
+            @if (isOwner())
+                <p class="fw-bold mb-3">Rangkuman</p>
+            @else
+                <p class="fw-bold mb-3">Stock Bahan</p>
+            @endif
             @php
                 $index = 1;
             @endphp

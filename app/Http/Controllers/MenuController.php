@@ -18,7 +18,7 @@ class MenuController extends Controller
     public function index()
     {
         $page = 'Menu';
-        $data = Menu::orderBy('id', 'DESC')->where('id_user', Auth::user()->id)->get();
+        $data = Menu::orderBy('id', 'DESC')->where('id_user', getUserID())->get();
         return view('menu', compact('data', 'page'));
     }
 
@@ -59,7 +59,7 @@ class MenuController extends Controller
             'name'          => $request->name,
             'price'         => str_to_int($request->price),
             'hpp'           => str_to_int($request->hpp),
-            'id_user'       => Auth::user()->id,
+            'id_user'       => getUserID(),
             'is_promo'      => $request->is_promo,
             'price_promo'   => str_to_int($request->price_promo),
             'status'        => $request->status,
@@ -118,7 +118,7 @@ class MenuController extends Controller
             'name'          => $request->name,
             'price'         => str_to_int($request->price),
             'hpp'           => str_to_int($request->hpp),
-            'id_user'       => Auth::user()->id,
+            'id_user'       => getUserID(),
             'is_promo'      => $request->is_promo,
             'price_promo'   => str_to_int($request->price_promo),
             'status'        => $request->status,
@@ -135,7 +135,7 @@ class MenuController extends Controller
     public function destroy(Request $request, Menu $menu)
     {
         $data = Menu::find($request->id);
-        $is_used = Sales::where('id_user', Auth::user()->id)->where('id_menu', $data->id)->count();
+        $is_used = Sales::where('id_user', getUserID())->where('id_menu', $data->id)->count();
         if ($is_used > 0) {
             return redirect()->back()->with('error', 'data masih digunakan');
         }

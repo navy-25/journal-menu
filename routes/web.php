@@ -54,7 +54,7 @@ Route::middleware(['auth'])->group(function () {
         });
     });
 
-    Route::middleware(['can:isPartner'])->group(function () {
+    Route::middleware(['can:isOwnerPartner'])->group(function () {
         Route::controller(PartnerHomeController::class)->prefix('home')->name('home.')->group(function () {
             Route::get('/', 'index')->name('index');
         });

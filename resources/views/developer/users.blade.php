@@ -121,14 +121,14 @@
                         </div>
                     </div>
                     <div class="form-group mb-3">
-                        <label for="" class="mb-2">
-                            Kata sandi
-                            <span class="d-none" id="password_change_tooltip"> (isi jika diganti)</span>
-                        </label>
-                        <input type="password" class="form-control" value="" name="password" id="password" placeholder="ex. kata sandi">
-                    </div>
-                    <div class="form-group mb-3">
                         <div class="row">
+                            <div class="col-6">
+                                <label for="" class="mb-2">
+                                    Kata sandi
+                                    <span class="d-none" id="password_change_tooltip"> (tidak wajib)</span>
+                                </label>
+                                <input type="password" class="form-control" value="" name="password" id="password" placeholder="ex. kata sandi">
+                            </div>
                             <div class="col-6">
                                 <label for="" class="mb-2 w-100">Status</label>
                                 <select name="status" id="status" class="form-select">
@@ -137,11 +137,24 @@
                                     @endforeach
                                 </select>
                             </div>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <div class="row">
                             <div class="col-6">
                                 <label for="" class="mb-2 w-100">Role</label>
                                 <select name="role" id="role" class="form-select">
                                     @foreach (roleUser() as $key => $value)
                                         <option value="{{ $key }}">{{ $value }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <label for="" class="mb-2 w-100">Owner</label>
+                                <select name="id_owner" id="id_owner" class="form-select">
+                                    <option value="">Pilih salah satu</option>
+                                    @foreach ($owner as $key => $value)
+                                        <option value="{{ $value->id }}">{{ $value->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -227,6 +240,7 @@
         $('#phone').val(data.phone)
         $('#role').val(data.role).trigger('change')
         $('#status').val(data.status).trigger('change')
+        $('#id_owner').val(data.id_owner).trigger('change')
         $('#address').val(data.address)
         $('#id').val(data.id)
 
@@ -242,6 +256,7 @@
         $('#email').val('')
         $('#phone').val('')
         $('#role').val(2).trigger('change')
+        $('#id_owner').val('').trigger('change')
         $('#status').val(1).trigger('change')
         $('#address').val('')
         $('#id').val('')

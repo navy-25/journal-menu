@@ -30,7 +30,11 @@
             <div class="row">
                 <div class="col-12 text-white mb-3">
                     <p class="fs-5 mb-0">Saldo hari ini</p>
-                    <p class="mb-3 d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#filter">
+                    <p class="mb-3 d-flex align-items-center"
+                        @if (isOwner())
+                            data-bs-toggle="modal" data-bs-target="#filter"
+                        @endif
+                    >
                         <i data-feather="calendar" class="me-2" style="width: 14px"></i>
                         @if (isset($_GET['dateFilter']))
                             {{ customDate($_GET['dateFilter'], 'D, d M Y') }}
@@ -68,9 +72,11 @@
         <div class="col-6 d-flex align-items-center">
             <h6 class="fw-bold mb-2">Daftar transaksi</h6>
         </div>
-        <div class="col-6 d-flex align-items-center justify-content-end">
-            <a class="m-0 text-decoration-none text-dark" href="{{ route('transaction.show') }}">Selengkapnya</a>
-        </div>
+        @if (isOwner())
+            <div class="col-6 d-flex align-items-center justify-content-end">
+                <a class="m-0 text-decoration-none text-dark" href="{{ route('transaction.show') }}">Selengkapnya</a>
+            </div>
+        @endif
     </div>
     <div class="row">
         <div class="col-12">

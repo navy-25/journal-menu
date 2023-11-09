@@ -29,21 +29,23 @@
 </div>
 
 <div class="px-4">
-    <p class="fs-7 px-0 fw-bold mb-4 text-gray">Stok & Gudang</p>
-    @foreach ($stock_menu as $value)
-        <a class="row text-decoration-none text-dark" href="{{ $value['route'] }}" >
-            <div class="col-8">
-                <div class="px-0 d-flex">
-                    <i data-feather="{{ $value['icon'] }}" style="width: 16px" class="my-auto me-3"></i>
-                    <span class="my-auto">{{ $value['name'] }}</span>
+    @if (isOwner())
+        <p class="fs-7 px-0 fw-bold mb-4 text-gray">Stok & Gudang</p>
+        @foreach ($stock_menu as $value)
+            <a class="row text-decoration-none text-dark" href="{{ $value['route'] }}" >
+                <div class="col-8">
+                    <div class="px-0 d-flex">
+                        <i data-feather="{{ $value['icon'] }}" style="width: 16px" class="my-auto me-3"></i>
+                        <span class="my-auto">{{ $value['name'] }}</span>
+                    </div>
                 </div>
-            </div>
-            <div class="col-4 d-flex">
-                <i data-feather="chevron-right" class="my-auto ms-auto" style="width: 18px"></i>
-            </div>
-        </a>
-        <hr style="opacity: 0.05 !important">
-    @endforeach
+                <div class="col-4 d-flex">
+                    <i data-feather="chevron-right" class="my-auto ms-auto" style="width: 18px"></i>
+                </div>
+            </a>
+            <hr style="opacity: 0.05 !important">
+        @endforeach
+    @endif
     <p class="fs-7 px-0 fw-bold mb-4 text-gray">Lainnya</p>
     @foreach ($more as $value)
         <a class="row text-decoration-none text-dark" href="{{ $value['route'] }}" >

@@ -31,5 +31,6 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('isRoot', [UserPolicy::class, 'isRoot']);
         Gate::define('isOwner', [UserPolicy::class, 'isOwner']);
         Gate::define('isPartner', [UserPolicy::class, 'isPartner']);
+        Gate::define('isOwnerPartner', [UserPolicy::class, 'isOwnerPartner']);
     }
 }

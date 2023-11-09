@@ -25,7 +25,8 @@ class UsersController extends Controller
     {
         $page = 'Pengguna';
         $data = User::orderBy('id', 'DESC')->whereNot('id', Auth::user()->id)->get();
-        return view('developer.users', compact('page', 'data'));
+        $owner = User::orderBy('id', 'DESC')->whereNot('id', Auth::user()->id)->where('role',1)->get();
+        return view('developer.users', compact('page', 'data','owner'));
     }
 
     /**
@@ -59,6 +60,13 @@ class UsersController extends Controller
                 'password'  => 'required',
             ],
         );
+
+        if($request->id_owner == ''){
+            $id_owner = NULL;
+        }else{
+            $id_owner = $request->id_owner;
+        }
+
         $data = User::create([
             'name'      => $request->name,
             'phone'     => $request->phone,
@@ -66,19 +74,23 @@ class UsersController extends Controller
             'role'      => $request->role,
             'status'    => $request->status,
             'owner'     => $request->owner,
+            'id_owner'  => $id_owner,
             'email'     => $request->email,
             'password'  => Hash::make($request->password),
         ]);
 
         $menu   = ['choco strawberry', 'choco vanilla', 'choco greentea', 'choco mix', 'choco cheese', 'choco oreo', 'sosis', 'sosis keju', 'sosis mozzarella', 'super mozzarella komplit', 'special ayam mozzarella', 'smoke beef mozzarella', 'meat lovers', 'papperoni mozzarella',];
-        $hpp    = [6300, 6300, 6300, 6465, 7800, 7700, 6600, 8100, 9100, 9390, 11200, 10800, 10800, 10800,];
+        $hpp    = [6300, 6300, 6300, 6500, 7800, 7700, 6600, 8100, 9100, 9390, 11200, 10800, 10800, 10800,];
         $price  = [10000, 10000, 10000, 11000, 15000, 15000, 10000, 15000, 15000, 15000, 20000, 18000, 18000, 18000,];
         foreach ($menu as $key => $value) {
             Menu::create([
-                'name'      => $value,
-                'price'     => $price[$key],
-                'hpp'       => $hpp[$key],
-                'id_user'   => $data->id
+                'name'          => $value,
+                'price'         => $price[$key],
+                'hpp'           => $hpp[$key],
+                'id_user'       => $data->id,
+                'status'        => 1,
+                'is_promo'      => 0,
+                'price_promo'   => 0,
             ]);
         }
 
@@ -163,6 +175,11 @@ class UsersController extends Controller
             ],
         );
         $data = User::find($request->id);
+        if($request->id_owner == ''){
+            $id_owner = NULL;
+        }else{
+            $id_owner = $request->id_owner;
+        }
         $data->update([
             'name'      => $request->name,
             'phone'     => $request->phone,
@@ -170,6 +187,7 @@ class UsersController extends Controller
             'role'      => $request->role,
             'status'    => $request->status,
             'owner'     => $request->owner,
+            'id_owner'  => $id_owner,
             'email'     => $request->email,
         ]);
 

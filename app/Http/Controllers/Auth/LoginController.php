@@ -60,7 +60,7 @@ class LoginController extends Controller
             if ($auth->role == 0) {
                 return redirect()->intended(route('dev.user.index'))->with('success', 'Berhasil Login');
             } else if ($auth->role == 1) {
-                dd('sedang di develop');
+                return redirect()->intended(route('home.index'))->with('success', 'Berhasil Login');
             } else {
                 return redirect()->intended(route('home.index'))->with('success', 'Berhasil Login');
             }

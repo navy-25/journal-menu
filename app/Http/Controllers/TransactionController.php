@@ -26,16 +26,16 @@ class TransactionController extends Controller
 
         $data = Transaction::query()
             ->where('transactions.date', $dateFilter)
-            ->where('transactions.id_user', Auth::user()->id)
+            ->where('transactions.id_user', getUserID())
             ->orderBy('transactions.created_at', 'DESC')->get();
 
         $income = Transaction::query()
-            ->where('transactions.id_user', Auth::user()->id)
+            ->where('transactions.id_user', getUserID())
             ->where('transactions.date', $dateFilter)
             ->where('status', 'in')->sum('price');
 
         $outcome = Transaction::query()
-            ->where('transactions.id_user', Auth::user()->id)
+            ->where('transactions.id_user', getUserID())
             ->where('transactions.date', $dateFilter)
             ->where('status', 'out')->sum('price');
 
@@ -83,7 +83,7 @@ class TransactionController extends Controller
             'status'    => $request->status,
             'note'      => $request->note,
             'date'      => $request->date,
-            'id_user'   => Auth::user()->id,
+            'id_user'   => getUserID(),
         ]);
         return redirect()->route('transaction.index', ['dateFilter' => $request->date])->with('success', 'berhasil menambahkan ' . $data->name);
     }
@@ -97,8 +97,9 @@ class TransactionController extends Controller
     public function show(Transaction $transaction, Request $request)
     {
         if ($request->all() == []) {
-            $dates['dateEndFilter']      = date('Y-m-d');
-            $dates['dateStartFilter']    = date('Y-m-d', strtotime('-6 day', strtotime($dates['dateEndFilter'])));
+            $dates['dateEndFilter']     = date('Y-m-d');
+            $dates['dateStartFilter']   = date('Y-m-d');
+            // $dates['dateStartFilter']    = date('Y-m-d', strtotime('-6 day', strtotime($dates['dateEndFilter'])));
         } else {
             $dates['dateEndFilter']      = $request->dateEndFilter;
             $dates['dateStartFilter']    = $request->dateStartFilter;
@@ -120,19 +121,19 @@ class TransactionController extends Controller
         $data = Transaction::query()
             ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
             ->whereIn('type', $type)
-            ->where('id_user', Auth::user()->id)
+            ->where('id_user', getUserID())
             ->orderBy($orderFilter, 'DESC')
             ->get();
         $income = Transaction::query()
             ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
             ->whereIn('type', $type)
-            ->where('id_user', Auth::user()->id)
+            ->where('id_user', getUserID())
             ->where('status', 'in')->sum('price');
 
         $outcome = Transaction::query()
             ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
             ->whereIn('type', $type)
-            ->where('id_user', Auth::user()->id)
+            ->where('id_user', getUserID())
             ->where('status', 'out')->sum('price');
         return view('transactionDetail', compact('page', 'data', 'dates', 'income', 'outcome', 'orderFilter', 'typeFilter'));
     }
@@ -175,7 +176,7 @@ class TransactionController extends Controller
             'note'      => $request->note,
             'status'    => $request->status,
             'date'      => $request->date,
-            'id_user'   => Auth::user()->id,
+            'id_user'   => getUserID(),
         ]);
         return redirect()->route('transaction.index', ['dateFilter' => $request->date])->with('success', 'berhasil memperbarui ' . $data->name);
     }

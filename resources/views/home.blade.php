@@ -13,7 +13,14 @@
     date_default_timezone_set('Asia/Jakarta');
 @endphp
 <div class="px-4 mb-3">
-    <h4 class="fw-bold mb-4">{{ Auth::user()->name }}</h4>
+    <h4 class="fw-bold mb-4">
+        @if (isOwner())
+            Owner
+        @else
+            Halo
+        @endif
+        {{ Auth::user()->name }}
+    </h4>
     @include('includes.alert')
     <div class="card rounded-4 border-0 mb-4 bg-white shadow-mini"
         style="
@@ -30,12 +37,14 @@
                         IDR {{ numberFormat($data['month'],0) }}
                     </p>
                 </div>
-                <div class="col-12">
-                    <p class="mb-1">Keseluruhan</p>
-                    <p class="mb-0 fs-4 fw-bold d-flex align-items-center text-warning">
-                        IDR {{ numberFormat($data['all'],0) }}
-                    </p>
-                </div>
+                @if (isOwner())
+                    <div class="col-12">
+                        <p class="mb-1">Keseluruhan</p>
+                        <p class="mb-0 fs-4 fw-bold d-flex align-items-center text-warning">
+                            IDR {{ numberFormat($data['all'],0) }}
+                        </p>
+                    </div>
+                @endif
             </div>
             <hr style="opacity: 0.05 !important">
             <small class="d-flex align-items-center">
@@ -49,19 +58,21 @@
     <p class="fw-bold mb-3">Pintasan</p>
     <div class="row">
         @foreach ($menu as $value)
-            <div class="col-4 d-flex justify-content-center align-items-center mb-4">
-                <a href="{{ $value['route'] == '' ? '#' : route($value['route']) }}"
-                    class="text-decoration-none text-white text-center px-3 py-4 d-block bg-dark border-0 w-100 rounded-5"
-                    style="
-                        background-image:url('app-assets/images/card-bg-empty.jpg');
-                        background-repeat: no-repeat;
-                        background-position: right top;
-                        background-size: cover;"
-                    >
-                    <i class="mb-2" data-feather="{{ $value['icon'] }}" width="25px"></i>
-                    <p class="fs-7 mb-0 fw-bold">{{ $value['name'] }}</p>
-                </a>
-            </div>
+            @if (in_array(Auth::user()->role,$value['access']))
+                <div class="col-4 d-flex justify-content-center align-items-center mb-4">
+                    <a href="{{ $value['route'] == '' ? '#' : route($value['route']) }}"
+                        class="text-decoration-none text-white text-center px-3 py-4 d-block bg-dark border-0 w-100 rounded-5"
+                        style="
+                            background-image:url('app-assets/images/card-bg-empty.jpg');
+                            background-repeat: no-repeat;
+                            background-position: right top;
+                            background-size: cover;"
+                        >
+                        <i class="mb-2" data-feather="{{ $value['icon'] }}" width="25px"></i>
+                        <p class="fs-7 mb-0 fw-bold">{{ $value['name'] }}</p>
+                    </a>
+                </div>
+            @endif
         @endforeach
     </div>
 </div>
