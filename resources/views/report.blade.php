@@ -217,14 +217,14 @@
         $('#table-sales').DataTable({
             paging: false,
             ordering: true,
-            order: [[1, 'DESC']],
+            order: [[1, 'desc']],
             searching: false,
             info: false,
         });
         $('#table-transaction').DataTable({
             paging: false,
             ordering: true,
-            order: [[0, 'DESC']],
+            order: [[0, 'desc']],
             searching: false,
             info: false,
         });

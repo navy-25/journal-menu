@@ -78,6 +78,12 @@ class HomeController extends Controller
                 'access'    => [1,2]
             ],
             [
+                'name'      => 'Laba Harian',
+                'icon'      => 'dollar-sign',
+                'route'     => 'profit.index',
+                'access'    => [1]
+            ],
+            [
                 'name'      => 'Catatan',
                 'icon'      => 'file',
                 'route'     => 'note.index',

@@ -92,27 +92,27 @@ class StatsController extends Controller
             ->where('sales.id_user', getUserID())
             ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
             ->whereBetween(DB::raw('TIME(created_at)'), $shift[0]['shift'])
-            ->count();
+            ->sum('qty');
         $data['shift_2'] = Sales::query()
             ->where('sales.id_user', getUserID())
             ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
             ->whereBetween(DB::raw('TIME(created_at)'), $shift[1]['shift'])
-            ->count();
+            ->sum('qty');
         $data['shift_3'] = Sales::query()
             ->where('sales.id_user', getUserID())
             ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
             ->whereBetween(DB::raw('TIME(created_at)'), $shift[2]['shift'])
-            ->count();
+            ->sum('qty');
         $data['shift_4'] = Sales::query()
             ->where('sales.id_user', getUserID())
             ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
             ->whereBetween(DB::raw('TIME(created_at)'), $shift[3]['shift'])
-            ->count();
+            ->sum('qty');
         $data['shift_5'] = Sales::query()
             ->where('sales.id_user', getUserID())
             ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
             ->whereBetween(DB::raw('TIME(created_at)'), $shift[4]['shift'])
-            ->count();
+            ->sum('qty');
 
         $shift[0]['total_pembeli'] = $data['shift_1'];
         $shift[1]['total_pembeli'] = $data['shift_2'];
@@ -120,7 +120,7 @@ class StatsController extends Controller
         $shift[3]['total_pembeli'] = $data['shift_4'];
         $shift[4]['total_pembeli'] = $data['shift_5'];
 
-        $data['stock'] = Stock::whereIn('id', [1, 20])->where('id_user', getUserID())->get();
+        $data['stock'] = Stock::where('id_user', getUserID())->get();
         return view('stats', compact('data', 'page', 'shift', 'dates'));
     }
 

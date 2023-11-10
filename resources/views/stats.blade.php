@@ -114,20 +114,30 @@
                         @foreach ($data['weekly'] as $key => $value)
                             @php
                                 $total  = 0;
+                                $profit  = 0;
                                 foreach ($value as $item) {
+                                    $gross_profit = $item->qty * $item->gross_profit;
+                                    $net_profit = $item->qty * $item->net_profit;
                                     $total += ($item->qty * $item->gross_profit);
+                                    $profit += ($gross_profit - $net_profit);
                                 }
                                 if($index == 4){
                                     break;
                                 }
                             @endphp
                             <div class="row">
-                                <div class="col-6 d-flex justify-content-start align-items-center">
+                                <div class="col-6 d-flex justify-content-start align-items-start">
                                     <i data-feather="calendar" class="me-2" style="width: 14px"></i>
                                     {{ formatDay($key) }}, {{ customDate($key,'d M') }}
                                 </div>
                                 <div class="col-6 d-flex justify-content-end">
-                                    <p class="m-0 fw-bold text-success">IDR  {{ numberFormat($total,0) }}</p>
+                                    <p class="m-0 text-end">
+                                        <small>IDR  {{ numberFormat($total,0) }}</small>
+                                        @if (isOwner())
+                                            <br>
+                                            <span class="text-success fw-bold">(IDR {{ numberFormat($profit,0) }})</span>
+                                        @endif
+                                    </p>
                                 </div>
                             </div>
                             <hr class="py-1 mt-2 mb-0" style="opacity: 0.05 !important">
@@ -155,25 +165,32 @@
                     @else
                         @foreach ($data['weekly-transaction'] as $key => $value)
                             @php
-                                $total  = 0;
+                                $in  = 0;
+                                $out  = 0;
                                 foreach ($value as $item) {
                                     if($item->status == 'in'){
-                                        $total += $item->price;
+                                        $in += $item->price;
                                     }else{
-                                        $total -= $item->price;
+                                        $out += $item->price;
                                     }
                                 }
+                                $diff = $in - $out;
                                 if($index == 4){
                                     break;
                                 }
                             @endphp
                             <div class="row">
-                                <div class="col-6 d-flex justify-content-start align-items-center">
+                                <div class="col-6 d-flex justify-content-start align-items-start">
                                     <i data-feather="calendar" class="me-2" style="width: 14px"></i>
                                     {{ formatDay($key) }}, {{ customDate($key,'d M') }}
                                 </div>
                                 <div class="col-6 d-flex justify-content-end">
-                                    <p class="m-0 fw-bold {{ $total > 0 ? 'text-success' : 'text-danger' }}">IDR  {{ numberFormat($total,0) }}</p>
+                                    <p class="m-0 text-end">
+                                        {{-- <small class="text-success">(IDR  {{ numberFormat($in,0) }})</small><br>
+                                        <small class="text-danger">(IDR {{ numberFormat($out,0) }})</small><br> --}}
+                                        <small>Sisa uang</small><br>
+                                        <span class="fw-bold {{ $diff < 0 ? 'text-danger' : '' }}">IDR  {{ numberFormat($diff,0) }}</span>
+                                    </p>
                                 </div>
                             </div>
                             <hr class="py-1 mt-2 mb-0" style="opacity: 0.05 !important">
@@ -271,17 +288,26 @@
                 @foreach ($data['weekly'] as $key => $value)
                     @php
                         $total  = 0;
+                        $profit  = 0;
                         foreach ($value as $item) {
+                            $gross_profit = $item->qty * $item->gross_profit;
+                            $net_profit = $item->qty * $item->net_profit;
                             $total += ($item->qty * $item->gross_profit);
+                            $profit += ($gross_profit - $net_profit);
                         }
                     @endphp
                     <div class="row">
-                        <div class="col-6 d-flex justify-content-start align-items-center">
+                        <div class="col-6 d-flex justify-content-start align-items-start">
                             <i data-feather="calendar" class="me-2" style="width: 15px"></i>
                             {{ formatDay($key) }}, {{ customDate($key,'d M') }}
                         </div>
                         <div class="col-6 d-flex justify-content-end">
-                            <p class="m-0 fw-bold text-success">IDR  {{ numberFormat($total) }}</p>
+                            <p class="m-0 text-end">
+                                <small>IDR  {{ numberFormat($total,0) }}</small>
+                                @if (isOwner())
+                                    <br><span class="fw-bold text-success">(IDR {{ numberFormat($profit,0) }})</span>
+                                @endif
+                            </p>
                         </div>
                     </div>
                     <hr class="py-1 my-2" style="opacity: 0.05 !important">
@@ -305,22 +331,29 @@
             <div class="modal-body">
                 @foreach ($data['weekly-transaction'] as $key => $value)
                     @php
-                        $total  = 0;
+                        $in  = 0;
+                        $out  = 0;
                         foreach ($value as $item) {
                             if($item->status == 'in'){
-                                $total += $item->price;
+                                $in += $item->price;
                             }else{
-                                $total -= $item->price;
+                                $out -= $item->price;
                             }
                         }
+                        $diff = $in - $out;
                     @endphp
                     <div class="row">
-                        <div class="col-6 d-flex justify-content-start align-items-center">
+                        <div class="col-6 d-flex justify-content-start align-items-start">
                             <i data-feather="calendar" class="me-2" style="width: 15px"></i>
                             {{ formatDay($key) }}, {{ customDate($key,'d M') }}
                         </div>
                         <div class="col-6 d-flex justify-content-end">
-                            <p class="m-0 fw-bold {{ $total > 0 ? 'text-success' : 'text-danger' }}">IDR  {{ numberFormat($total) }}</p>
+                            <p class="m-0 text-end">
+                                <small class="text-success">(IDR  {{ numberFormat($in,0) }})</small><br>
+                                <small class="text-danger">(IDR {{ numberFormat($out,0) }})</small><br><br>
+                                <small>Sisa uang</small><br>
+                                <span class="fw-bold {{ $diff < 0 ? 'text-danger' : '' }}">IDR  {{ numberFormat($diff,0) }}</span>
+                            </p>
                         </div>
                     </div>
                     <hr class="py-1 my-2" style="opacity: 0.05 !important">
@@ -425,46 +458,95 @@
     var sales_stats = JSON.parse('{{ $data['weekly'] }}'.replaceAll('&quot;','"'))
     var index = 0
     label_sales_stats = []
-    data_sales_stats = []
+    gross_sales_stats = []
+    profit_sales_stats = []
     Object.entries(sales_stats).forEach(([key, value]) => {
         if(index < 7){
             var temp_total = 0
+            var temp_profit = 0
             label_sales_stats.push(dateFormatDate(key))
             Object.entries(value).forEach(([x, y]) => {
-                temp_total += y.gross_profit * y.qty
+                var gross_profit = y.gross_profit * y.qty
+                var net_profit = y.net_profit * y.qty
+                temp_total += gross_profit
+                temp_profit += (gross_profit - net_profit)
             })
-            data_sales_stats.push(temp_total)
+            gross_sales_stats.push(temp_total)
+            profit_sales_stats.push(temp_profit)
         }
         index++
     })
-    data_sales_stats.reverse()
+    gross_sales_stats.reverse()
+    profit_sales_stats.reverse()
     label_sales_stats.reverse()
+
+    var isOwner = parseInt('{{ isOwner() }}')
+    if(isOwner == 1){
+        var dataset = [
+            {
+                axis: 'y',
+                label: 'Laba Kotor',
+                data: gross_sales_stats,
+                fill: true,
+                backgroundColor: [
+                    'rgba(255, 159, 64, 0.2)',
+                ],
+                borderColor: [
+                    'rgb(255, 159, 64)',
+                ],
+                borderWidth: 1,
+                pointBorderWidth: 2,
+                pointRadius: 8,
+                pointHitRadius: 4,
+            },
+            {
+                axis: 'y',
+                label: 'Laba Bersih',
+                data: profit_sales_stats,
+                fill: true,
+                backgroundColor: [
+                    'rgba(255, 159, 64, 0.6)',
+                ],
+                borderColor: [
+                    'rgb(255, 159, 64)',
+                ],
+                borderWidth: 1,
+                pointBorderWidth: 2,
+                pointRadius: 8,
+                pointHitRadius: 4,
+            }
+        ]
+    }else{
+        var dataset = [
+            {
+                axis: 'y',
+                label: 'Laba Kotor',
+                data: gross_sales_stats,
+                fill: true,
+                backgroundColor: [
+                    'rgba(255, 159, 64, 0.2)',
+                ],
+                borderColor: [
+                    'rgb(255, 159, 64)',
+                ],
+                borderWidth: 1,
+                pointBorderWidth: 2,
+                pointRadius: 8,
+                pointHitRadius: 4,
+            },
+        ]
+    }
+
     const data_sales_detail = {
         labels: label_sales_stats,
-        datasets: [{
-            axis: 'y',
-            label: 'Total',
-            data: data_sales_stats,
-            fill: true,
-            backgroundColor: [
-                'rgba(255, 159, 64, 0.2)',
-            ],
-            borderColor: [
-                'rgb(255, 159, 64)',
-            ],
-            borderWidth: 1,
-            pointBorderWidth: 2,
-            pointRadius: 8,
-            pointHitRadius: 4,
-        }]
+        datasets: dataset
     };
     new Chart(sales_detail, {
-        responsive: true,
+        responsive: false,
         maintainAspectRatio: true,
         type: 'line',
         data: data_sales_detail,
         options: {
-            // indexAxis: 'y',scales: {
             scales: {
                 y: {
                     ticks: {
@@ -482,50 +564,71 @@
     var transaction_stats = JSON.parse('{{ $data['weekly-transaction'] }}'.replaceAll('&quot;','"'))
     var index = 0
     label_transaction_stats = []
-    data_transaction_stats = []
+    in_transaction_stats = []
+    out_transaction_stats = []
     Object.entries(transaction_stats).forEach(([key, value]) => {
         if(index < 7){
-            var temp_total = 0
+            var temp_in = 0
+            var temp_out = 0
             label_transaction_stats.push(dateFormatDate(key))
             Object.entries(value).forEach(([x, y]) => {
                 if(y.status  == 'in'){
-                    temp_total = parseInt(temp_total) + parseInt(y.price)
+                    temp_in = parseInt(temp_in) + parseInt(y.price)
                 }else{
-                    temp_total = parseInt(temp_total) - parseInt(y.price)
+                    temp_out = parseInt(temp_out) + parseInt(y.price)
                 }
             })
-            data_transaction_stats.push(temp_total)
+            in_transaction_stats.push(temp_in)
+            out_transaction_stats.push(temp_out)
         }
         index++
     })
-    data_transaction_stats.reverse()
+    in_transaction_stats.reverse()
+    out_transaction_stats.reverse()
     label_transaction_stats.reverse()
     const data_transaction_detail = {
         labels: label_transaction_stats,
-        datasets: [{
-            axis: 'y',
-            label: 'Total',
-            data: data_transaction_stats,
-            fill: true,
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-            ],
-            borderColor: [
-                'rgb(255, 99, 132)',
-            ],
-            borderWidth: 1,
-            pointBorderWidth: 2,
-            pointRadius: 8,
-            pointHitRadius: 4,
-        }]
+        datasets: [
+            {
+                axis: 'y',
+                label: 'Uang Masuk',
+                data: in_transaction_stats,
+                fill: true,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                ],
+                borderColor: [
+                    'rgb(255, 99, 132)',
+                ],
+                borderWidth: 1,
+                pointBorderWidth: 2,
+                pointRadius: 8,
+                pointHitRadius: 4,
+            },
+            {
+                axis: 'y',
+                label: 'Uang Keluar',
+                data: out_transaction_stats,
+                fill: true,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)',
+                ],
+                borderColor: [
+                    'rgb(255, 99, 132)',
+                ],
+                borderWidth: 1,
+                pointBorderWidth: 2,
+                pointRadius: 8,
+                pointHitRadius: 4,
+            }
+        ]
     };
     new Chart(transaction_detail, {
-        responsive: true,
+        responsive: false,
         maintainAspectRatio: true,
         type: 'line',
         data: data_transaction_detail,
         options: {
-            // indexAxis: 'y',scales: {
             scales: {
                 y: {
                     ticks: {
@@ -579,19 +682,12 @@
         }]
     };
     new Chart(buy_detail, {
-        responsive: true,
+        responsive: false,
         maintainAspectRatio: true,
         type: 'bar',
         data: data_buy_detail,
         options: {
             indexAxis: 'y',
-            // scales: {
-            //     y: {
-            //         ticks: {
-            //             display: false,
-            //         }
-            //     }
-            // }
         }
     });
     // BUY DETAIL

@@ -9,6 +9,7 @@ use App\Http\Controllers\Dev\UsersController;
 use App\Http\Controllers\HomeController as PartnerHomeController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\NoteController;
+use App\Http\Controllers\ProfitController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\SettingsController;
@@ -113,6 +114,10 @@ Route::middleware(['auth'])->group(function () {
         Route::controller(ReportController::class)->prefix('report')->name('report.')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::post('/download', 'download')->name('download');
+        });
+
+        Route::controller(ProfitController::class)->prefix('profit')->name('profit.')->group(function () {
+            Route::get('/', 'index')->name('index');
         });
     });
 });
