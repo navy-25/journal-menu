@@ -376,11 +376,11 @@
             <div class="modal-body">
                 @foreach ($data['menu'] as $key => $value)
                     <div class="row">
-                        <div class="col-6 d-flex justify-content-start align-items-center">
+                        <div class="col-8 d-flex justify-content-start align-items-center">
                             <i data-feather="package" class="me-2" style="width: 15px"></i>
                             {{ $value->name }}
                         </div>
-                        <div class="col-6 d-flex justify-content-end">
+                        <div class="col-4 d-flex justify-content-end">
                             <p class="m-0 fw-bold text-success">{{ numberFormat($value->total_terjual) }}</p>
                         </div>
                     </div>
