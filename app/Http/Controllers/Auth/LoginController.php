@@ -13,14 +13,12 @@ class LoginController extends Controller
     public function index()
     {
         $page = 'Login';
-
         if (isset(Auth::user()->id) == true) {
             $role = Auth::user()->role;
             if ($role == 0) {
                 return redirect()->route('dev.home.index');
-            } else if ($role == 1) {
             } else {
-                return redirect()->route('stats.index');
+                return redirect()->route('home.index');
             }
         } else {
             return view('auth.login', compact('page'));

@@ -29,7 +29,7 @@
         <div class="card-body text-white p-4">
             <div class="row">
                 <div class="col-12 text-white mb-3">
-                    <p class="fs-5 mb-0">Saldo hari ini</p>
+                    <p class="fs-5 mb-0">Sisa saldo</p>
                     <p class="mb-3 d-flex align-items-center"
                         @if (isOwner())
                             data-bs-toggle="modal" data-bs-target="#filter"
@@ -74,7 +74,7 @@
         </div>
         @if (isOwner())
             <div class="col-6 d-flex align-items-center justify-content-end">
-                <a class="m-0 text-decoration-none text-dark" href="{{ route('transaction.show') }}">Selengkapnya</a>
+                <a class="m-0 text-decoration-none text-dark" href="{{ route('transaction.show') }}?dateStartFilter={{ $dateFilter }}&dateEndFilter={{ $dateFilter }}">Selengkapnya</a>
             </div>
         @endif
     </div>
@@ -118,9 +118,6 @@
                         <div class="col-6 d-flex align-items-center">
                             <i data-feather="calendar" class="me-2" style="width: 14px"></i>
                             <small class="me-4">{{ date('d M Y', strtotime($item->date)) }}</small>
-
-                            {{-- <i data-feather="user-plus" class="me-2" style="width: 14px"></i>
-                            <small>{{ date('d M Y H:i', strtotime($item->created_at)) }}</small> --}}
                         </div>
                         <div class="col-6 d-flex align-items-center">
                             @if ($item->note != '')

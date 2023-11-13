@@ -18,22 +18,20 @@ class ProfitController extends Controller
     {
         $page = 'Laba Harian';
         if ($request->all() == []) {
-            $dates['dateEndFilter']      = date('Y-m-d');
-            $dates['dateStartFilter']    = date('Y-m-d');
+            $dates['dateFilter']    = date('Y-m-d');
         } else {
-            $dates['dateEndFilter']      = $request->dateEndFilter;
-            $dates['dateStartFilter']    = $request->dateStartFilter;
+            $dates['dateFilter']      = $request->dateFilter;
         }
         $sales = Sales::query()
             ->where('sales.id_user', getUserID())
             ->join('menus as m', 'm.id', 'sales.id_menu')
-            ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
+            ->where('date', $dates['dateFilter'])
             ->get();
 
         $temp_hpp = Sales::query()
             ->where('sales.id_user', getUserID())
             ->join('menus as m', 'm.id', 'sales.id_menu')
-            ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
+            ->where('date', $dates['dateFilter'])
             ->get();
 
         $hpp = 0;
@@ -57,7 +55,7 @@ class ProfitController extends Controller
 
         $transaction = Transaction::query()
                 ->where('transactions.id_user', getUserID())
-                ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
+                ->where('date', $dates['dateFilter'])
                 ->orderBy('status','ASC')
                 ->get();
         return view('profit', compact('page','sales','transaction','hpp','diff','temp_diff','total', 'dates'));

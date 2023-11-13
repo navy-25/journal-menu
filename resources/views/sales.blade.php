@@ -50,7 +50,7 @@
             background-size: cover;
         ">
         <div class="card-body p-4 text-white">
-            <p class="fs-5 mb-0">Penjualan</p>
+            <p class="fs-5 mb-0">Total Penjualan</p>
             <p class="mb-3 d-flex align-items-center"
                 @if (isOwner())
                     data-bs-toggle="modal" data-bs-target="#filter"
@@ -75,7 +75,7 @@
         </div>
         @if (isOwner())
             <div class="col-6 d-flex align-items-center justify-content-end">
-                <a class="m-0 text-decoration-none text-dark" href="{{ route('sales.show') }}">Selengkapnya</a>
+                <a class="m-0 text-decoration-none text-dark" href="{{ route('sales.show') }}?dateStartFilter={{ $dateFilter }}&dateEndFilter={{ $dateFilter }}">Selengkapnya</a>
             </div>
         @endif
     </div>

@@ -36,16 +36,11 @@
             <div class="col-6">
                 <small class="m-0 d-flex align-items-center">
                     <i data-feather="calendar" class="me-2" style="width: 14px"></i>
-                    Tgl. Awal
+                    Tgl. Transaksi
                 </small>
-                <p class="fw-bold fs-6 mb-0">{{ dateFormat($dates['dateStartFilter']) }}</p>
             </div>
-            <div class="col-6">
-                <small class="m-0 d-flex align-items-center">
-                    <i data-feather="calendar" class="me-2" style="width: 14px"></i>
-                    Tgl. Akhir
-                </small>
-                <p class="fw-bold fs-6 mb-0">{{ dateFormat($dates['dateEndFilter']) }}</p>
+            <div class="col-6 text-end">
+                <p class="fw-bold fs-6 mb-0">{{ dateFormat($dates['dateFilter']) }}</p>
             </div>
         </div>
     </div>
@@ -219,17 +214,10 @@
             <div class="modal-body">
                 <form action="{{ route('profit.index') }}" method="get">
                     <div class="row">
-                        <div class="col-6">
-                            <label for="" class="mb-2">Tanggal awal</label>
+                        <div class="col-12">
                             <input type="date" class="form-control"
-                            value="{{ $dates['dateStartFilter'] }}"
-                            name="dateStartFilter">
-                        </div>
-                        <div class="col-6">
-                            <label for="" class="mb-2">Tanggal akhir</label>
-                            <input type="date" class="form-control"
-                            value="{{ $dates['dateEndFilter'] }}"
-                            name="dateEndFilter">
+                            value="{{ $dates['dateFilter'] }}"
+                            name="dateFilter">
                         </div>
                     </div>
                     <button class="d-none" id="btn-submit-filter" type="submit"></button>

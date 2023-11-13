@@ -72,7 +72,7 @@
                     <p class="fw-bold fs-6 mb-0">{{ count($data) }} pesanan</p>
                 </div>
                 <div class="col-6">
-                    <small class="m-0">Total Laba Kotor</small>
+                    <small class="m-0">Omset Penjualan</small>
                     <p class="fw-bold fs-6">IDR {{ numberFormat($gross_profit) }}</p>
                     @php
                         if($net_profit == 0 || $gross_profit == 0){
@@ -81,7 +81,7 @@
                             $percentase = $net_profit / $gross_profit * 100;
                         }
                     @endphp
-                    <small class="m-0">Total Laba Bersih ({{ numberFormat($percentase) }}%)</small>
+                    <small class="m-0">Total Keuntungan ({{ numberFormat($percentase) }}%)</small>
                     <p class="fw-bold fs-6 mb-0">IDR {{ numberFormat($net_profit) }}</p>
                 </div>
             </div>

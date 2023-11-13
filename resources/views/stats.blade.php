@@ -24,12 +24,21 @@
                 background-size: cover;"
             >
             <div class="card-body p-4 text-white">
-                <p class="fs-5 mb-0">
-                    Uang Kas
-                </p>
-                <p class="mb-2 fs-5 fw-bold d-flex align-items-center text-warning">
-                    IDR  {{ numberFormat($data['all']) }}
-                </p>
+                <div class="row mb-2">
+                    <div class="col-12 mb-3">
+                        <p class="mb-1">Omset Keseluruhan</p>
+                        <p class="mb-0 fs-4 fw-bold d-flex align-items-center text-warning">
+                            IDR  {{ numberFormat($data['omset']) }}
+                        </p>
+                    </div>
+                    <div class="col-12">
+                        <p class="mb-1">Total Laba Bersih</p>
+                        <p class="mb-0 fs-4 fw-bold d-flex align-items-center text-warning">
+                            IDR  {{ numberFormat($data['profit']) }}
+                        </p>
+                    </div>
+                </div>
+                <hr style="opacity: 0.05 !important">
                 <small class="d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#filter">
                     <i data-feather="calendar" class="me-2" style="width: 14px"></i>
                     {{ dateFormat($dates['dateStartFilter']) }} s/d {{ dateFormat($dates['dateEndFilter']) }}
@@ -186,8 +195,6 @@
                                 </div>
                                 <div class="col-6 d-flex justify-content-end">
                                     <p class="m-0 text-end">
-                                        {{-- <small class="text-success">(IDR  {{ numberFormat($in,0) }})</small><br>
-                                        <small class="text-danger">(IDR {{ numberFormat($out,0) }})</small><br> --}}
                                         <small>Sisa uang</small><br>
                                         <span class="fw-bold {{ $diff < 0 ? 'text-danger' : '' }}">IDR  {{ numberFormat($diff,0) }}</span>
                                     </p>
@@ -260,7 +267,6 @@
 
                         <i data-feather="clock" class="me-2" style="width: 14px"></i>
                         <span>{{ $value['shift'][1] }}</span>
-                        {{-- {{ implode(' s/d ', $value['shift']) }} --}}
                     </div>
                     <div class="col-4 d-flex justify-content-end align-items-center">
                         <p class="m-0 fw-bold text-dark text-end">
@@ -285,6 +291,10 @@
                 <p class="fs-6 m-0 fw-bold">Detail penjualan harian</p>
             </div>
             <div class="modal-body">
+                @php
+                    $total_weekly = 0;
+                    $total_omset = 0;
+                @endphp
                 @foreach ($data['weekly'] as $key => $value)
                     @php
                         $total  = 0;
@@ -295,6 +305,8 @@
                             $total += ($item->qty * $item->gross_profit);
                             $profit += ($gross_profit - $net_profit);
                         }
+                        $total_weekly += $profit;
+                        $total_omset += $total;
                     @endphp
                     <div class="row">
                         <div class="col-6 d-flex justify-content-start align-items-start">
@@ -302,16 +314,32 @@
                             {{ formatDay($key) }}, {{ customDate($key,'d M') }}
                         </div>
                         <div class="col-6 d-flex justify-content-end">
-                            <p class="m-0 text-end">
-                                <small>IDR  {{ numberFormat($total,0) }}</small>
+                            <div class="m-0 text-end">
+                                <p class="mb-0" style="font-size: 12px" class="me-2">Omset</p>
+                                <p>IDR  {{ numberFormat($total,0) }}</p>
                                 @if (isOwner())
-                                    <br><span class="fw-bold text-success">(IDR {{ numberFormat($profit,0) }})</span>
+                                    <p class="mt-2 mb-0" style="font-size: 12px" class="me-2">Keuntungan</p>
+                                    <p class="fw-bold text-success">IDR  {{ numberFormat($profit,0) }}</p>
                                 @endif
-                            </p>
+                            </div>
                         </div>
                     </div>
                     <hr class="py-1 my-2" style="opacity: 0.05 !important">
                 @endforeach
+            </div>
+            <div class="modal-footer">
+                <div class="w-100 d-flex justify-content-between align-content-start">
+                    @if (isOwner())
+                        <p class="fw-bold mb-0">Total Keuntungan</p>
+                        <p class="fw-bold mb-0 fs-3">IDR {{ numberFormat($total_weekly,0) }}</p>
+                    @else
+                        <p class="fw-bold mb-0">Total Penjualan</p>
+                        <p class="fw-bold mb-0 fs-3">IDR {{ numberFormat($total_omset,0) }}</p>
+                    @endif
+                </div>
+                <div class="alert bg-warning text-center w-100 p-2">
+                    Belum dikurangi pengeluaran
+                </div>
             </div>
         </div>
     </div>
@@ -329,6 +357,9 @@
                 <p class="fs-6 m-0 fw-bold">Detail transaksi harian</p>
             </div>
             <div class="modal-body">
+                @php
+                    $total_weekly_transaction = 0
+                @endphp
                 @foreach ($data['weekly-transaction'] as $key => $value)
                     @php
                         $in  = 0;
@@ -340,7 +371,8 @@
                                 $out -= $item->price;
                             }
                         }
-                        $diff = $in - $out;
+                        $diff = $in + $out;
+                        $total_weekly_transaction += $diff;
                     @endphp
                     <div class="row">
                         <div class="col-6 d-flex justify-content-start align-items-start">
@@ -351,13 +383,22 @@
                             <p class="m-0 text-end">
                                 <small class="text-success">(IDR  {{ numberFormat($in,0) }})</small><br>
                                 <small class="text-danger">(IDR {{ numberFormat($out,0) }})</small><br><br>
-                                <small>Sisa uang</small><br>
+                                <small>Selisih</small><br>
                                 <span class="fw-bold {{ $diff < 0 ? 'text-danger' : '' }}">IDR  {{ numberFormat($diff,0) }}</span>
                             </p>
                         </div>
                     </div>
                     <hr class="py-1 my-2" style="opacity: 0.05 !important">
                 @endforeach
+            </div>
+            <div class="modal-footer">
+                <div class="w-100 d-flex justify-content-between align-content-start">
+                    <p class="fw-bold mb-0">Sisa Uang Kas</p>
+                    <p class="fw-bold mb-0 fs-3">IDR {{ numberFormat($total_weekly_transaction,0) }}</p>
+                </div>
+                <div class="alert bg-warning text-center w-100 p-2">
+                    Belum dikurangi modal bahan
+                </div>
             </div>
         </div>
     </div>
@@ -485,7 +526,7 @@
         var dataset = [
             {
                 axis: 'y',
-                label: 'Laba Kotor',
+                label: 'Omset Penjualan',
                 data: gross_sales_stats,
                 fill: true,
                 backgroundColor: [
@@ -501,7 +542,7 @@
             },
             {
                 axis: 'y',
-                label: 'Laba Bersih',
+                label: 'Keuntungan',
                 data: profit_sales_stats,
                 fill: true,
                 backgroundColor: [

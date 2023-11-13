@@ -44,21 +44,26 @@ class StatsController extends Controller
             ->groupBy('date');
 
         $income = Sales::query()
-            ->join('menus as m', 'm.id', 'sales.id_menu')
-            ->where('sales.id_user', getUserID())
-            ->whereBetween('sales.date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
-            ->sum(DB::raw('sales.qty * m.price'));
+            ->where('id_user', getUserID())
+            ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
+            ->sum(DB::raw('qty * gross_profit'));
+
+        $income_clean = Sales::query()
+            ->where('id_user', getUserID())
+            ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
+            ->sum(DB::raw('(qty * gross_profit) - (qty * net_profit)'));
 
         $trans_outcome = Transaction::where('status', 'out')
             ->where('transactions.id_user', getUserID())
             ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
             ->sum('price');
-        $trans_intcome = Transaction::where('status', 'in')
+        $trans_income = Transaction::where('status', 'in')
             ->where('transactions.id_user', getUserID())
             ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
             ->sum('price');
 
-        $data['all'] = $trans_intcome - $trans_outcome;
+        $data['omset'] = $trans_income - $trans_outcome;
+        $data['profit'] = $income_clean - $trans_outcome;
         $data['qty'] = Sales::query()
             ->where('sales.id_user', getUserID())
             ->whereBetween('sales.date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
