@@ -422,7 +422,7 @@
                             {{ $value->name }}
                         </div>
                         <div class="col-4 d-flex justify-content-end">
-                            <p class="m-0 fw-bold text-success">{{ numberFormat($value->total_terjual) }}</p>
+                            <p class="m-0 fw-bold text-success">{{ numberFormat($value->total_terjual,0) }}</p>
                         </div>
                     </div>
                     <hr class="py-1 my-2" style="opacity: 0.05 !important">
