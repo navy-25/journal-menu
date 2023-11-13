@@ -111,7 +111,7 @@
             </div>
             <div id="chart_penjualan">
                 <div class="mb-4">
-                    <canvas id="sales_detail" class="w-100" style="min-height: 40px"></canvas>
+                    <canvas id="sales_detail" class="w-100 h-100"></canvas>
                 </div>
                 <div>
                     @php
