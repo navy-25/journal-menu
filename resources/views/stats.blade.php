@@ -583,7 +583,7 @@
         datasets: dataset
     };
     new Chart(sales_detail, {
-        responsive: true,
+        responsive: false,
         maintainAspectRatio: false,
         type: 'line',
         data: data_sales_detail,
@@ -665,7 +665,7 @@
         ]
     };
     new Chart(transaction_detail, {
-        responsive: true,
+        responsive: false,
         maintainAspectRatio: false,
         type: 'line',
         data: data_transaction_detail,
@@ -723,7 +723,7 @@
         }]
     };
     new Chart(buy_detail, {
-        responsive: true,
+        responsive: false,
         maintainAspectRatio: false,
         type: 'bar',
         data: data_buy_detail,
