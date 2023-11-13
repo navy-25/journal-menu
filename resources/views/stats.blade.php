@@ -588,6 +588,7 @@
         type: 'line',
         data: data_sales_detail,
         options: {
+            animation: false,
             scales: {
                 y: {
                     ticks: {
@@ -670,6 +671,7 @@
         type: 'line',
         data: data_transaction_detail,
         options: {
+            animation: false,
             scales: {
                 y: {
                     ticks: {
@@ -728,6 +730,7 @@
         type: 'bar',
         data: data_buy_detail,
         options: {
+            animation: false,
             indexAxis: 'y',
         }
     });
