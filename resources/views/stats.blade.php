@@ -163,7 +163,7 @@
             </div>
             <div id="chart_transaksi">
                 <div class="mb-4">
-                    <canvas id="transactionn_detail"></canvas>
+                    <canvas id="transactionn_detail" class="w-100 h-100"></canvas>
                 </div>
                 <div>
                     @php
@@ -214,7 +214,7 @@
             </div>
             <div id="chart_menu">
                 <div class="mb-4">
-                    <canvas id="buy_detail"></canvas>
+                    <canvas id="buy_detail" class="w-100 h-100"></canvas>
                 </div>
                 <div>
                     @php
