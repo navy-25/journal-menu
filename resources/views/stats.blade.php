@@ -111,7 +111,7 @@
             </div>
             <div id="chart_penjualan">
                 <div class="mb-4">
-                    <canvas id="sales_detail"></canvas>
+                    <canvas id="sales_detail" class="w-100" style="min-height: 40px"></canvas>
                 </div>
                 <div>
                     @php
@@ -584,10 +584,10 @@
     };
     new Chart(sales_detail, {
         responsive: false,
+        maintainAspectRatio: true,
         type: 'line',
         data: data_sales_detail,
         options: {
-            animation: false,
             scales: {
                 y: {
                     ticks: {
@@ -666,11 +666,10 @@
     };
     new Chart(transaction_detail, {
         responsive: false,
-        maintainAspectRatio: false,
+        maintainAspectRatio: true,
         type: 'line',
         data: data_transaction_detail,
         options: {
-            animation: false,
             scales: {
                 y: {
                     ticks: {
@@ -725,11 +724,10 @@
     };
     new Chart(buy_detail, {
         responsive: false,
-        maintainAspectRatio: false,
+        maintainAspectRatio: true,
         type: 'bar',
         data: data_buy_detail,
         options: {
-            animation: false,
             indexAxis: 'y',
         }
     });
