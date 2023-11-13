@@ -584,7 +584,6 @@
     };
     new Chart(sales_detail, {
         responsive: false,
-        maintainAspectRatio: false,
         type: 'line',
         data: data_sales_detail,
         options: {
