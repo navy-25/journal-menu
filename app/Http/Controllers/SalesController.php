@@ -64,7 +64,7 @@ class SalesController extends Controller
 
         $isClosed = Transaction::query()
             ->where('transactions.date', $dateFilter)
-            ->where('name', 'LIKE', "%Tutup Buku%")
+            ->where('name', 'LIKE', "%Omset Penjualan%")
             ->where('transactions.id_user', getUserID())
             ->count();
         return view('sales', compact('data', 'page', 'menu', 'total', 'qty', 'isClosed', 'dateFilter'));
@@ -139,28 +139,52 @@ class SalesController extends Controller
             $dateFilter = date('Y-m-d');
         }
 
-        $total_kotor = Sales::query()
+        $omset = Sales::query()
             ->where('date', $dateFilter)
             ->where('id_user', getUserID())
             ->sum(DB::raw('qty * gross_profit'));
+        $laba_kotor = Sales::query()
+            ->where('date', $dateFilter)
+            ->where('id_user', getUserID())
+            ->sum(DB::raw('(qty * gross_profit) - (qty * net_profit)'));
         $hpp = Sales::query()
             ->where('date', $dateFilter)
             ->where('id_user', getUserID())
             ->sum(DB::raw('qty * net_profit'));
 
-        if ($total_kotor == 0) {
+        if ($omset == 0) {
             return redirect()->back()->with('error', 'Belum ada penjualan hari ini');
         }
 
+        // Transaction::create([
+        //     'name'      => 'Modal Penjualan ' . customDate($dateFilter, 'd M'),
+        //     'price'     => $hpp,
+        //     'type'      => 8,
+        //     'id_user'   => getUserID(),
+        //     'status'    => 'out',
+        //     'note'      => 'Tutup buku harian tanggal '.customDate($dateFilter, 'd M Y'),
+        //     'date'      => $dateFilter,
+        // ]);
+
         Transaction::create([
-            'name'      => 'Tutup buku ' . customDate($dateFilter, 'd M'),
-            'price'     => $total_kotor,
-            'type'      => 6,
+            'name'      => 'Tutup Buku ' . customDate($dateFilter, 'd M'),
+            'price'     => $omset,
+            'type'      => 9,
             'id_user'   => getUserID(),
             'status'    => 'in',
-            'note'      => 'Laba kotor : IDR ' . numberFormat($total_kotor, 0) . ', Laba bersih : IDR ' . numberFormat($total_kotor - $hpp, 0),
+            'note'      => 'Laba kotor : IDR ' . numberFormat($laba_kotor, 0),
             'date'      => $dateFilter,
         ]);
+
+        // Transaction::create([
+        //     'name'      => 'Laba Kotor ' . customDate($dateFilter, 'd M'),
+        //     'price'     => $total_kotor,
+        //     'type'      => 8,
+        //     'id_user'   => getUserID(),
+        //     'status'    => 'in',
+        //     'note'      => 'Tutup buku harian tanggal '.customDate($dateFilter, 'd M Y'),
+        //     'date'      => $dateFilter,
+        // ]);
         return redirect()->back()->with('success', 'berhasil menambahkan data penjualan hari ini (Tutup buku harian)');
     }
 

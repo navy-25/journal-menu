@@ -190,6 +190,14 @@ class TransactionController extends Controller
     public function destroy(Request $request, Transaction $transaction)
     {
         $data = Transaction::find($request->id);
+        // if ($data->type == 9) {
+        //     Transaction::query()
+        //         ->where('transactions.date', $data->date)
+        //         ->where('type', 8)
+        //         ->where('transactions.id_user', getUserID())
+        //         ->delete();
+        // }
+
         $data->delete();
         return redirect()->back()->with('success', 'data berhasil dihapus');
     }

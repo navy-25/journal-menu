@@ -23,7 +23,7 @@ class ReportController extends Controller
 
         if ($request->all() == []) {
             $dates['dateEndFilter']      = date('Y-m-d');
-            $dates['dateStartFilter']    = date('Y-m-d', strtotime('-1 weeks', strtotime($dates['dateEndFilter'])));
+            $dates['dateStartFilter']    = date('Y-m-d', strtotime('-1 month', strtotime($dates['dateEndFilter'])));
         } else {
             $dates['dateEndFilter']      = $request->dateEndFilter;
             $dates['dateStartFilter']    = $request->dateStartFilter;

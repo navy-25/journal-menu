@@ -81,7 +81,7 @@
 <div class="px-4 mb-3">
     <div class="row mb-4 px-0">
         <div class="col-12 d-flex align-items-center mb-2">
-            <h6 class="fw-bold">Buku Kas</h6>
+            <h6 class="fw-bold">Detail Kas</h6>
         </div>
         <div class="col-12">
             <table id="table-cash" class="table table-bordered table-striped w-100 mx-0">
@@ -99,10 +99,15 @@
                     @foreach ($transaction as $key => $value)
                         @php
                             $balance = $value->price;
-                            if ($key == 0) {
-                                $temp_balance = $balance - $hpp;
+                            if ($value->type == 9) {
+                                $temp_balance = $balance;
                             }else{
-                                $temp_balance -= $balance;
+                                if ($value->status == 'in') {
+                                    $temp_balance += $balance;
+                                }
+                                if ($value->status == 'out') {
+                                    $temp_balance -= $balance;
+                                }
                             }
                         @endphp
                         <tr>

@@ -108,6 +108,8 @@ if (!function_exists('transactionType')) {
             4 => 'Kebutuhan Alat',
             5 => 'Kebutuhan Outlet',
             6 => 'Kas Outlet',
+            8 => 'Modal Penjualan',
+            9 => 'Omset Penjualan',
             7 => 'Lainnya',
         ];
         return $type == '' ? $list : $list[$type];

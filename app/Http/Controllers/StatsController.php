@@ -6,6 +6,7 @@ use App\Models\Sales;
 use App\Models\Stats;
 use App\Models\Stock;
 use App\Models\Transaction;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -28,7 +29,6 @@ class StatsController extends Controller
             $dates['dateEndFilter']      = $request->dateEndFilter;
             $dates['dateStartFilter']    = $request->dateStartFilter;
         }
-
         $data['weekly'] = Sales::query()
             ->join('menus as m', 'm.id', 'sales.id_menu')
             ->orderBy('sales.date', 'DESC')
@@ -43,27 +43,31 @@ class StatsController extends Controller
             ->get()
             ->groupBy('date');
 
-        $income = Sales::query()
-            ->where('id_user', getUserID())
-            ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
-            ->sum(DB::raw('qty * gross_profit'));
+        // $income = Sales::query()
+        //     ->where('id_user', getUserID())
+        //     ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
+        //     ->sum(DB::raw('qty * gross_profit'));
 
-        $income_clean = Sales::query()
+        // $trans_outcome = Transaction::where('status', 'out')
+        //     ->where('transactions.id_user', getUserID())
+        //     ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
+        //     ->sum('price');
+        // $trans_income = Transaction::where('status', 'in')
+        //     ->where('transactions.id_user', getUserID())
+        //     ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
+        //     ->sum('price');
+
+        $data['omset'] =  Transaction::where('status', 'in')
+            ->where('transactions.id_user', getUserID())
+            ->where('transactions.type', 9)
+            ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
+            ->sum('price');
+
+        $data['laba_kotor'] =  Sales::query()
             ->where('id_user', getUserID())
             ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
             ->sum(DB::raw('(qty * gross_profit) - (qty * net_profit)'));
 
-        $trans_outcome = Transaction::where('status', 'out')
-            ->where('transactions.id_user', getUserID())
-            ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
-            ->sum('price');
-        $trans_income = Transaction::where('status', 'in')
-            ->where('transactions.id_user', getUserID())
-            ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
-            ->sum('price');
-
-        $data['omset'] = $trans_income - $trans_outcome;
-        $data['profit'] = $income_clean - $trans_outcome;
         $data['qty'] = Sales::query()
             ->where('sales.id_user', getUserID())
             ->whereBetween('sales.date', [$dates['dateStartFilter'], $dates['dateEndFilter']])

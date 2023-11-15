@@ -31,7 +31,7 @@
         </div>
         @if (date('H:i') > '22:00' && date('H:i') < '23:59')
             @php
-                $is_closed = DB::table('transactions')->where('date',date('Y-m-d'))->where('id_user',Auth::user()->id)->where('type',6)->where("name", "LIKE", "%Tutup Buku%")->count();
+                $is_closed = DB::table('transactions')->where('date',date('Y-m-d'))->where('id_user',Auth::user()->id)->where('type',9)->count();
             @endphp
             @if ($is_closed == 0)
                 <div style="position: fixed;bottom:100px;left:20px;z-index:999">

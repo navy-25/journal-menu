@@ -21,24 +21,18 @@ class HomeController extends Controller
         $page = 'Beranda';
         $dates['dateEndFilter']      = date('Y-m-t');
         $dates['dateStartFilter']    = date('Y-m-01');
-        $trans_outcome = Transaction::where('status', 'out')
+
+        $trans_in_this_month = Transaction::where('status', 'in')
             ->where('transactions.id_user', getUserID())
             ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
             ->sum('price');
-        $trans_intcome = Transaction::where('status', 'in')
+        $trans_out_this_month = Transaction::where('status', 'out')
             ->where('transactions.id_user', getUserID())
             ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
             ->sum('price');
 
-        $data['month'] = $trans_intcome - $trans_outcome;
-
-        $trans_outcome = Transaction::where('status', 'out')
-            ->where('transactions.id_user', getUserID())
-            ->sum('price');
-        $trans_intcome = Transaction::where('status', 'in')
-            ->where('transactions.id_user', getUserID())
-            ->sum('price');
-        $data['all'] = $trans_intcome - $trans_outcome;
+        $data['month'] = $trans_in_this_month;
+        $data['sisa'] = $trans_in_this_month - $trans_out_this_month;
 
         $menu = [
             [
@@ -78,7 +72,7 @@ class HomeController extends Controller
                 'access'    => [1,2]
             ],
             [
-                'name'      => 'Laba Harian',
+                'name'      => 'Laba Kotor',
                 'icon'      => 'dollar-sign',
                 'route'     => 'profit.index',
                 'access'    => [1]

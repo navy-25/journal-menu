@@ -26,15 +26,15 @@
             <div class="card-body p-4 text-white">
                 <div class="row mb-2">
                     <div class="col-12 mb-3">
-                        <p class="mb-1">Omset Keseluruhan</p>
+                        <p class="mb-1">Total Omset Penjualan</p>
                         <p class="mb-0 fs-4 fw-bold d-flex align-items-center text-warning">
                             IDR  {{ numberFormat($data['omset']) }}
                         </p>
                     </div>
                     <div class="col-12">
-                        <p class="mb-1">Total Laba Bersih</p>
+                        <p class="mb-1">Total Keuntungan Penjualan</p>
                         <p class="mb-0 fs-4 fw-bold d-flex align-items-center text-warning">
-                            IDR  {{ numberFormat($data['profit']) }}
+                            IDR {{ numberFormat($data['laba_kotor'],0) }}
                         </p>
                     </div>
                 </div>

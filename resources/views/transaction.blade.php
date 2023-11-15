@@ -96,9 +96,19 @@
                         {{ $item }}
                     </textarea>
                     <div class="row mb-2">
-                        <div class="col-7" onclick="edit('{{ $key }}','{{ route('transaction.update') }}')" data-bs-toggle="modal" data-bs-target="#modal" >
+                        <div class="col-7"
+                            @if ($item->type == 9)
+                            @elseif ($item->type == 8)
+                            @else
+                                onclick="edit('{{ $key }}','{{ route('transaction.update') }}')"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modal"
+                            @endif
+                        >
                             <p class="fw-bold fs-6 m-0 text-capitalize">{{ $item->name }}</p>
-                            <p class="m-0 mb-2">{{ transactionType($item->type) }} </p>
+                            <p class="m-0 mb-2">
+                                {{ transactionType($item->type) }}
+                            </p>
                         </div>
                         <div class="col-5 d-flex align-items-top justify-content-end">
                             <a href="#" class="fw-bold m-0 d-flex align-items-center justify-content-center text-dark bg-white text-decoration-none" style="border-radius: 100% !important;">
@@ -121,9 +131,11 @@
                         </div>
                         <div class="col-6 d-flex align-items-center">
                             @if ($item->note != '')
-                                <a href="#" class="text-dark ms-auto text-decoration-none me-4"  data-bs-toggle="modal" data-bs-target="#modalDetail" onclick="note('{{ $item->note }}')">Catatan</a>
+                                <a href="#" class="text-dark ms-auto text-decoration-none"  data-bs-toggle="modal" data-bs-target="#modalDetail" onclick="note('{{ $item->note }}')">Catatan</a>
                             @endif
-                            <a href="#" class="text-danger text-decoration-none ms-auto" onclick="alert_confirm('{{ route('transaction.destroy',['id'=>$item->id]) }}','Hapus {{ $item->name }}')">Hapus</a>
+                            @if ($item->type != 8)
+                                <a href="#" class="text-danger text-decoration-none ms-auto" onclick="alert_confirm('{{ route('transaction.destroy',['id'=>$item->id]) }}','Hapus {{ $item->name }}')">Hapus</a>
+                            @endif
                         </div>
                     </div>
                     <hr style="opacity: 0.1">
@@ -178,7 +190,11 @@
                                 <label for="" class="mb-2 w-100">Untuk keperluan</label>
                                 <select name="type" id="type" class="form-select">
                                     @foreach (transactionType() as $key => $value)
-                                        <option value="{{ $key }}">{{ $value }}</option>
+                                        @if ($key == 8)
+                                        @elseif ($key == 9)
+                                        @else
+                                            <option value="{{ $key }}">{{ $value }}</option>
+                                        @endif
                                     @endforeach
                                 </select>
                             </div>

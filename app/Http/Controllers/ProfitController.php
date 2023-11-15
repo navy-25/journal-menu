@@ -16,7 +16,7 @@ class ProfitController extends Controller
      */
     public function index(Request $request)
     {
-        $page = 'Laba Harian';
+        $page = 'Laba Kotor';
         if ($request->all() == []) {
             $dates['dateFilter']    = date('Y-m-d');
         } else {
