@@ -52,21 +52,38 @@
             <table class="table table-bordered table-striped w-100 mx-0">
                 <thead>
                     <tr>
-                        <td>#</td>
-                        <td>Value</td>
-                        <td>Status</td>
+                        <td style="width: 30%">#</td>
+                        <td style="width: 35%">Value</td>
+                        <td style="width: 35%">Status</td>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    {{-- <tr>
                         <td>Selisih</td>
-                        <td>{{ numberFormat(($temp_diff - $total) / 1000,0) }}</td>
+                        <td class="text-end">IDR {{ numberFormat(($temp_diff - $total) / 1000,0) }}</td>
                         <td>{{ $diff }}</td>
-                    </tr>
+                    </tr> --}}
                     <tr>
                         <td>Sisa Kas</td>
-                        <td id="finance-value"></td>
+                        <td id="finance-value" class="text-end"></td>
                         <td id="finance-status">
+                            <div class="spinner-border spinner-border-sm" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Omset</td>
+                        <td id="omset-value" class="text-end"></td>
+                        <td id="omset-status" class="text-danger">
+                            <div class="spinner-border spinner-border-sm" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Laba Kotor</td>
+                        <td colspan="2" id="laba-kotor-value" class="text-center text-success fw-bold">
                             <div class="spinner-border spinner-border-sm" role="status">
                                 <span class="visually-hidden">Loading...</span>
                             </div>
@@ -127,15 +144,15 @@
                             var nominal = '{{ numberFormat($temp_balance,0) }}'.replaceAll('-','')
                             if(funds == 0 ){
                                 $('#finance-status').text('EMPTY')
-                                $('#finance-value').text(nominal)
+                                $('#finance-value').text('IDR '+nominal)
                             }else if(funds > 0 ){
                                 $('#finance-status').text('PROFIT')
-                                $('#finance-value').text(nominal)
+                                $('#finance-value').text('IDR '+nominal)
                                 $('#finance-status').addClass('text-success')
                                 $('#finance-value').addClass('text-success')
                             }else{
-                                $('#finance-status').text('MIN')
-                                $('#finance-value').text(nominal)
+                                $('#finance-status').text('MINUS')
+                                $('#finance-value').text('IDR '+nominal)
                                 $('#finance-status').addClass('text-danger')
                                 $('#finance-value').addClass('text-danger')
                             }
@@ -253,6 +270,9 @@
             searching: false,
             info: false,
         });
+        $('#laba-kotor-value').text('IDR {{ numberFormat($total_clean,0) }}')
+        $('#omset-value').text('IDR {{ numberFormat($total,0) }}')
+        $('#omset-status').text('IDR {{ numberFormat($total_hpp,0) }} (HPP)')
     });
 </script>
 @endsection
