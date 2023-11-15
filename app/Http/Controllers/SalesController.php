@@ -64,7 +64,7 @@ class SalesController extends Controller
 
         $isClosed = Transaction::query()
             ->where('transactions.date', $dateFilter)
-            ->where('name', 'LIKE', "%Omset Penjualan%")
+            ->where('transactions.type', 9)
             ->where('transactions.id_user', getUserID())
             ->count();
         return view('sales', compact('data', 'page', 'menu', 'total', 'qty', 'isClosed', 'dateFilter'));
