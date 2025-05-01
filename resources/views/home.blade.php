@@ -62,24 +62,41 @@
     <div class="row">
         @if (isOwner())
             <div class="col-6 mb-3">
-        @else
-            <div class="col-12 mb-3">
-        @endif
-            <div class="card bg-warning text-white rounded-4 border-0">
-                <div class="card-body">
-                    <div class="bg-white mb-4 d-flex align-items-center justify-content-center rounded-3" style="width: 50px; aspect-ratio: 1/1">
-                        <i class="text-warning" data-feather="credit-card"></i>
+                <div class="card bg-warning text-white rounded-4 border-0">
+                    <div class="card-body">
+                        <div class="bg-white mb-4 d-flex align-items-center justify-content-center rounded-3" style="width: 50px; aspect-ratio: 1/1">
+                            <i class="text-warning" data-feather="credit-card"></i>
+                        </div>
+                        <p class="mb-1 text-small">
+                            Kas Bulan
+                            {{ month((int)date('m')) }}
+                        </p>
+                        <p class="mb-0 fs-5 fw-bold d-flex align-items-center">
+                            IDR {{ numberFormat($data['month'],0) }}
+                        </p>
                     </div>
-                    <p class="mb-1 text-small">
-                        Kas Bulan
-                        {{ month((int)date('m')) }}
-                    </p>
-                    <p class="mb-0 fs-5 fw-bold d-flex align-items-center">
-                        IDR {{ numberFormat($data['month'],0) }}
-                    </p>
                 </div>
             </div>
-        </div>
+        @else
+            <div class="col-12 mb-3">
+                <div class="row">
+                    <div class="col-3">
+                        <div class="bg-white d-flex align-items-center justify-content-center rounded-3" style="width: 50px; aspect-ratio: 1/1">
+                            <i class="text-warning" data-feather="credit-card"></i>
+                        </div>
+                    </div>
+                    <div class="col-9 text-end">
+                        <p class="mb-1 text-small">
+                            Kas Bulan
+                            {{ month((int)date('m')) }}
+                        </p>
+                        <p class="mb-0 fs-5 fw-bold d-flex align-items-center">
+                            IDR {{ numberFormat($data['month'],0) }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        @endif
         @if (isOwner())
             <div class="col-6 mb-3">
                 <div class="card bg-white text-dark rounded-4 border-0">
