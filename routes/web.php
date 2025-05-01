@@ -7,6 +7,7 @@ use App\Http\Controllers\Dev\HomeController;
 use App\Http\Controllers\Dev\SettingsController as DevSettingsController;
 use App\Http\Controllers\Dev\UsersController;
 use App\Http\Controllers\HomeController as PartnerHomeController;
+use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\ProfitController;
@@ -19,7 +20,8 @@ use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect()->route('login.form');
+    $page = 'Welcome Screen';
+    return view('auth.splass_screen', compact('page'));
 });
 
 Route::controller(LoginController::class)->prefix('login')->name('login.')->group(function () {
@@ -118,6 +120,13 @@ Route::middleware(['auth'])->group(function () {
 
         Route::controller(ProfitController::class)->prefix('profit')->name('profit.')->group(function () {
             Route::get('/', 'index')->name('index');
+        });
+
+        Route::controller(MaterialController::class)->prefix('material')->name('material.')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::post('/store', 'store')->name('store');
+            Route::post('/update', 'update')->name('update');
+            Route::get('/destroy', 'destroy')->name('destroy');
         });
     });
 });

@@ -20,13 +20,28 @@
         <script src="{{ asset('js/feather-icons.js') }}"></script>
         @include('includes.customCss')
         @yield('css')
+
+        <style>
+            @media screen and (min-width: 768px) {
+                body {
+                    max-width: 450px;
+                    margin: 0 auto
+                }
+                html {
+                    background: rgb(37, 37, 37);
+                }
+            }
+            .form-control{
+                padding: 1rem 1.4rem !important;
+                height: 60px !important;
+            }
+        </style>
     </head>
     <body>
-        <div id="spinner" class="bg-white">
+        <div id="spinner">
             <center>
-                <center>
-                    <div class="spinner-border text-warning mt-5" role="status"></div>
-                </center>
+                {{-- <div class="spinner-border text-warning mt-5" role="status"></div> --}}
+                <img width="100px" src="{{ asset('app-assets/images/pizza.gif') }}" alt="">
             </center>
         </div>
 

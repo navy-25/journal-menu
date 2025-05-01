@@ -2,27 +2,27 @@
 
 return [
     [
-        'name'      => 'Statistik',
+        'name'      => 'Statistics',
         'icon'      => 'pie-chart',
         'route'     => 'stats.index',
     ],
     [
-        'name'      => 'Transaksi',
+        'name'      => 'Transactions',
         'icon'      => 'repeat',
         'route'     => 'transaction.index',
     ],
     [
-        'name'      => 'Berannda',
+        'name'      => 'Home',
         'icon'      => 'home',
         'route'     => 'home.index',
     ],
     [
-        'name'      => 'Penjualan',
+        'name'      => 'Cashier',
         'icon'      => 'shopping-cart',
         'route'     => 'sales.index',
     ],
     [
-        'name'      => 'Pengaturan',
+        'name'      => 'Settings',
         'icon'      => 'settings',
         'route'     => 'settings.index',
     ],

@@ -20,48 +20,72 @@
         <script src="{{ asset('js/feather-icons.js') }}"></script>
         @include('includes.customCss')
         @yield('css')
+
+        <style>
+            @media screen and (min-width: 768px) {
+                body {
+                    max-width: 450px;
+                    margin: 0 auto
+                }
+                html {
+                    background: rgb(37, 37, 37);
+                }
+            }
+            .form-control{
+                padding: 1rem 1.4rem !important;
+                height: 60px !important;
+            }
+        </style>
     </head>
     <body>
-        <div id="spinner" class="bg-white">
+        <div id="spinner">
             <center>
-                <center>
-                    <div class="spinner-border text-warning mt-5" role="status"></div>
-                </center>
+                {{-- <div class="spinner-border text-warning mt-5" role="status"></div> --}}
+                <img width="100px" src="{{ asset('app-assets/images/pizza.gif') }}" alt="">
             </center>
         </div>
-        @if (date('H:i') > '22:00' && date('H:i') < '23:59')
+        {{-- @if (date('H:i') > '22:00' && date('H:i') < '23:59')
             @php
                 $is_closed = DB::table('transactions')->where('date', date('Y-m-d'))->where('id_user', getUserID())->where('type', 9)->count();
             @endphp
             @if ($is_closed == 0)
-                <div style="position: fixed;bottom:100px;left:20px;z-index:999">
-                    <div class="alert alert-primary d-flex align-items-center border-0" role="alert">
-                        <i data-feather="smile" class="me-3"></i>
-                        <p class="m-0">
-                            jangan lupa <strong>tutup buku</strong> ya!
+                <div id="reminder" style="position: fixed;bottom:150px;z-index:999;margin-left:10px">
+                    <div class="alert alert-primary text-center d-block border-0 rounded-4" style="box-shadow: 0px 0px 20px 0px #b9b9b9 !important;" role="alert">
+                        <i data-feather="smile" style="width: 40px;height: 40px;" class="mb-3"></i>
+                        <p class="m-0 text-small">
+                            Jangan lupa <br> <strong>tutup buku</strong>
                         </p>
                     </div>
                 </div>
             @endif
-        @endif
+        @endif --}}
 
-        <nav id="nav-bottom" class="navbar navbar-expand-lg bg-light fixed-bottom py-2 px-3 shadow" style="height: 75px !important;">
-            <div class="d-flex justify-content-around w-100 align-items-center">
-                @foreach (config('menu') as $value)
-                    <a  href="{{ $value['route'] == '' ? '#' : route($value['route']) }}"
-                        class="text-decoration-none" style="color: {{ Route::current()->getName() == $value['route'] ? '#000000e6' : 'grey' }} !important">
-                        <i data-feather="{{ $value['icon'] }}"></i>
-                    </a>
-                @endforeach
+        <nav id="nav-bottom" class="navbar navbar-expand-lg fixed-bottom mb-2" style="height: fit-content !important;">
+            <div class="py-2 px-3 w-100">
+                <div class="d-flex justify-content-around w-100 align-items-center bg-white rounded-4" style="box-shadow: 0px 0px 20px 0px #b9b9b9 !important;">
+                    @foreach (config('menu') as $value)
+                        <a
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="top"
+                            title="{{ $value['name'] }}"
+                            href="{{ $value['route'] == '' ? '#' : route($value['route']) }}"
+                            class="text-decoration-none d-flex align-items-center justify-content-center py-4 pb-0"
+                            style="
+                                color: {{ Route::current()->getName() == $value['route'] ? '#ff5e00' : 'grey' }} !important;
+                            ">
+                            <center>
+                                <i class="mb-3" data-feather="{{ $value['icon'] }}"></i>
+                                <div class="{{ Route::current()->getName() == $value['route'] ? 'bg-warning' : 'bg-transparent' }} rounded-pill mb-2" style="width: 40px; height: 5px"></div>
+                            </center>
+                        </a>
+                    @endforeach
+                </div>
             </div>
         </nav>
 
-        <div class="container p-3 vh-100 px-0 bg-white">
+        <div class="container p-3 px-0" style="min-height: 100vh">
             @yield('content')
-            <div id="padding-bottom">
-                <br><br><br><br><br><br>
-            </div>
-            <br><br><br><br><br>
+            <div class="bg-body w-100" id="padding-bottom" style="height: 150px"></div>
         </div>
 
         <script src="{{ asset('js/jquery-3.6.3.min.js') }}"></script>

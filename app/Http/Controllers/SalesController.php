@@ -27,7 +27,7 @@ class SalesController extends Controller
             $dateFilter = date('Y-m-d');
         }
 
-        $page = 'Penjualan';
+        $page = 'e-Kasir';
         $menu = Menu::where('id_user', getUserID())->where('status', 1)->orderBy('is_promo', 'DESC')->orderBy('price', 'DESC')->orderBy('name', 'DESC')->get();
         $data = Sales::query()
             ->join('menus as m', 'm.id', 'sales.id_menu')
@@ -290,6 +290,7 @@ class SalesController extends Controller
     {
         $data = SalesGroup::find($request->id);
         $sales = Sales::where('sales_group_id', $data->id)->where('id_user', getUserID())->get();
+
 
         $stock = Stock::where('id_user', getUserID())->get();
         foreach ($sales as $value) {

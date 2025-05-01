@@ -14,7 +14,7 @@ class SettingsController extends Controller
      */
     public function index()
     {
-        $page = 'Pengaturan';
+        $page = 'Settings';
 
         $stock_menu = [
             [
@@ -22,10 +22,15 @@ class SettingsController extends Controller
                 'route' => route('menu.index'),
                 'icon'  => 'coffee',
             ],
+            // [
+            //     'name'  => 'Bahan',
+            //     'route' => route('stock.index'),
+            //     'icon'  => 'package',
+            // ],
             [
-                'name'  => 'Bahan',
-                'route' => route('stock.index'),
-                'icon'  => 'package',
+                'name'  => 'Harga Bahan',
+                'route' => route('material.index'),
+                'icon'  => 'book',
             ],
         ];
         $account = [
@@ -39,22 +44,22 @@ class SettingsController extends Controller
                 'route' => route('account.password'),
                 'icon'  => 'key',
             ],
-            [
-                'name'  => 'S&K',
-                'route' => '#',
-                'icon'  => 'file-text',
-            ],
         ];
         $more = [
+            // [
+            //     'name'  => 'Laporan',
+            //     'route' => route('report.index'),
+            //     'icon'  => 'printer',
+            // ],
             [
                 'name'  => 'Catatan',
                 'route' => route('note.index'),
                 'icon'  => 'file-text',
             ],
             [
-                'name'  => 'Laporan',
-                'route' => route('report.index'),
-                'icon'  => 'printer',
+                'name'  => 'S&K',
+                'route' => '#',
+                'icon'  => 'file-text',
             ],
         ];
         return view('settings', compact('page', 'stock_menu', 'more', 'account'));

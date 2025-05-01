@@ -1,4 +1,4 @@
-@extends('layouts.dev')
+@extends('layouts.master')
 
 @section('css')
 <style>
@@ -12,37 +12,30 @@
 @php
     date_default_timezone_set('Asia/Jakarta');
 @endphp
+@include('includes.alert')
 {{-- NAV BACK --}}
-<div class="px-4 py-4 mb-3 bg-white shadow-mini fixed-top d-flex align-items-center">
-    <a href="{{ route('settings.index') }}" class="text-decoration-none text-dark">
-        <i data-feather="arrow-left" class="me-2 my-0 py-0" style="width: 18px"></i>
+<div id="nav-top" class="px-4 py-3 mb-3 fixed-top d-flex align-items-center justify-content-between bg-body-blur">
+    <a href="{{ route('settings.index') }}" class="btn btn-light bg-white outline-0 border-0 shadow-none p-0 rounded-4 d-flex align-items-center justify-content-center" style="width: 50px; aspect-ratio: 1/1">
+        <i data-feather="chevron-left"></i>
     </a>
-    <p class="fw-bold m-0 p-0">{{ $page }}</p>
+    <h4 class="fw-bold mb-0">{{ $page }}</h4>
 </div>
 <div style="height: 100px !important"></div>
 {{-- END NAV BACK --}}
 
-<div class="px-4 mb-3">
-    @include('includes.alert')
-    <div class="row mb-4 px-0">
-        <div class="col-12 d-flex align-items-center">
-            <h6 class="fw-bold mb-2">Pengaturan {{ $page }}</h6>
-        </div>
-    </div>
-</div>
 <div class="px-4">
     <form action="{{ route('account.updatePassword') }}" method="post" id="form">
         @csrf
         <div class="form-group mb-3">
-            <label for="" class="mb-2">Kata sandi baru</label>
-            <input type="password" class="form-control" name="password" placeholder="kata sandi baru" required>
+            <label for="" class="form-label opacity-75 text-small">Kata sandi baru</label>
+            <input type="password" class="form-control rounded-4" name="password" placeholder="kata sandi baru" autofocus required>
         </div>
         <div class="form-group mb-3">
-            <label for="" class="mb-2">Ulangi</label>
-            <input type="password" class="form-control" name="retype_password" placeholder="ulangi kata sandi baru" required>
+            <label for="" class="form-label opacity-75 text-small">Ulangi</label>
+            <input type="password" class="form-control rounded-4" name="retype_password" placeholder="ulangi kata sandi baru" required>
         </div>
         <br>
-        <button type="submit" class="btn btn-dark w-100 rounded-4 py-3">Simpan</button>
+        <button type="submit" id="btn-submit" class="btn btn-warning text-white w-100 rounded-4 py-3">Simpan</button>
     </form>
 </div>
 @endsection
@@ -52,6 +45,11 @@
     $(document).ready(function () {
         $('#padding-bottom').remove();
         $('#nav-bottom').remove();
+    });
+    document.getElementById("form").addEventListener("submit", function (e) {
+        // e.preventDefault();
+        const btn = document.getElementById("btn-submit");
+        btn.disabled = true;
     });
 </script>
 @endsection

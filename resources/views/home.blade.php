@@ -2,8 +2,11 @@
 
 @section('css')
 <style>
-    #padding-bottom{
+    /* #padding-bottom{
         display: none;
+    } */
+    .container{
+        padding-top: 0px !important;
     }
 </style>
 @endsection
@@ -11,65 +14,158 @@
 @section('content')
 @php
     date_default_timezone_set('Asia/Jakarta');
+    use Carbon\Carbon;
+
+    $start  = Carbon::parse($dates['dateStartFilter']);
+    $end    = Carbon::parse($dates['dateEndFilter']);
+    $now    = Carbon::now();
+
+    $totalDays          = $start->diffInDays($end) + 1;
+    $currentDays        = $start->diffInDays(min($now, $end)) + 1;;
+    $progressPercent    = $totalDays > 0 ? round(($currentDays / $totalDays) * 100) : 0;
+
+    // $targetTime = Carbon::createFromTime(18, 0, 0); // jam 18:00
+    // $diffInMinutes = $now->diffInMinutes($targetTime, false); // bisa negatif
 @endphp
-<div class="px-4 mb-3">
-    <h4 class="fw-bold mb-4">
-        @if (isOwner())
-            Owner
+@include('includes.alert')
+{{-- <div class="w-100 d-block mb-4">
+    <div class="bg-dark p-4 text-center" style="border-radius: 0px 0px 30px 30px">
+        <h4 class="fw-bold text-white mt-2">
+            @if (isOwner())
+                Halo Owner
+                {{ Auth::user()->name }}
+            @else
+                Halo
+                {{ Auth::user()->name }}
+            @endif
+        </h4>
+        @if ($diffInMinutes > 0 && $diffInMinutes <= 14)
+            <p class="text-white mb-2">📣 Jangan lupa sholat, agar diberikan kelancaran!</p>
         @else
-            Halo
+            <p class="text-white mb-2">📣 Selalu jaga tempat kerja agar selalu bersih ya!</p>
         @endif
-        {{ Auth::user()->name }}
-    </h4>
-    @include('includes.alert')
-    <div class="card rounded-4 border-0 mb-4 bg-white shadow-mini"
-        style="
-            background-image:url('app-assets/images/card-bg.jpg');
-            background-repeat: no-repeat;
-            background-position: right top;
-            background-size: cover;"
-        >
-        <div class="card-body p-4 text-white">
-            <div class="row mb-2">
-                <div class="col-12 mb-3">
-                    <p class="mb-1">Kas Bulan {{ month((int)date('m')) }}</p>
-                    <p class="mb-0 fs-4 fw-bold d-flex align-items-center text-warning">
+    </div>
+</div> --}}
+
+{{-- NAV BACK --}}
+<div id="nav-top" class="px-4 py-3 mb-3 fixed-top d-flex align-items-center justify-content-between bg-body-blur">
+    <p class="fw-bold m-0 p-0 fs-4">{{ $page }}</p>
+    <button type="button" onclick="alert_confirm('{{ route('login.logout') }}','Yakin keluar?')" class="btn btn-warning text-white outline-0 border-0 shadow-none p-0 rounded-4 d-flex align-items-center justify-content-center" style="width: 50px; aspect-ratio: 1/1">
+        <i data-feather="log-out"></i>
+    </button>
+</div>
+<div style="height: 100px !important"></div>
+{{-- END NAV BACK --}}
+
+<div class="px-4 mb-3">
+    <p class="fw-bold mb-3">Summary</p>
+    <div class="row">
+        @if (isOwner())
+            <div class="col-6 mb-3">
+        @else
+            <div class="col-12 mb-3">
+        @endif
+            <div class="card bg-warning text-white rounded-4 border-0">
+                <div class="card-body">
+                    <div class="bg-white mb-4 d-flex align-items-center justify-content-center rounded-3" style="width: 50px; aspect-ratio: 1/1">
+                        <i class="text-warning" data-feather="credit-card"></i>
+                    </div>
+                    <p class="mb-1 text-small">
+                        Kas Bulan
+                        {{ month((int)date('m')) }}
+                    </p>
+                    <p class="mb-0 fs-5 fw-bold d-flex align-items-center">
                         IDR {{ numberFormat($data['month'],0) }}
                     </p>
                 </div>
-                @if (isOwner())
-                    <div class="col-12">
-                        <p class="mb-1">Sisa Kas</p>
-                        <p class="mb-0 fs-4 fw-bold d-flex align-items-center text-warning">
+            </div>
+        </div>
+        @if (isOwner())
+            <div class="col-6 mb-3">
+                <div class="card bg-white text-dark rounded-4 border-0">
+                    <div class="card-body">
+                        <div
+                            class="bg-light-warning mb-4 d-flex align-items-center justify-content-center rounded-3"
+                            style="width: 50px; aspect-ratio: 1/1;">
+                            <i class="text-warning" data-feather="dollar-sign"></i>
+                        </div>
+                        <p class="mb-1 text-small">Sisa Kas</p>
+                        <p class="mb-0 fs-5 fw-bold d-flex align-items-center">
                             IDR  {{ numberFormat($data['sisa']) }}
                         </p>
                     </div>
-                @endif
+                </div>
             </div>
-            <hr style="opacity: 0.05 !important">
-            <small class="d-flex align-items-center">
-                <i data-feather="calendar" class="me-2" style="width: 14px"></i>
-                {{ customDate($dates['dateStartFilter'],'d') }} s/d {{ dateFormat($dates['dateEndFilter']) }}
-            </small>
+        @endif
+        <div class="col-12 mb-3 mt-3">
+            <div class="mb-3 d-flex align-items-center justify-content-between">
+                <p class="fw-bold mb-0">Counting Days</p>
+                <p class="fw-bold mb-0">{{ customDate($currentDays,'d') }} {{ customDate($dates['dateStartFilter'],'M Y') }} </p>
+            </div>
+            <div
+                class="card bg-white text-dark rounded-4 border-0"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                title="Day {{ $currentDays }} of {{ $totalDays }} days ({{ $progressPercent }}%)"
+                style="cursor: pointer;"
+            >
+                <div class="card-body">
+                    <div class="row align-items-start justify-content-between px-1">
+                        <div class="col-2">
+                            <div
+                                class="bg-light-warning d-flex align-items-center justify-content-center rounded-3"
+                                style="width: 100%; aspect-ratio: 1/1;">
+                                <i class="text-warning" data-feather="calendar"></i>
+                            </div>
+                        </div>
+                        <div class="col-10">
+                            <div class="progress mb-1 mt-2" role="progressbar" aria-label="Warning example" aria-valuenow="3{{ $progressPercent }}" aria-valuemin="0" aria-valuemax="100">
+                                <div class="progress-bar text-bg-warning" style="width: {{ $progressPercent }}%"></div>
+                            </div>
+                            <div class="row justify-content-between">
+                                <div class="col-auto">
+                                    <p class="mb-0" style="font-size: .6rem">
+                                        day 1
+                                    </p>
+                                </div>
+                                <div class="col-auto">
+                                    <p class="mb-0" style="font-size: .6rem">
+                                        day 7
+                                    </p>
+                                </div>
+                                <div class="col-auto">
+                                    <p class="mb-0" style="font-size: .6rem">
+                                        day 14
+                                    </p>
+                                </div>
+                                <div class="col-auto">
+                                    <p class="mb-0" style="font-size: .6rem">
+                                        day 21
+                                    </p>
+                                </div>
+                                <div class="col-auto">
+                                    <p class="mb-0" style="font-size: .6rem">
+                                        day {{ customDate($dates['dateEndFilter'],'d') }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 <div class="px-4">
-    <p class="fw-bold mb-3">Pintasan</p>
+    <p class="fw-bold mb-3">Main Menu</p>
     <div class="row">
         @foreach ($menu as $value)
             @if (in_array(Auth::user()->role,$value['access']))
-                <div class="col-4 d-flex justify-content-center align-items-center mb-4">
+                <div class="col-4 d-flex justify-content-center align-items-center mb-3">
                     <a href="{{ $value['route'] == '' ? '#' : route($value['route']) }}"
-                        class="text-decoration-none text-white text-center px-3 py-4 d-block bg-dark border-0 w-100 rounded-5"
-                        style="
-                            background-image:url('app-assets/images/card-bg-empty.jpg');
-                            background-repeat: no-repeat;
-                            background-position: right top;
-                            background-size: cover;"
-                        >
-                        <i class="mb-2" data-feather="{{ $value['icon'] }}" width="25px"></i>
-                        <p class="fs-7 mb-0 fw-bold">{{ $value['name'] }}</p>
+                        class="text-decoration-none text-dark text-center px-3 py-3 d-block bg-white border-0 w-100 rounded-5">
+                        <img class="mb-3" style="width: 50px;" src="{{ $value['icon'] }}" alt="">
+                        <p class="text-small mb-0 fw-semibold">{{ $value['name'] }}</p>
                     </a>
                 </div>
             @endif
@@ -111,4 +207,11 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('script')
+<script>
+    $(document).ready(function () {
+    });
+</script>
 @endsection

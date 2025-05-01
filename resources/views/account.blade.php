@@ -12,45 +12,38 @@
 @php
     date_default_timezone_set('Asia/Jakarta');
 @endphp
+@include('includes.alert')
 {{-- NAV BACK --}}
-<div class="px-4 py-4 mb-3 bg-white shadow-mini fixed-top d-flex align-items-center">
-    <a href="{{ route('settings.index') }}" class="text-decoration-none text-dark">
-        <i data-feather="arrow-left" class="me-2 my-0 py-0" style="width: 18px"></i>
+<div id="nav-top" class="px-4 py-3 mb-3 fixed-top d-flex align-items-center justify-content-between bg-body-blur">
+    <a href="{{ route('settings.index') }}" class="btn btn-light bg-white outline-0 border-0 shadow-none p-0 rounded-4 d-flex align-items-center justify-content-center" style="width: 50px; aspect-ratio: 1/1">
+        <i data-feather="chevron-left"></i>
     </a>
-    <p class="fw-bold m-0 p-0">{{ $page }}</p>
+    <h4 class="fw-bold mb-0">{{ $page }}</h4>
 </div>
 <div style="height: 100px !important"></div>
 {{-- END NAV BACK --}}
 
-<div class="px-4 mb-3">
-    @include('includes.alert')
-    <div class="row mb-4 px-0">
-        <div class="col-12 d-flex align-items-center">
-            <h6 class="fw-bold mb-2">Pengaturan {{ $page }}</h6>
-        </div>
-    </div>
-</div>
 <div class="px-4">
     <form action="{{ route('account.update') }}" method="post" id="form">
         @csrf
         <div class="form-group mb-3">
-            <label for="" class="mb-2">Username</label>
-            <input type="text" class="form-control" value="{{ Auth::user()->name }}" disabled>
+            <label for="" class="form-label opacity-75 text-small">Cabang</label>
+            <input type="text" class="form-control rounded-4" value="{{ Auth::user()->name }}" disabled>
         </div>
         <div class="form-group mb-3">
-            <label for="" class="mb-2">Nomor telepon</label>
-            <input type="number" class="form-control" name="phone" value="{{ Auth::user()->phone }}" placeholder="ex. 08xx xxx xxxx" required>
+            <label for="" class="form-label opacity-75 text-small">Nomor telepon</label>
+            <input type="number" class="form-control rounded-4" name="phone" value="{{ Auth::user()->phone }}" placeholder="ex. 08xx xxx xxxx" autofocus required>
         </div>
         <div class="form-group mb-3">
-            <label for="" class="mb-2">Pemilik outlet</label>
-            <input type="text" class="form-control" name="owner" value="{{ Auth::user()->owner }}" placeholder="ex. nama terang" required>
+            <label for="" class="form-label opacity-75 text-small">Pemilik outlet</label>
+            <input type="text" class="form-control rounded-4" name="owner" value="{{ Auth::user()->owner }}" placeholder="ex. nama terang" required>
         </div>
         <div class="form-group mb-3">
-            <label for="" class="mb-2">Alamat outlet</label>
-            <input type="text" class="form-control" name="address" value="{{ Auth::user()->address }}" placeholder="ex. dsn/ds/kec/kab/nama jalan" required>
+            <label for="" class="form-label opacity-75 text-small">Alamat outlet</label>
+            <input type="text" class="form-control rounded-4" name="address" value="{{ Auth::user()->address }}" placeholder="ex. dsn/ds/kec/kab/nama jalan" required>
         </div>
         <br>
-        <button type="submit" class="btn btn-dark w-100 rounded-4 py-3">Simpan</button>
+        <button type="submit" id="btn-submit" class="btn btn-warning text-white w-100 rounded-4 py-3">Simpan</button>
     </form>
 </div>
 @endsection
@@ -60,6 +53,11 @@
     $(document).ready(function () {
         $('#padding-bottom').remove();
         $('#nav-bottom').remove();
+    });
+    document.getElementById("form").addEventListener("submit", function (e) {
+        // e.preventDefault();
+        const btn = document.getElementById("btn-submit");
+        btn.disabled = true;
     });
 </script>
 @endsection

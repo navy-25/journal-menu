@@ -27,51 +27,114 @@
 @php
     date_default_timezone_set('Asia/Jakarta');
 @endphp
-<div style="position: fixed;bottom:120px;right:20px;z-index:999">
-    <button type="button" class="btn btn-warning text-dark d-flex align-items-center justify-content-center"
+{{-- <div style="position: fixed;bottom:140px;right:20px;z-index:999">
+    <button type="button" class="btn btn-warning text-white d-flex align-items-center justify-content-center"
         style="height: 60px;width: 60px;border-radius:100%">
         <i data-feather="plus" style="width: 25px" data-bs-toggle="modal" data-bs-target="#modal"></i>
     </button>
 </div>
-<div style="position: fixed;bottom:200px;right:20px;z-index:999">
-    <button type="button" class="btn {{ $isClosed == 1 ? 'bg-dark text-white' : 'btn-danger ' }} d-flex align-items-center justify-content-center"
+<div style="position: fixed;bottom:220px;right:20px;z-index:999">
+    <button type="button" class="btn {{ $isClosed == 1 ? 'bg-white text-dark' : 'btn-dark text-white' }} d-flex align-items-center justify-content-center"
         style="height: 60px;width: 60px;border-radius:100%" onclick="closing()" {{ $isClosed == 1 ? 'disabled' : '' }}>
         <i data-feather="arrow-right" style="width: 25px"></i>
     </button>
+</div> --}}
+@include('includes.alert')
+{{-- NAV BACK --}}
+<div id="nav-top" class="px-4 py-3 mb-3 fixed-top d-flex align-items-center justify-content-between bg-body-blur">
+    <a href="{{ route('home.index') }}" class="btn btn-light bg-white outline-0 border-0 shadow-none p-0 rounded-4 d-flex align-items-center justify-content-center" style="width: 50px; aspect-ratio: 1/1">
+        <i data-feather="chevron-left"></i>
+    </a>
+    <h4 class="fw-bold mb-0">{{ $page }}</h4>
 </div>
-<div class="px-4 mb-3">
-    <h4 class="fw-bold mb-4">{{ $page }}</h4>
-    @include('includes.alert')
-    <div class="card rounded-4 border-0 mb-4"
-        style="box-shadow:5px 4px 30px rgba(53, 53, 53, 0.288);
-            background-image:url('app-assets/images/card-bg.jpg');
-            background-repeat: no-repeat;
-            background-position: right top;
-            background-size: cover;
-        ">
-        <div class="card-body p-4 text-white">
-            <p class="fs-5 mb-0">Total Penjualan</p>
-            <p class="mb-3 d-flex align-items-center"
-                @if (isOwner())
-                    data-bs-toggle="modal" data-bs-target="#filter"
-                @endif
-            >
-                <i data-feather="calendar" class="me-2" style="width: 14px"></i>
-                @if (isset($_GET['dateFilter']))
-                    {{ customDate($_GET['dateFilter'], 'D, d M Y') }}
-                @else
-                    {{ date('D, d M Y') }}
-                @endif
-            </p>
-            <h4 class="fw-bold mb-0 text-warning">IDR {{ number_format($total,2,',','.') }}</h4>
-            <p class="m-0">{{ $qty }} pizza</p>
+<div style="height: 100px !important"></div>
+{{-- END NAV BACK --}}
+
+<nav id="nav-bottom-custom" class="navbar navbar-expand-lg fixed-bottom bg-body-blur" style="height: fit-content !important">
+    <div class="pb-2 pt-3 px-3 w-100">
+        <div class="row">
+            <div class="col-5 pe-0">
+                <button
+                    type="button"
+                    class="btn {{ $isClosed == 1 ? 'bg-white text-dark' : 'btn-dark text-white' }} w-100 rounded-4 py-3"
+                    onclick="closing()"
+                    {{ $isClosed == 1 ? 'disabled' : '' }}
+                >
+                    Tutup Buku
+                </button>
+            </div>
+            <div class="col-7">
+                <button
+                    type="button"
+                    class="btn btn-warning w-100 rounded-4 py-3"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modal"
+                >
+                    Tambah
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="px-4 mb-4">
+    <p class="fw-bold mb-3">Summary</p>
+    <div class="row align-items-stretch">
+        <div class="col-9">
+            <div class="card h-100 bg-warning text-white rounded-4 border-0">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="bg-white d-flex align-items-center justify-content-center rounded-3" style="width: 50px; aspect-ratio: 1/1">
+                                <i class="text-warning" data-feather="credit-card"></i>
+                            </div>
+                        </div>
+                        <div class="col-9 text-end">
+                            <p class="mb-0 fs-4 fw-bold d-flex align-items-center justify-content-end">
+                                IDR {{ number_format($total,0,',','.') }}
+                            </p>
+                            <p class="mb-0 text-small">
+                                Total {{ $qty }} pizza
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="card h-100 bg-white text-dark rounded-4 border-0">
+                <div class="card-body">
+                    <div class="mb-0 d-block text-center"
+                        @if (isOwner())
+                            data-bs-toggle="modal" data-bs-target="#filter"
+                        @endif
+                    >
+                        @if (isset($_GET['dateFilter']))
+                            <p class="fw-bold mb-0 fs-4 lh-1">
+                                {{ customDate($_GET['dateFilter'], 'd') }}
+                            </p>
+                            <small>
+                                {{ customDate($_GET['dateFilter'], 'M') }}
+                            </small>
+                        @else
+                            <p class="fw-bold mb-0 fs-4 lh-1">
+                                {{ date('d') }}
+                            </p>
+                            <small>
+                                {{ date('M') }}
+                            </small>
+                        @endif
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
 <div class="px-4">
     <div class="row mb-4 px-0">
         <div class="col-6 d-flex align-items-center">
-            <h6 class="fw-bold mb-2">Daftar pesanan</h6>
+            <h6 class="fw-bold mb-0">Daftar pesanan</h6>
         </div>
         @if (isOwner())
             <div class="col-6 d-flex align-items-center justify-content-end">
@@ -82,7 +145,7 @@
     <div class="row">
         <div class="col-12">
             @if (count($data) == 0)
-                <div class="py-5">
+                <div class="py-5 mt-5">
                     <center>
                         <img src="{{ asset('app-assets/images/shopping-bag.png') }}" alt="wallet" class="mb-3" width="30%">
                         <br>
@@ -101,57 +164,60 @@
                         foreach ($val as $x) {
                             $total += $x->gross_profit*$x->qty;
                         }
+                        $date = '';
+                        $total = 0;
+                        $note = '';
                     @endphp
-                    <div class="accordion p-3 mb-3" id="accordion_{{ $key }}" style="border: 1px solid #2125291e;border-radius:15px">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="heading_{{$key}}">
-                                <button class="accordion-button collapsed p-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{$key}}" aria-expanded="{{ $index == count($data) ? 'true' : 'false' }}" aria-controls="collapse_{{$key}}">
-                                    <p class="fw-bold m-0 mb-2 me-2">Pesanan ke {{ $index }}</p>
-                                    <p class="fw-bold m-0 mb-2">IDR {{ numberFormat($total,0) }}</p>
-                                </button>
-                            </h2>
-                            @php
-                                $date = '';
-                                $total = 0;
-                                $note = '';
-                            @endphp
-                            <div id="collapse_{{$key}}" class="accordion-collapse collapse {{ $index == count($data) ? 'show' : '' }}" aria-labelledby="heading_{{$key}}" data-bs-parent="#accordion">
-                                <div class="accordion-body p-0 pt-2">
-                                    @foreach ($val as $item)
-                                        <div class="row mb-2">
-                                            <div class="col-1">
-                                                -
-                                            </div>
-                                            <div class="col-11">
-                                                <p class="mb-0 text-capitalize">
-                                                    {{ $item->name }}
-                                                    {{ $item->is_promo == 1 ? '(Promo)' : '' }}
-                                                </p>
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        <p class="mb-0">{{ numberFormat($item->gross_profit) }} @ {{ $item->qty }} </p>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <p class="mb-0 text-end">IDR {{ numberFormat($item->gross_profit*$item->qty) }} </p>
-                                                    </div>
-                                                </div>
-                                            </div>
+                    <div class="card bg-white text-dark rounded-4 border-0 mb-3">
+                        <div class="card-body">
+                            <div class="accordion" id="accordion_{{ $key }}">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="heading_{{$key}}">
+                                        <button class="accordion-button collapsed p-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{$key}}" aria-expanded="{{ $index == count($data) ? 'true' : 'false' }}" aria-controls="collapse_{{$key}}">
+                                            <p class="fw-bold m-0 mb-2 me-2">{{ date('H:i', strtotime($date)) }} WIB</p>
+                                            <p class="fw-bold m-0 mb-2"> | Order-{{ $index }}</p>
+                                        </button>
+                                    </h2>
+                                    <div id="collapse_{{$key}}" class="accordion-collapse collapse {{ $index == count($data) ? 'show' : '' }}" aria-labelledby="heading_{{$key}}" data-bs-parent="#accordion">
+                                        <div class="accordion-body p-0 pt-2">
+                                            <ul class="ps-3">
+                                                @foreach ($val as $item)
+                                                    <li>
+                                                        <div class="row mb-2">
+                                                            <div class="col-12">
+                                                                <p class="mb-0 text-capitalize fw-semibold">
+                                                                    {{ $item->name }}
+                                                                    {{ $item->is_promo == 1 ? '(Promo)' : '' }}
+                                                                </p>
+                                                                <div class="row text-small">
+                                                                    <div class="col-6">
+                                                                        <p class="mb-0">{{ numberFormat($item->gross_profit, 0) }} @ {{ $item->qty }} </p>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <p class="mb-0 text-end">IDR {{ numberFormat($item->gross_profit*$item->qty, 0) }} </p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        @php
+                                                            $total += $item->gross_profit*$item->qty;
+                                                            $date = $item->created_at;
+                                                            $note = $item->note;
+                                                        @endphp
+                                                    </li>
+                                                @endforeach
+                                            </ul>
                                         </div>
-                                        @php
-                                            $total += $item->gross_profit*$item->qty;
-                                            $date = $item->created_at;
-                                            $note = $item->note;
-                                        @endphp
-                                    @endforeach
-                                    <p class="fw-bold text-end mb-3">IDR {{ numberFormat($total) }}</p>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center pt-2">
-                                <i data-feather="calendar" class="me-2" style="width: 14px"></i>
-                                <small>{{ date('d M Y H:i', strtotime($date)) }}</small>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between pt-2">
+                                        <p class="fw-bold text-start fs-5 mb-0">IDR {{ numberFormat($total, 0) }}</p>
 
-                                <a href="#" class="text-dark ms-auto text-decoration-none me-4"  data-bs-toggle="modal" data-bs-target="#modalDetail" onclick="note('{{ $note }}')">Catatan</a>
-                                <a href="#" class="text-danger text-decoration-none" onclick="alert_confirm('{{ route('sales.destroy',['id'=>$key]) }}','Hapus pesanan ke {{ $index }}')">Hapus</a>
+                                        {{-- <a href="#" class="text-dark ms-auto text-decoration-none me-4"  data-bs-toggle="modal" data-bs-target="#modalDetail" onclick="note('{{ $note }}')">Catatan</a> --}}
+                                        <a href="#" class="text-small btn btn-warning text-white text-decoration-none rounded-3" onclick="alert_confirm('{{ route('sales.destroy',['id'=>$key]) }}','Hapus pesanan ke {{ $index }}')">
+                                            <i data-feather="trash" style="width: 14px"></i>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -168,41 +234,46 @@
     data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
-            <div class="modal-header d-flex justify-content-start align-items-center">
-                <a href="#" data-bs-dismiss="modal" class="text-decoration-none text-dark me-3">
-                    <i data-feather="arrow-left" style="width: 18px"></i>
+            <div class="modal-header d-flex justify-content-between align-items-center border-0">
+                <p class="fs-4 m-0 fw-bold">Tambah Pesanan</p>
+                <a href="#" data-bs-dismiss="modal" class="text-decoration-none text-dark">
+                    <i data-feather="x" style="width: 24px"></i>
                 </a>
-                <p class="fs-6 m-0 fw-bold">Tambah Pesanan</p>
             </div>
-            <div class="modal-body">
+            <div class="modal-body pt-3">
                 <form action="{{ route('sales.store') }}" method="POST">
                     @csrf
                     @foreach ($menu as $key => $item)
-                        <div class="row">
+                        <div class="row align-items-start">
                             <div class="col-7">
                                 @if ($item->is_promo == 1)
-                                    <div class="mb-2 d-flex align-items-center">
+                                    {{-- <div class="mb-2 d-flex align-items-center">
                                         <div class="bg-light-danger fs-7 p-1 rounded-3 px-2 me-2" style="width: fit-content !important">
                                             Promo
                                         </div>
                                         <div class="bg-light-warning fs-7 p-1 rounded-3 px-2" style="width: fit-content !important">
                                             Hemat {{ numberFormat($item->price - $item->price_promo,0) }}
                                         </div>
+                                    </div> --}}
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-light-warning text-small p-1 rounded-3 px-2 me-2" style="width: fit-content !important; height: fit-content !important;">
+                                            <i data-feather="percent" class="text-warning" style="width: 12px"></i>
+                                        </div>
+                                        <p class="fw-bold fs-6 m-0 text-capitalize">
+                                            <span class="me-2">
+                                                {{ $item->name }}
+                                            </span>
+                                        </p>
                                     </div>
-                                    <p class="fw-bold fs-6 m-0 mb-2 text-capitalize">
-                                        <span class="me-2">
-                                            {{ $item->name }}
-                                        </span>
-                                    </p>
                                 @else
                                     <p class="fw-bold fs-6 m-0 text-capitalize">{{ $item->name }}</p>
                                 @endif
                                 <div class="d-flex">
                                     @if ($item->is_promo == 1)
                                         <p class="m-0 me-2">IDR {{ numberFormat($item->price_promo,0) }}</p>
-                                        <p class="m-0" style="opacity: 0.3">
+                                        <p class="m-0 text-danger">
                                             <strike>
-                                                {{ numberFormat($item->price,0) }}
+                                                IDR {{ numberFormat($item->price,0) }}
                                             </strike>
                                         </p>
                                     @else
@@ -217,7 +288,7 @@
                                     <i data-feather="minus" style="width: 12px"></i>
                                 </button>
                                 <p class="m-0" id="qty_text{{ $key }}">0</p>
-                                <button class="btn btn-dark rounded-4 text-white" onclick="plus('{{ $key }}')" style="width: 40px;height: 40px" type="button" id="min{{ $key }}">
+                                <button class="btn btn-warning rounded-4 text-white" onclick="plus('{{ $key }}')" style="width: 40px;height: 40px" type="button" id="min{{ $key }}">
                                     <i data-feather="plus" style="width: 12px"></i>
                                 </button>
                             </div>
@@ -229,9 +300,15 @@
                 </form>
             </div>
             <div class="modal-footer border-0">
-                <label for="note" class="me-auto">Catatan khusus</label>
-                <textarea class="form-control w-100" id="note-temp" rows="3"></textarea>
-                <button type="button" onclick="$('#note').val($('#note-temp').val());$('#btn-submit').trigger('click');" class="btn btn-dark w-100 rounded-4 py-3">Tambah</button>
+                {{-- <label for="note" class="form-label opacity-75 text-small me-auto">Keterangan</label> --}}
+                {{-- <textarea class="form-control w-100 rounded-4 mb-2" placeholder="pedas/sedang/etc" id="note-temp"></textarea> --}}
+                {{-- <select name="note" id="note-temp" class="form-select rounded-4 mb-4">
+                    <option value="">Pedas/Sedang/Tidak Pedas</option>
+                    <option value="Pedas">Pedas</option>
+                    <option value="Sedang">Sedang</option>
+                    <option value="Tidak Pedas">Tidak Pedas</option>
+                </select> --}}
+                <button type="button" onclick="$('#note').val($('#note-temp').val());$('#btn-submit').trigger('click');" class="btn btn-warning text-white w-100 rounded-4 py-3">Tambah</button>
             </div>
         </div>
     </div>
@@ -267,13 +344,13 @@
                 </a>
             </div>
             <div class="modal-body">
-                <form action="{{ route('sales.index') }}" method="get">
-                    <input type="date" class="form-control" value="{{ $dateFilter }}" name="dateFilter">
+                <form action="{{ route('sales.index') }}" method="get" id="form">
+                    <input type="date" class="form-control rounded-4" value="{{ $dateFilter }}" name="dateFilter">
                     <button class="d-none" id="btn-submit-filter" type="submit"></button>
                 </form>
             </div>
             <div class="modal-footer border-0">
-                <button type="button" onclick="$('#btn-submit-filter').trigger('click')" class="btn btn-dark w-100 rounded-4 py-3">Terapkan</button>
+                <button type="button" id="btn-submit" onclick="$('#btn-submit-filter').trigger('click')" class="btn btn-warning text-white w-100 rounded-4 py-3">Terapkan</button>
             </div>
         </div>
     </div>
@@ -281,6 +358,15 @@
 @endsection
 @section('script')
 <script>
+    $(document).ready(function () {
+        // $('#padding-bottom').remove();
+        $('#nav-bottom').remove();
+    });
+    document.getElementById("form").addEventListener("submit", function (e) {
+        // e.preventDefault();
+        const btn = document.getElementById("btn-submit");
+        btn.disabled = true;
+    });
     function minus(key){
         var qty_text = parseInt($('#qty_text'+key).text())
         if(qty_text > 0){

@@ -12,7 +12,7 @@ class LoginController extends Controller
 {
     public function index()
     {
-        $page = 'Login';
+        $page = 'Sign in';
         if (isset(Auth::user()->id) == true) {
             $role = Auth::user()->role;
             if ($role == 0) {

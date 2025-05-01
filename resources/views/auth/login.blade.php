@@ -14,46 +14,41 @@
 @endsection
 
 @section('content')
-<div class="vw-100 vh-100 d-flex align-items-end bg-dark"
-    style="
-        background-image: url('{{ asset('app-assets/images/bg-login.png') }}');
-        object-position: center top;
-        background-repeat: no-repeat;
-        background-size: 100% auto;
-    "
-    >
-    <div class="w-100">
-        <div class="text-center my-4">
-            <img src="{{ asset('app-assets/images/logo-pizza.png') }}" style="width: 100px" alt="" class="mb-5">
-            <br><br><br><br>
-            {{-- <div class="d-flex justify-content-center"><p class="mb-1 text-dark bg-white px-2 rounded-4">Selamat datang</p></div> --}}
-            <p class="fw-bold text-warning text-title">Pizza Super <br> Merchant</p>
+<div class="w-100 vh-100 d-flex align-items-start">
+    <div class="w-100 p-4">
+        <a href="/" class="btn btn-light bg-white outline-0 border-0 shadow-none p-0 rounded-4 d-flex align-items-center justify-content-center" style="width: 50px; aspect-ratio: 1/1; margin-bottom: 30%">
+            <i data-feather="chevron-left"></i>
+        </a>
+        <div class="mb-4">
+            <p class="fs-3 fw-bold mb-1">Sign in</p>
+            <p class="text-small text-gray">Masukkan nomor telepon dan kata sandi untuk <br> masuk ke aplikasi, Have a nice day!</p>
         </div>
-        <br>
-        <div class="w-100 p-4 bg-white" style="border-radius: 20px 20px 0px 0px !important">
-            <div class="mb-4">
-                <p class="fs-3 fw-bold mb-0">Masuk</p>
-                {{-- <small class="text-gray">masukkan nomor telepon dan kata sandi untuk <br> masuk ke aplikasi, Have a nice day!</small> --}}
+        <form id="form" method="POST" action="{{ route('login.store') }}">
+            @csrf
+            <div class="form-group mb-3">
+                <p class="form-label opacity-75 text-small">Phone<span class="text-danger">*</span> </p>
+                <input type="number" class="form-control border-0 rounded-4 w-100" value="" name="phone" id="phone" placeholder="085 xxxx xxxx" autofocus required>
             </div>
-            <form method="POST" action="{{ route('login.store') }}">
-                @csrf
-                <div class="form-group mb-4">
-                    <input type="number" class="form-control rounded-4 w-100" value="" name="phone" id="phone" placeholder="nomor telepon" autofocus required>
-                </div>
-                <div class="form-group mb-4">
-                    <input type="password" class="form-control rounded-4 w-100" value="" name="password" id="password" placeholder="kata sandi" required>
-                </div>
-                {{-- <div class="text-end fw-bold text-gray">
-                    Lupa kata sandi?
-                </div> --}}
-                <br>
-                <button type="submit" class="btn btn-warning w-100 rounded-4 py-3 mb-5">Masuk</button>
-            </form>
-        </div>
+            <div class="form-group mb-3">
+                <p class="form-label opacity-75 text-small">Password<span class="text-danger">*</span> </p>
+                <input type="password" class="form-control border-0 rounded-4 w-100" value="" name="password" id="password" placeholder="*****************" required>
+            </div>
+            <br>
+            <button type="submit" id="btn-submit" class="btn btn-warning w-100 rounded-4 py-3 mb-5">Let's Go!</button>
+        </form>
+        <p class="text-gray text-center text-small">Jika terdapat kendala silahkan hubungi admin</p>
     </div>
 </div>
 @endsection
 
 @section('script')
 @include('includes.alert')
+
+<script>
+    document.getElementById("form").addEventListener("submit", function (e) {
+        // e.preventDefault();
+        const btn = document.getElementById("btn-submit");
+        btn.disabled = true;
+    });
+</script>
 @endsection

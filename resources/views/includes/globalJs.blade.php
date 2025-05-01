@@ -2,6 +2,9 @@
     $(document).ready( function () {
         $('#spinner').fadeOut();
         feather.replace()
+
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        const tooltipList = [...tooltipTriggerList].map(el => new bootstrap.Tooltip(el));
     });
     function alert_confirm(url,title =''){
         Swal.fire({

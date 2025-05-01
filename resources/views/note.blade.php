@@ -12,30 +12,42 @@
 @php
     date_default_timezone_set('Asia/Jakarta');
 @endphp
+
+@include('includes.alert')
 {{-- NAV BACK --}}
-<div class="px-4 py-4 mb-3 bg-white shadow-mini fixed-top d-flex align-items-center">
-    <a href="{{ route('settings.index') }}" class="text-decoration-none text-dark">
-        <i data-feather="arrow-left" class="me-2 my-0 py-0" style="width: 18px"></i>
+<div id="nav-top" class="px-4 py-3 mb-3 fixed-top d-flex align-items-center justify-content-between bg-body-blur">
+    <a href="{{ route('settings.index') }}" class="btn btn-light bg-white outline-0 border-0 shadow-none p-0 rounded-4 d-flex align-items-center justify-content-center" style="width: 50px; aspect-ratio: 1/1">
+        <i data-feather="chevron-left"></i>
     </a>
-    <p class="fw-bold m-0 p-0">{{ $page }}</p>
+    <h4 class="fw-bold mb-0">{{ $page }}</h4>
 </div>
 <div style="height: 100px !important"></div>
 {{-- END NAV BACK --}}
 
 <div class="px-4 mb-3">
-    <div style="position: fixed;bottom:70px;right:20px;">
-        <button type="button" class="btn btn-warning text-dark d-flex align-items-center justify-content-center"
-            style="height: 60px;width: 60px;border-radius:100%" onclick="create()">
-            <i data-feather="plus" style="width: 25px" data-bs-toggle="modal" data-bs-target="#modal"></i>
-        </button>
-    </div>
-    @include('includes.alert')
     <div class="row mb-4 px-0">
         <div class="col-12 d-flex align-items-center">
             <h6 class="fw-bold mb-2">Daftar {{ $page }}</h6>
         </div>
     </div>
 </div>
+
+<nav id="button-create" class="navbar navbar-expand-lg fixed-bottom bg-body-blur" style="height: fit-content !important">
+    <div class="py-2 px-3 w-100">
+        <div class="d-flex justify-content-end w-100 align-items-center rounded-4 p-2">
+            <button
+                type="button"
+                class="btn btn-warning text-white rounded-4 py-3 w-100"
+                onclick="create()"
+                data-bs-toggle="modal"
+                data-bs-target="#modal"
+            >
+                <span class="ms-2 fw-bold">Tambah</span>
+            </button>
+        </div>
+    </div>
+</nav>
+
 <div class="px-4">
     @if (count($data) == 0)
         <div class="py-5">
@@ -49,20 +61,28 @@
         </div>
     @else
         @foreach ($data as $key => $item)
-            <div class="row px-2 mb-3">
-                <div class="col-12 rounded-5 px-4 py-3" style="border: 1px solid rgba(0, 0, 0, 0.1)" >
-                    <div class="d-flex justify-content-start align-items-center" onclick="edit('{{ $key }}','{{ route('note.update') }}')" data-bs-toggle="modal" data-bs-target="#modal">
-                        <div>
-                            <p class="fw-bold m-0 text-capitalize">{{ $item->title }}</p>
-                            <p>{{ $item->description }}</p>
-                            <textarea  class="d-none" id="data{{ $key }}" cols="30" rows="10">{{ $item }}</textarea>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center">
-                        <i data-feather="calendar" class="me-2" style="width: 14px"></i>
-                        <small>{{ date('d M Y H:i', strtotime($item->created_at)) }}</small>
+            <div class="card bg-white text-dark rounded-4 border-0 mb-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 rounded-5">
+                            <div class="d-flex justify-content-start align-items-center" onclick="edit('{{ $key }}','{{ route('note.update') }}')" data-bs-toggle="modal" data-bs-target="#modal">
+                                <div>
+                                    <p class="fw-bold mb-2 text-capitalize">{{ $item->title }}</p>
+                                    <p>{{ $item->description }}</p>
+                                    <textarea  class="d-none" id="data{{ $key }}" cols="30" rows="10">{{ $item }}</textarea>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="d-flex align-items-center">
+                                    <i data-feather="calendar" class="me-2" style="width: 14px"></i>
+                                    <small>{{ date('d M Y H:i', strtotime($item->created_at)) }}</small>
+                                </div>
 
-                        <a href="#" class="text-danger text-decoration-none ms-auto" onclick="alert_confirm('{{ route('note.destroy',['id'=>$item->id]) }}','Hapus  {{ $item->title }}')">Hapus</a>
+                                <a href="#" class="text-small btn btn-warning text-white text-decoration-none rounded-3" onclick="alert_confirm('{{ route('note.destroy',['id'=>$item->id]) }}','Hapus {{ $item->title }}')">
+                                    <i data-feather="trash" style="width: 14px"></i>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -86,11 +106,11 @@
                     @csrf
                     <div class="form-group mb-3">
                         <label for="title" class="mb-2">Judul</label>
-                        <input type="text" class="form-control" value="" name="title" id="title" placeholder="tulis judul catatan disini...">
+                        <input type="text" class="form-control rounded-4" value="" name="title" id="title" placeholder="tulis judul catatan disini...">
                     </div>
                     <div class="form-group mb-3">
                         <label for="description" class="mb-2">Catatan</label>
-                        <textarea name="description" class="form-control" id="description" cols="10" rows="4"></textarea>
+                        <textarea name="description" class="form-control rounded-4" style="height: 200px !important" id="description" cols="10" rows="4"></textarea>
                     </div>
                     <input type="hidden" name="id" id="id">
                     <button class="d-none" id="btn-submit" type="submit"></button>

@@ -18,7 +18,7 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $page = 'Beranda';
+        $page = 'Home';
         $dates['dateEndFilter']      = date('Y-m-t');
         $dates['dateStartFilter']    = date('Y-m-01');
 
@@ -37,58 +37,64 @@ class HomeController extends Controller
         $menu = [
             [
                 'name'      => 'Statistik',
-                'icon'      => 'pie-chart',
+                'icon'      => asset('app-assets/images/data-analysis.png'),
                 'route'     => 'stats.index',
                 'access'    => [1]
             ],
             [
                 'name'      => 'Kasir',
-                'icon'      => 'shopping-cart',
+                'icon'      => asset('app-assets/images/approved-order.png'),
                 'route'     => 'sales.index',
                 'access'    => [1,2]
             ],
             [
                 'name'      => 'Keuangan',
-                'icon'      => 'repeat',
+                'icon'      => asset('app-assets/images/accounting.png'),
                 'route'     => 'transaction.index',
                 'access'    => [1,2]
             ],
             [
                 'name'      => 'Menu',
-                'icon'      => 'coffee',
+                'icon'      => asset('app-assets/images/pizza-slice.png'),
                 'route'     => 'menu.index',
                 'access'    => [1,2]
             ],
+            // [
+            //     'name'      => 'Bahan',
+            //     'icon'      => asset('app-assets/images/rolling-pin.png'),
+            //     'route'     => 'stock.index',
+            //     'access'    => [1]
+            // ],
             [
-                'name'      => 'Bahan',
-                'icon'      => 'box',
-                'route'     => 'stock.index',
+                'name'      => 'Katalog',
+                'icon'      => asset('app-assets/images/package.png'),
+                'route'     => 'material.index',
                 'access'    => [1]
             ],
             [
                 'name'      => 'Laporan',
-                'icon'      => 'printer',
+                'icon'      => asset('app-assets/images/folder.png'),
                 'route'     => 'report.index',
                 'access'    => [1,2]
             ],
             [
                 'name'      => 'Laba Kotor',
-                'icon'      => 'dollar-sign',
+                'icon'      => asset('app-assets/images/investment-growth.png'),
                 'route'     => 'profit.index',
                 'access'    => [1]
             ],
             [
                 'name'      => 'Catatan',
-                'icon'      => 'file',
+                'icon'      => asset('app-assets/images/book.png'),
                 'route'     => 'note.index',
                 'access'    => [1,2]
             ],
-            [
-                'name'      => 'Akun',
-                'icon'      => 'user',
-                'route'     => 'account.index',
-                'access'    => [1,2]
-            ],
+            // [
+            //     'name'      => 'Akun',
+            //     'icon'      => asset('app-assets/images/data-analysis.png'),
+            //     'route'     => 'account.index',
+            //     'access'    => [1,2]
+            // ],
         ];
         return view('home', compact('data', 'page', 'dates', 'menu'));
     }
