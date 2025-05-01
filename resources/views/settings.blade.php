@@ -33,9 +33,9 @@
 </div>
 
 <div class="px-4">
-    <div class="card bg-white text-dark rounded-4 border-0 mb-4">
-        <div class="card-body">
-            @if (isOwner())
+    @if (isOwner())
+        <div class="card bg-white text-dark rounded-4 border-0 mb-4">
+            <div class="card-body">
                 <p class="text-small px-0 fw-bold mb-4 text-dark">Stok & Gudang</p>
                 @foreach ($stock_menu as $index => $value)
                     @if ($index > 0)
@@ -53,9 +53,9 @@
                         </div>
                     </a>
                 @endforeach
-            @endif
+            </div>
         </div>
-    </div>
+    @endif
     <div class="card bg-white text-dark rounded-4 border-0 mb-4">
         <div class="card-body">
             <p class="text-small px-0 fw-bold mb-4 text-dark">Data Akun</p>
