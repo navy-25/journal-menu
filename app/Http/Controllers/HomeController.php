@@ -71,12 +71,12 @@ class HomeController extends Controller
                 'route'     => 'material.index',
                 'access'    => [1]
             ],
-            [
-                'name'      => 'Laporan',
-                'icon'      => asset('app-assets/images/folder.png'),
-                'route'     => 'report.index',
-                'access'    => [1,2]
-            ],
+            // [
+            //     'name'      => 'Laporan',
+            //     'icon'      => asset('app-assets/images/folder.png'),
+            //     'route'     => 'report.index',
+            //     'access'    => [1,2]
+            // ],
             [
                 'name'      => 'Laba Kotor',
                 'icon'      => asset('app-assets/images/investment-growth.png'),
