@@ -92,7 +92,7 @@
                                     Kas Bulan
                                     {{ month((int)date('m')) }}
                                 </p>
-                                <p class="mb-0 fs-5 fw-bold d-flex align-items-center">
+                                <p class="mb-0 fs-5 fw-bold d-flex align-items-center justify-content-end">
                                     IDR {{ numberFormat($data['month'],0) }}
                                 </p>
                             </div>
