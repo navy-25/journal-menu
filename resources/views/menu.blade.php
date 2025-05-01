@@ -177,7 +177,7 @@
         reverse: true
     });
     $(document).ready(function () {
-        $('#padding-bottom').remove();
+        // $('#padding-bottom').remove();
         $('#nav-bottom').remove();
     });
 

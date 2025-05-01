@@ -214,7 +214,7 @@
 
 @section('script')
 <script>
-    $('#padding-bottom').remove();
+    // $('#padding-bottom').remove();
     $('#nav-bottom').remove();
 </script>
 @endsection
