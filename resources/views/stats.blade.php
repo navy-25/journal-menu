@@ -2,9 +2,9 @@
 
 @section('css')
 <style>
-    #padding-bottom{
+    /* #padding-bottom{
         display: none;
-    }
+    } */
 </style>
 @endsection
 
