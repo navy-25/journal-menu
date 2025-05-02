@@ -12,106 +12,188 @@
 @php
     date_default_timezone_set('Asia/Jakarta');
 @endphp
-<div class="px-4">
-    <h4 class="fw-bold mb-4">{{ $page }}</h4>
-    @include('includes.alert')
-    @if (isOwner())
-        <div class="card rounded-4 border-0 bg-white shadow-mini"
-            style="
-                background-image:url('app-assets/images/card-bg.jpg');
-                background-repeat: no-repeat;
-                background-position: right top;
-                background-size: cover;"
-            >
-            <div class="card-body p-4 text-white">
-                <div class="row mb-2">
-                    <div class="col-12 mb-3">
-                        <p class="mb-1">Total Omset Penjualan</p>
-                        <p class="mb-0 fs-4 fw-bold d-flex align-items-center text-warning">
-                            IDR  {{ numberFormat($data['omset']) }}
+@include('includes.alert')
+
+{{-- NAV BACK --}}
+<div id="nav-top" class="px-4 py-3 mb-3 fixed-top d-flex align-items-center justify-content-between bg-body-blur">
+    <a href="{{ route('home.index') }}" class="btn btn-light bg-white outline-0 border-0 shadow-none p-0 rounded-4 d-flex align-items-center justify-content-center" style="width: 50px; aspect-ratio: 1/1">
+        <i data-feather="chevron-left"></i>
+    </a>
+    <h4 class="fw-bold mb-0">{{ $page }}</h4>
+</div>
+<div style="height: 80px !important"></div>
+{{-- END NAV BACK --}}
+
+<nav id="nav-bottom-custom" class="navbar navbar-expand-lg fixed-bottom bg-body-blur" style="height: fit-content !important">
+    <div class="pb-2 pt-3 px-3 w-100">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <button
+                    type="button"
+                    class="btn btn-warning w-100 rounded-4 py-3"
+                    data-bs-toggle="modal"
+                    data-bs-target="#filter"
+                >
+                    Filter
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="px-4 mb-3">
+    <div class="row">
+        @if (isOwner())
+            <div class="col-12">
+                <p class="fw-bold mb-2">Keuntungan</p>
+            </div>
+            <div class="col-6 mb-3">
+                <div class="card bg-warning text-white rounded-4 border-0">
+                    <div class="card-body">
+                        <div class="bg-white mb-4 d-flex align-items-center justify-content-center rounded-3" style="width: 50px; aspect-ratio: 1/1">
+                            <i class="text-warning" data-feather="credit-card"></i>
+                        </div>
+                        <p class="mb-1 text-small">
+                            Total Omset
+                        </p>
+                        <p class="mb-0 fs-5 fw-bold d-flex align-items-center">
+                            DR  {{ numberFormat($data['omset'],0) }}
                         </p>
                     </div>
-                    <div class="col-12">
-                        <p class="mb-1">Total Keuntungan Penjualan</p>
-                        <p class="mb-0 fs-4 fw-bold d-flex align-items-center text-warning">
+                </div>
+            </div>
+            <div class="col-6 mb-3">
+                <div class="card bg-white text-dark rounded-4 border-0">
+                    <div class="card-body">
+                        <div
+                            class="bg-light-warning mb-4 d-flex align-items-center justify-content-center rounded-3"
+                            style="width: 50px; aspect-ratio: 1/1;">
+                            <i class="text-warning" data-feather="dollar-sign"></i>
+                        </div>
+                        <p class="mb-1 text-small">
+                            Total Keuntungan
+                        </p>
+                        <p class="mb-0 fs-5 fw-bold d-flex align-items-center">
                             IDR {{ numberFormat($data['laba_kotor'],0) }}
                         </p>
                     </div>
                 </div>
-                <hr style="opacity: 0.05 !important">
-                <small class="d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#filter">
-                    <i data-feather="calendar" class="me-2" style="width: 14px"></i>
-                    {{ dateFormat($dates['dateStartFilter']) }} s/d {{ dateFormat($dates['dateEndFilter']) }}
-                </small>
             </div>
-        </div>
-    @endif
-</div>
-<div class="px-0">
-    <div class="card rounded-4 border-0 mb-2">
-        <div class="card-body px-4">
-            @if (isOwner())
-                <p class="fw-bold mb-3">Rangkuman</p>
-            @else
-                <p class="fw-bold mb-3">Stock Bahan</p>
-            @endif
-            @php
-                $index = 1;
-            @endphp
-            @foreach ($data['stock'] as $key => $value)
-                <div class="row">
-                    <div class="col-6 d-flex justify-content-start align-items-center">
-                        <i data-feather="package" class="me-2" style="width: 14px"></i>
-                        {{ $value->name }}
-                    </div>
-                    <div class="col-6 d-flex justify-content-end">
-                        @php
-                            if($value->qty < 100){
-                                $textColor = 'text-danger';
-                            }else if($value->qty < 150){
-                                $textColor = 'text-warning';
-                            }else if($value->qty < 200){
-                                $textColor = 'text-success';
-                            }else{
-                                $textColor = 'text-dark';
-                            }
-                        @endphp
-                        <p class="m-0 fw-bold {{ $textColor }}">{{ numberFormat($value->qty,0) }} {{ $value->unit }}</p>
-                    </div>
-                </div>
-                <hr class="py-1 mt-2 mb-0" style="opacity: 0.05 !important">
-            @endforeach
-            <div class="row">
-                <div class="col-6 d-flex justify-content-start align-items-center">
-                    <i data-feather="package" class="me-2" style="width: 14px"></i>
-                    Total pizza terjual
-                </div>
-                <div class="col-6 d-flex justify-content-end">
-                    <p class="m-0 fw-bold text-dark">{{ numberFormat($data['qty'],0) }} pcs</p>
-                </div>
-            </div>
-        </div>
+        @endif
     </div>
-    <div class="card rounded-4 border-0 mb-2">
-        <div class="card-body p-4">
-            <div class="row mb-3">
-                <div class="col-4">
-                    <p class="fw-bold mb-3">Statistik</p>
-                </div>
-                <div class="col-8">
-                    <div class="form-group">
-                        <select id="stats" onchange="getChartType()" class="form-select"
-                            style="padding:5px 10px !important;font-size:14px !important">
-                            <option class="fs-7" value="penjualan">Penjualan</option>
-                            <option class="fs-7" value="transaksi">Transaksi</option>
-                            <option class="fs-7" value="menu">Menu</option>
-                        </select>
-                    </div>
+    <div class="row gx-2">
+        <div class="col-12">
+            <p class="fw-bold mb-2">Penjualan</p>
+        </div>
+        <div class="col-4 mb-3">
+            <div class="card h-100 bg-warning text-white rounded-4 border-0"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                title="Orderan dengan pizza terbanyak"
+                style="cursor: pointer;"
+            >
+                <div class="card-body">
+                    <p class="mb-1 text-small">
+                        Top Order
+                    </p>
+                    <p class="mb-0 fs-5 fw-bold d-flex align-items-center">
+                        {{ $topSalesGroup->total_qty }} pcs
+                    </p>
                 </div>
             </div>
+        </div>
+        <div class="col-4 mb-3">
+            <div class="card h-100 bg-white text-dark rounded-4 border-0">
+                <div class="card-body">
+                    <p class="mb-1 text-small">
+                        Orderan
+                    </p>
+                    <p class="mb-0 fs-5 fw-bold d-flex align-items-center">
+                        {{ numberFormat($data['orderan'],0) }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-4 mb-3">
+            <div class="card h-100 bg-white text-dark rounded-4 border-0">
+                <div class="card-body">
+                    <p class="mb-1 text-small">
+                        Pizza
+                    </p>
+                    <p class="mb-0 fs-5 fw-bold d-flex align-items-center">
+                        {{ numberFormat($data['qty'],0) }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <p class="fw-bold mb-2">Jam Buka</p>
+        </div>
+        <div class="col-4 mb-3">
+            <div class="card h-100 bg-warning text-white rounded-4 border-0">
+                <div class="card-body">
+                    <p class="mb-1 text-small">
+                        Soon
+                    </p>
+                    <p class="mb-0 fs-5 fw-bold d-flex align-items-center">
+                        {{ $data['jumlah_hari_belum_tahu'] }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-4 mb-3">
+            <div class="card h-100 bg-white text-dark rounded-4 border-0">
+                <div class="card-body">
+                    <p class="mb-1 text-small">
+                        Buka
+                    </p>
+                    <p class="mb-0 fs-5 fw-bold d-flex align-items-center">
+                        {{ $data['jumlah_hari_buka'] }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-4 mb-3">
+            <div class="card h-100 bg-white text-dark rounded-4 border-0">
+                <div class="card-body">
+                    <p class="mb-1 text-small">
+                        Tutup
+                    </p>
+                    <p class="mb-0 fs-5 fw-bold d-flex align-items-center">
+                        {{ $data['jumlah_hari_tutup'] }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-4 my-3">
+            <p class="fw-bold mb-2">
+                Grafik
+            </p>
+        </div>
+        <div class="col-8 my-3">
+            <div class="form-group">
+                <select id="stats" onchange="getChartType()" class="form-select rounded-3 border-0"
+                    style="padding:7px 15px !important;font-size:14px !important">
+                    <option class="fs-7" value="penjualan">Penjualan</option>
+                    <option class="fs-7" value="transaksi">Transaksi</option>
+                    <option class="fs-7" value="menu">Menu</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-12 mb-3">
             <div id="chart_penjualan">
-                <div class="mb-4">
-                    <canvas id="sales_detail" class="w-100 h-100"></canvas>
+                <div class="mb-2">
+                    <div class="card h-100 bg-white text-dark rounded-4 border-0">
+                        <div class="card-body">
+                            <canvas id="sales_detail" class="w-100 h-100 mb-2"></canvas>
+                            <center>
+                                <a class="text-decoration-none text-small text-white bg-dark rounded-3 py-2 px-3 d-flex align-items-center justify-content-between" data-bs-toggle="modal" data-bs-target="#modalIncome">
+                                    Semua Data
+                                    <i class="ms-2" style="transform: rotate(-225deg); width: 16px" data-feather="arrow-left"></i>
+                                </a>
+                            </center>
+                        </div>
+                    </div>
                 </div>
                 <div>
                     @php
@@ -120,50 +202,65 @@
                     @if (count($data['weekly']) == 0)
                         <center>belum ada data</center>
                     @else
-                        @foreach ($data['weekly'] as $key => $value)
-                            @php
-                                $total  = 0;
-                                $profit  = 0;
-                                foreach ($value as $item) {
-                                    $gross_profit = $item->qty * $item->gross_profit;
-                                    $net_profit = $item->qty * $item->net_profit;
-                                    $total += ($item->qty * $item->gross_profit);
-                                    $profit += ($gross_profit - $net_profit);
-                                }
-                                if($index == 4){
-                                    break;
-                                }
-                            @endphp
-                            <div class="row">
-                                <div class="col-6 d-flex justify-content-start align-items-start">
-                                    <i data-feather="calendar" class="me-2" style="width: 14px"></i>
-                                    {{ formatDay($key) }}, {{ customDate($key,'d M') }}
+                        <div class="row gx-2">
+                            @foreach ($data['weekly'] as $key => $value)
+                                @php
+                                    $total  = 0;
+                                    $profit  = 0;
+                                    foreach ($value as $item) {
+                                        $gross_profit = $item->qty * $item->gross_profit;
+                                        $net_profit = $item->qty * $item->net_profit;
+                                        $total += ($item->qty * $item->gross_profit);
+                                        $profit += ($gross_profit - $net_profit);
+                                    }
+                                    if($index == 4){
+                                        break;
+                                    }
+                                @endphp
+                                <div class="col-4">
+                                    <div class="card h-100 bg-white text-dark rounded-4 border-0">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <p class="mb-0" style="font-size:10px !important">{{ customDate($key,'d M') }}</p>
+                                                </div>
+                                                <div class="col-12 mt-1">
+                                                    @if (isOwner())
+                                                        <p class="m-0 fw-bold fs-6 text-start text-warning">{{ numberFormat($profit,0) }}</p>
+                                                        <p class="m-0 text-start opacity-50" style="font-size:10px !important">
+                                                            <s>
+                                                                {{ numberFormat($total,0) }}
+                                                            </s>
+                                                        </p>
+                                                    @else
+                                                        <p class="m-0 fw-bold fs-6 text-start text-warning">{{ numberFormat($total,0) }}</p>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-6 d-flex justify-content-end">
-                                    <p class="m-0 text-end">
-                                        <small>IDR  {{ numberFormat($total,0) }}</small>
-                                        @if (isOwner())
-                                            <br>
-                                            <span class="text-success fw-bold">(IDR {{ numberFormat($profit,0) }})</span>
-                                        @endif
-                                    </p>
-                                </div>
-                            </div>
-                            <hr class="py-1 mt-2 mb-0" style="opacity: 0.05 !important">
-                            @php
-                                $index++
-                            @endphp
-                        @endforeach
+                                @php
+                                    $index++
+                                @endphp
+                            @endforeach
+                        </div>
                     @endif
-                    <br>
-                    <center>
-                        <a class="text-decoration-none text-white bg-dark rounded-3 py-2 px-3" data-bs-toggle="modal" data-bs-target="#modalIncome">Lihat Semua Data</a>
-                    </center>
                 </div>
             </div>
             <div id="chart_transaksi">
-                <div class="mb-4">
-                    <canvas id="transactionn_detail" class="w-100 h-100"></canvas>
+                <div class="mb-2">
+                    <div class="card h-100 bg-white text-dark rounded-4 border-0">
+                        <div class="card-body">
+                            <canvas id="transactionn_detail" class="w-100 h-100 mb-2"></canvas>
+                            <center>
+                                <a class="text-decoration-none text-small text-white bg-dark rounded-3 py-2 px-3 d-flex align-items-center justify-content-between" data-bs-toggle="modal" data-bs-target="#modalOutcome">
+                                    Semua Data
+                                    <i class="ms-2" style="transform: rotate(-225deg); width: 16px" data-feather="arrow-left"></i>
+                                </a>
+                            </center>
+                        </div>
+                    </div>
                 </div>
                 <div>
                     @php
@@ -172,49 +269,61 @@
                     @if (count($data['weekly-transaction']) == 0)
                         <center>belum ada data</center>
                     @else
-                        @foreach ($data['weekly-transaction'] as $key => $value)
-                            @php
-                                $in  = 0;
-                                $out  = 0;
-                                foreach ($value as $item) {
-                                    if($item->status == 'in'){
-                                        $in += $item->price;
-                                    }else{
-                                        $out += $item->price;
+                        <div class="row gx-2">
+                            @foreach ($data['weekly-transaction'] as $key => $value)
+                                @php
+                                    $in  = 0;
+                                    $out  = 0;
+                                    foreach ($value as $item) {
+                                        if($item->status == 'in'){
+                                            $in += $item->price;
+                                        }else{
+                                            $out += $item->price;
+                                        }
                                     }
-                                }
-                                $diff = $in - $out;
-                                if($index == 4){
-                                    break;
-                                }
-                            @endphp
-                            <div class="row">
-                                <div class="col-6 d-flex justify-content-start align-items-start">
-                                    <i data-feather="calendar" class="me-2" style="width: 14px"></i>
-                                    {{ formatDay($key) }}, {{ customDate($key,'d M') }}
+                                    $diff = $in - $out;
+                                    if($index == 4){
+                                        break;
+                                    }
+                                @endphp
+                                <div class="col-4">
+                                    <div class="card h-100 bg-white text-dark rounded-4 border-0">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <p class="mb-0" style="font-size:10px !important">{{ customDate($key,'d M') }}</p>
+                                                </div>
+                                                <div class="col-12 mt-1">
+                                                    <p class="m-0 fw-bold fs-6 text-start text-warning">{{ numberFormat($diff,0) }}</p>
+                                                    <p class="m-0 text-start opacity-50" style="font-size:10px !important">
+                                                        (Sisa Uang)
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-6 d-flex justify-content-end">
-                                    <p class="m-0 text-end">
-                                        <small>Sisa uang</small><br>
-                                        <span class="fw-bold {{ $diff < 0 ? 'text-danger' : '' }}">IDR  {{ numberFormat($diff,0) }}</span>
-                                    </p>
-                                </div>
-                            </div>
-                            <hr class="py-1 mt-2 mb-0" style="opacity: 0.05 !important">
-                            @php
-                                $index++
-                            @endphp
-                        @endforeach
-                    @endif
-                    <br>
-                    <center>
-                        <a class="text-decoration-none text-white bg-dark rounded-3 py-2 px-3" data-bs-toggle="modal" data-bs-target="#modalOutcome">Lihat Semua Data</a>
-                    </center>
+                                @php
+                                    $index++
+                                @endphp
+                            @endforeach
+                        @endif
+                    </div>
                 </div>
             </div>
             <div id="chart_menu">
-                <div class="mb-4">
-                    <canvas id="buy_detail" class="w-100 h-100"></canvas>
+                <div class="mb-2">
+                    <div class="card h-100 bg-white text-dark rounded-4 border-0">
+                        <div class="card-body">
+                            <canvas id="buy_detail" class="w-100 h-100 mb-2"></canvas>
+                            <center>
+                                <a class="text-decoration-none text-small text-white bg-dark rounded-3 py-2 px-3 d-flex align-items-center justify-content-between" data-bs-toggle="modal" data-bs-target="#modalMenu">
+                                    Semua Data
+                                    <i class="ms-2" style="transform: rotate(-225deg); width: 16px" data-feather="arrow-left"></i>
+                                </a>
+                            </center>
+                        </div>
+                    </div>
                 </div>
                 <div>
                     @php
@@ -223,72 +332,86 @@
                     @if (count($data['menu']) == 0)
                         <center>belum ada data</center>
                     @else
-                        @foreach ($data['menu'] as $key => $value)
-                            @php
-                                if($index == 4){
-                                    break;
-                                }
-                            @endphp
-                            <div class="row">
-                                <div class="col-8 d-flex justify-content-start align-items-center">
-                                    <i data-feather="shopping-bag" class="me-2" style="width: 14px"></i>
-                                    {{ $value->name }}
+                        <div class="row gx-2">
+                            @foreach ($data['menu'] as $key => $value)
+                                @php
+                                    if($index == 4){
+                                        break;
+                                    }
+                                @endphp
+                                <div class="col-4">
+                                    <div class="card h-100 bg-white text-dark rounded-4 border-0">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <p class="mb-0 text-capitalize" style="font-size:10px !important">{{ $value->name }}</p>
+                                                </div>
+                                                <div class="col-12 mt-1">
+                                                    <p class="m-0 fw-bold fs-6 text-start text-warning">{{ numberFormat($value->total_terjual,0) }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-4 d-flex justify-content-end">
-                                    <p class="m-0 fw-bold text-success">{{ numberFormat($value->total_terjual,0) }}</p>
+                                {{-- <div class="row">
+                                    <div class="col-8 d-flex justify-content-start align-items-center">
+                                        <i data-feather="shopping-bag" class="me-2" style="width: 14px"></i>
+                                        {{ $value->name }}
+                                    </div>
+                                    <div class="col-4 d-flex justify-content-end">
+                                        <p class="m-0 fw-bold text-success">{{ numberFormat($value->total_terjual,0) }}</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <hr class="py-1 mt-2 mb-0" style="opacity: 0.05 !important">
-                            @php
-                                $index++
-                            @endphp
-                        @endforeach
+                                <hr class="py-1 mt-2 mb-0" style="opacity: 0.05 !important"> --}}
+                                @php
+                                    $index++
+                                @endphp
+                            @endforeach
+                        </div>
                     @endif
-                    <br>
-                    <center>
-                        <a class="text-decoration-none text-white bg-dark rounded-3 py-2 px-3" data-bs-toggle="modal" data-bs-target="#modalMenu">Lihat Semua Data</a>
-                    </center>
                 </div>
             </div>
         </div>
     </div>
-    <div class="card rounded-4 border-0 mb-2">
-        <div class="card-body p-4">
-            <div class="row px-0">
-                <div class="col-12 d-flex align-items-center">
-                    <p class="fw-bold mb-3">Berdasarkan shift</p>
-                </div>
-            </div>
+    <div class="row mt-2">
+        <div class="col-12">
+            <p class="fw-bold mb-2">Berdasarkan shift</p>
+        </div>
+        <div class="col-12">
             @foreach ($shift as $key => $value)
-                <div class="row">
-                    <div class="col-8 d-flex justify-content-start align-items-center">
-                        <i data-feather="clock" class="me-2" style="width: 14px"></i>
-                        <span class="me-2">{{ $value['shift'][0] }} &nbsp; -</span>
+                <div class="card bg-white text-dark rounded-4 border-0 mb-2">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-8 d-flex justify-content-start align-items-center">
+                                <i data-feather="clock" class="me-2" style="width: 14px"></i>
+                                <span class="me-2">{{ $value['shift'][0] }} &nbsp; -</span>
 
-                        <i data-feather="clock" class="me-2" style="width: 14px"></i>
-                        <span>{{ $value['shift'][1] }}</span>
-                    </div>
-                    <div class="col-4 d-flex justify-content-end align-items-center">
-                        <p class="m-0 fw-bold text-dark text-end">
-                            {{ numberFormat($value['total_pembeli'],0) }} pcs
-                        </p>
+                                <i data-feather="clock" class="me-2" style="width: 14px"></i>
+                                <span>{{ $value['shift'][1] }}</span>
+                            </div>
+                            <div class="col-4 d-flex justify-content-end align-items-center">
+                                <p class="m-0 fw-bold text-dark text-end">
+                                    {{ numberFormat($value['total_pembeli'],0) }} pcs
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <hr class="py-1 mt-2 mb-0" style="opacity: 0.05 !important">
             @endforeach
         </div>
     </div>
 </div>
+
 <!-- Modal -->
 <div class="modal fade" id="modalIncome" data-bs-backdrop="static"
     data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalIncomeLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
-            <div class="modal-header d-flex justify-content-start align-items-center">
-                <a href="#" data-bs-dismiss="modal" class="text-decoration-none text-dark me-3">
-                    <i data-feather="arrow-left" style="width: 18px"></i>
+            <div class="modal-header d-flex justify-content-between align-items-center border-0">
+                <p class="fs-4 m-0 fw-bold">Detail penjualan harian</p>
+                <a href="#" data-bs-dismiss="modal" class="text-decoration-none text-dark">
+                    <i data-feather="x" style="width: 24px"></i>
                 </a>
-                <p class="fs-6 m-0 fw-bold">Detail penjualan harian</p>
             </div>
             <div class="modal-body">
                 @php
@@ -337,7 +460,7 @@
                         <p class="fw-bold mb-0 fs-3">IDR {{ numberFormat($total_omset,0) }}</p>
                     @endif
                 </div>
-                <div class="alert bg-warning text-center w-100 p-2">
+                <div class="alert bg-warning text-white rounded-4 text-center w-100">
                     Belum dikurangi pengeluaran
                 </div>
             </div>
@@ -350,11 +473,11 @@
     data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalOutcomeLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
-            <div class="modal-header d-flex justify-content-start align-items-center">
-                <a href="#" data-bs-dismiss="modal" class="text-decoration-none text-dark me-3">
-                    <i data-feather="arrow-left" style="width: 18px"></i>
+            <div class="modal-header d-flex justify-content-between align-items-center border-0">
+                <p class="fs-4 m-0 fw-bold">Detail transaksi harian</p>
+                <a href="#" data-bs-dismiss="modal" class="text-decoration-none text-dark">
+                    <i data-feather="x" style="width: 24px"></i>
                 </a>
-                <p class="fs-6 m-0 fw-bold">Detail transaksi harian</p>
             </div>
             <div class="modal-body">
                 @php
@@ -396,7 +519,7 @@
                     <p class="fw-bold mb-0">Sisa Uang Kas</p>
                     <p class="fw-bold mb-0 fs-3">IDR {{ numberFormat($total_weekly_transaction,0) }}</p>
                 </div>
-                <div class="alert bg-warning text-center w-100 p-2">
+                <div class="alert bg-warning text-white rounded-4 text-center w-100">
                     Belum dikurangi modal bahan
                 </div>
             </div>
@@ -446,14 +569,14 @@
                 <form action="{{ route('stats.index') }}" method="get">
                     <div class="row">
                         <div class="col-6">
-                            <label for="" class="mb-2">Tanggal awal</label>
-                            <input type="date" class="form-control"
+                            <label for="" class="form-label opacity-75 text-small">Tanggal awal</label>
+                            <input type="date" class="form-control rounded-4"
                             value="{{ $dates['dateStartFilter'] }}"
                             name="dateStartFilter">
                         </div>
                         <div class="col-6">
-                            <label for="" class="mb-2">Tanggal akhir</label>
-                            <input type="date" class="form-control"
+                            <label for="" class="form-label opacity-75 text-small">Tanggal akhir</label>
+                            <input type="date" class="form-control rounded-4"
                             value="{{ $dates['dateEndFilter'] }}"
                             name="dateEndFilter">
                         </div>
@@ -462,7 +585,7 @@
                 </form>
             </div>
             <div class="modal-footer border-0">
-                <button type="button" onclick="$('#btn-submit-filter').trigger('click')" class="btn btn-dark w-100 rounded-4 py-3">Terapkan</button>
+                <button type="button" onclick="$('#btn-submit-filter').trigger('click')" class="btn btn-warning text-white w-100 rounded-4 py-3">Terapkan</button>
             </div>
         </div>
     </div>
@@ -473,6 +596,8 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     $(document).ready(function () {
+        // $('#padding-bottom').remove();
+        $('#nav-bottom').remove();
         getChartType()
     });
     function getChartType(){

@@ -22,7 +22,7 @@
     </a>
     <h4 class="fw-bold mb-0">{{ $page }}</h4>
 </div>
-<div style="height: 100px !important"></div>
+<div style="height: 80px !important"></div>
 {{-- END NAV BACK --}}
 
 <nav id="button-create" class="navbar navbar-expand-lg fixed-bottom bg-body-blur" style="height: fit-content !important">

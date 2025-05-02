@@ -19,7 +19,7 @@
     </a>
     <p class="fw-bold m-0 p-0">{{ $page }}</p>
 </div>
-<div style="height: 100px !important"></div>
+<div style="height: 80px !important"></div>
 {{-- END NAV BACK --}}
 
 <div class="px-4 mb-3">

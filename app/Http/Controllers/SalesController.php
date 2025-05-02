@@ -94,9 +94,10 @@ class SalesController extends Controller
             return redirect()->route('sales.index')->with('error', 'oops, belum ada menu yang dipilih');
         }
         $qty_order  = 0;
+        $date_co = $request->date == '' ? date('Y-m-d') : $request->date;
         $sales_group = SalesGroup::create([
             'name'          => '',
-            'date'          => date('Y-m-d'),
+            'date'          => $date_co,
             'time'          => date('H:i:s'),
             'note'          => $request->note,
             'id_user'       => getUserID(),
@@ -117,7 +118,7 @@ class SalesController extends Controller
                 'id_menu'           => $menu->id,
                 'id_user'           => getUserID(),
                 'qty'               => $qty[$key],
-                'date'              => date('Y-m-d'),
+                'date'              => $date_co,
                 'sales_group_id'    => $sales_group->id,
                 'gross_profit'      => $price,
                 'net_profit'        => $menu->hpp,

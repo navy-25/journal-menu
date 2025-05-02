@@ -35,22 +35,39 @@
     </a>
     <h4 class="fw-bold mb-0">{{ $page }}</h4>
 </div>
-<div style="height: 100px !important"></div>
+<div style="height: 80px !important"></div>
 {{-- END NAV BACK --}}
 
-<div style="position: fixed;bottom:50px;right:20px;z-index:999">
+{{-- <div style="position: fixed;bottom:50px;right:20px;z-index:999">
     <button type="button" class="btn bg-dark text-white d-flex align-items-center justify-content-center"
         style="height: 60px;width: 60px;border-radius:100%">
         <i data-feather="filter" style="width: 25px" data-bs-toggle="modal" data-bs-target="#filter"></i>
     </button>
-</div>
+</div> --}}
+
+<nav id="nav-bottom-custom" class="navbar navbar-expand-lg fixed-bottom bg-body-blur" style="height: fit-content !important">
+    <div class="pb-2 pt-3 px-3 w-100">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <button
+                    type="button"
+                    class="btn btn-warning w-100 rounded-4 py-3"
+                    data-bs-toggle="modal"
+                    data-bs-target="#filter"
+                >
+                    Filter
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
 
 <div class="px-4">
     <div class="row">
         <div class="col-12 mb-4">
             <div class="card bg-white text-dark rounded-4 border-0 mb-3">
                 <div class="card-body">
-                    <div class="row mb-3">
+                    <div class="row">
                         <div class="col-6">
                             <small class="m-0 d-flex align-items-center">
                                 <i data-feather="calendar" class="me-2" style="width: 14px"></i>
@@ -69,7 +86,7 @@
                 </div>
             </div>
 
-            <div class="card bg-white text-dark rounded-4 border-0 mb-3">
+            <div class="card bg-white text-dark rounded-4 border-0">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-6">
@@ -96,7 +113,7 @@
             </div>
         </div>
         <div class="col-12">
-            <h6 class="fw-bold mb-4">Riwayat pesanan</h6>
+            <h6 class="fw-bold mb-3">Riwayat pesanan</h6>
             @if (count($data) == 0)
                 <div class="py-5">
                     <center>
@@ -117,7 +134,7 @@
                         foreach ($val as $x) {
                             $total += $x->gross_profit*$x->qty;
                         }
-                        $date = '';
+                        // $date = '';
                         $total = 0;
                         $note = '';
                     @endphp
@@ -127,8 +144,8 @@
                                 <div class="accordion-item">
                                     <h2 class="accordion-header" id="heading_{{$key}}">
                                         <button class="accordion-button collapsed p-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{$key}}" aria-expanded="false" aria-controls="collapse_{{$key}}">
-                                            <p class="fw-bold m-0 mb-2 me-2">{{ date('H:i', strtotime($date)) }} WIB</p>
-                                            <p class="fw-bold m-0 mb-2"> | Order-{{ $index }}</p>
+                                            <p class="fw-bold m-0 mb-2 me-1">{{ date('H:i', strtotime($val[0]->created_at)) }} WIB</p>
+                                            <p class="fw-bold m-0 mb-2">| Orderan-{{ $index }}</p>
                                         </button>
                                     </h2>
                                     <div id="collapse_{{$key}}" class="accordion-collapse collapse" aria-labelledby="heading_{{$key}}" data-bs-parent="#accordion">
@@ -160,7 +177,15 @@
                                                     </li>
                                                 @endforeach
                                             </ul>
-                                            <p class="fw-bold text-end mb-0">IDR {{ numberFormat($total, 0) }}</p>
+                                            <div class="row">
+                                                <div class="col-6 d-flex align-items-center">
+                                                    <i data-feather="calendar" class="me-2" style="width: 14px"></i>
+                                                    <small>{{ date('d M Y', strtotime($date)) }}</small>
+                                                </div>
+                                                <div class="col-6">
+                                                    <p class="fw-bold text-end mb-0">IDR {{ numberFormat($total, 0) }}</p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -189,14 +214,14 @@
                 <form action="{{ route('sales.show') }}" method="get">
                     <div class="row">
                         <div class="col-6">
-                            <label for="" class="mb-2">Tanggal awal</label>
-                            <input type="date" class="form-control"
+                            <label for="" class="form-label opacity-75 text-small">Tanggal awal</label>
+                            <input type="date" class="form-control rounded-4"
                             value="{{ $dates['dateStartFilter'] }}"
                             name="dateStartFilter">
                         </div>
                         <div class="col-6">
-                            <label for="" class="mb-2">Tanggal akhir</label>
-                            <input type="date" class="form-control"
+                            <label for="" class="form-label opacity-75 text-small">Tanggal akhir</label>
+                            <input type="date" class="form-control rounded-4"
                             value="{{ $dates['dateEndFilter'] }}"
                             name="dateEndFilter">
                         </div>
@@ -205,7 +230,7 @@
                 </form>
             </div>
             <div class="modal-footer border-0">
-                <button type="button" onclick="$('#btn-submit-filter').trigger('click')" class="btn btn-dark w-100 rounded-4 py-3">Terapkan</button>
+                <button type="button" onclick="$('#btn-submit-filter').trigger('click')" class="btn btn-warning text-white w-100 rounded-4 py-3">Terapkan</button>
             </div>
         </div>
     </div>

@@ -21,10 +21,10 @@
     </a>
     <h4 class="fw-bold mb-0">{{ $page }}</h4>
 </div>
-<div style="height: 100px !important"></div>
+<div style="height: 80px !important"></div>
 {{-- END NAV BACK --}}
 
-<div class="px-4 mb-3">
+<div class="px-4 mb-3 mt-4">
     <div class="row mb-4 px-0">
         <div class="col-12 d-flex align-items-center">
             <h6 class="fw-bold mb-2">Daftar {{ $page }}</h6>
@@ -50,7 +50,7 @@
 
 <div class="px-4">
     @if (count($data) == 0)
-        <div class="py-5">
+        {{-- <div class="py-5">
             <center>
                 <img src="{{ asset('app-assets/images/empty-folder.png') }}" alt="wallet" class="mb-3" width="30%">
                 <br>
@@ -58,7 +58,7 @@
                     Belum ada catatan
                 </p>
             </center>
-        </div>
+        </div> --}}
     @else
         @foreach ($data as $key => $item)
             <div class="card bg-white text-dark rounded-4 border-0 mb-3">

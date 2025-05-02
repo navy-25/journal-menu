@@ -18,6 +18,9 @@
     .bg-light-warning {
         background-color: #ff5e001a !important;
     }
+    .bg-light-success {
+        background-color: #1987541c !important;
+    }
     .text-warning {
         color: #ff5e00 !important;
     }
@@ -131,5 +134,9 @@
     .progress {
         border-radius: 20px;
         background-color: #ff5e001a !important;
+    }
+    .progress.bg-warning {
+        border-radius: 20px;
+        background-color: #ff5e00 !important;
     }
 </style>

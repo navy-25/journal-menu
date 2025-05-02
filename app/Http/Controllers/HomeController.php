@@ -39,12 +39,6 @@ class HomeController extends Controller
                 'name'      => 'Statistik',
                 'icon'      => asset('app-assets/images/data-analysis.png'),
                 'route'     => 'stats.index',
-                'access'    => [1]
-            ],
-            [
-                'name'      => 'Kasir',
-                'icon'      => asset('app-assets/images/approved-order.png'),
-                'route'     => 'sales.index',
                 'access'    => [1,2]
             ],
             [
@@ -54,10 +48,16 @@ class HomeController extends Controller
                 'access'    => [1,2]
             ],
             [
+                'name'      => 'Kasir',
+                'icon'      => asset('app-assets/images/approved-order.png'),
+                'route'     => 'sales.index',
+                'access'    => [1,2]
+            ],
+            [
                 'name'      => 'Menu',
                 'icon'      => asset('app-assets/images/pizza-slice.png'),
                 'route'     => 'menu.index',
-                'access'    => [1,2]
+                'access'    => [1]
             ],
             // [
             //     'name'      => 'Bahan',

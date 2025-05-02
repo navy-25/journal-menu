@@ -27,18 +27,6 @@
 @php
     date_default_timezone_set('Asia/Jakarta');
 @endphp
-{{-- <div style="position: fixed;bottom:140px;right:20px;z-index:999">
-    <button type="button" class="btn btn-warning text-white d-flex align-items-center justify-content-center"
-        style="height: 60px;width: 60px;border-radius:100%">
-        <i data-feather="plus" style="width: 25px" data-bs-toggle="modal" data-bs-target="#modal"></i>
-    </button>
-</div>
-<div style="position: fixed;bottom:220px;right:20px;z-index:999">
-    <button type="button" class="btn {{ $isClosed == 1 ? 'bg-white text-dark' : 'btn-dark text-white' }} d-flex align-items-center justify-content-center"
-        style="height: 60px;width: 60px;border-radius:100%" onclick="closing()" {{ $isClosed == 1 ? 'disabled' : '' }}>
-        <i data-feather="arrow-right" style="width: 25px"></i>
-    </button>
-</div> --}}
 @include('includes.alert')
 {{-- NAV BACK --}}
 <div id="nav-top" class="px-4 py-3 mb-3 fixed-top d-flex align-items-center justify-content-between bg-body-blur">
@@ -47,7 +35,7 @@
     </a>
     <h4 class="fw-bold mb-0">{{ $page }}</h4>
 </div>
-<div style="height: 100px !important"></div>
+<div style="height: 80px !important"></div>
 {{-- END NAV BACK --}}
 
 <nav id="nav-bottom-custom" class="navbar navbar-expand-lg fixed-bottom bg-body-blur" style="height: fit-content !important">
@@ -56,7 +44,7 @@
             <div class="col-5 pe-0">
                 <button
                     type="button"
-                    class="btn {{ $isClosed == 1 ? 'bg-white text-dark' : 'btn-dark text-white' }} w-100 rounded-4 py-3"
+                    class="btn {{ $isClosed == 1 ? 'bg-white border-0 text-dark' : 'btn-dark text-white' }} w-100 rounded-4 py-3"
                     onclick="closing()"
                     {{ $isClosed == 1 ? 'disabled' : '' }}
                 >
@@ -78,7 +66,7 @@
 </nav>
 
 <div class="px-4 mb-4">
-    <p class="fw-bold mb-3">Summary</p>
+    <p class="fw-bold mb-2">Summary</p>
     <div class="row align-items-stretch">
         <div class="col-9">
             <div class="card h-100 bg-warning text-white rounded-4 border-0">
@@ -132,9 +120,9 @@
 </div>
 
 <div class="px-4">
-    <div class="row mb-4 px-0">
+    <div class="row mb-2 px-0">
         <div class="col-6 d-flex align-items-center">
-            <h6 class="fw-bold mb-0">Daftar pesanan</h6>
+            <p class="fw-bold mb-0">Daftar pesanan</p>
         </div>
         @if (isOwner())
             <div class="col-6 d-flex align-items-center justify-content-end">
@@ -145,7 +133,7 @@
     <div class="row">
         <div class="col-12">
             @if (count($data) == 0)
-                <div class="py-5 mt-5">
+                {{-- <div class="py-5 mt-5">
                     <center>
                         <img src="{{ asset('app-assets/images/shopping-bag.png') }}" alt="wallet" class="mb-3" width="30%">
                         <br>
@@ -153,7 +141,7 @@
                             Belum ada pesanan <br> hari ini
                         </p>
                     </center>
-                </div>
+                </div> --}}
             @else
                 @php
                     $index = count($data);
@@ -164,7 +152,7 @@
                         foreach ($val as $x) {
                             $total += $x->gross_profit*$x->qty;
                         }
-                        $date = '';
+                        // $date = '';
                         $total = 0;
                         $note = '';
                     @endphp
@@ -174,8 +162,8 @@
                                 <div class="accordion-item">
                                     <h2 class="accordion-header" id="heading_{{$key}}">
                                         <button class="accordion-button collapsed p-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{$key}}" aria-expanded="{{ $index == count($data) ? 'true' : 'false' }}" aria-controls="collapse_{{$key}}">
-                                            <p class="fw-bold m-0 mb-2 me-2">{{ date('H:i', strtotime($date)) }} WIB</p>
-                                            <p class="fw-bold m-0 mb-2"> | Order-{{ $index }}</p>
+                                            <p class="fw-bold m-0 mb-2 me-2">{{ date('H:i', strtotime($val[0]->created_at)) }} WIB</p>
+                                            <p class="fw-bold m-0 mb-2"> | Orderan-{{ $index }}</p>
                                         </button>
                                     </h2>
                                     <div id="collapse_{{$key}}" class="accordion-collapse collapse {{ $index == count($data) ? 'show' : '' }}" aria-labelledby="heading_{{$key}}" data-bs-parent="#accordion">
@@ -241,20 +229,12 @@
                 </a>
             </div>
             <div class="modal-body pt-3">
-                <form action="{{ route('sales.store') }}" method="POST">
+                <form action="{{ route('sales.store') }}" method="POST" id="form">
                     @csrf
                     @foreach ($menu as $key => $item)
                         <div class="row align-items-start">
                             <div class="col-7">
                                 @if ($item->is_promo == 1)
-                                    {{-- <div class="mb-2 d-flex align-items-center">
-                                        <div class="bg-light-danger fs-7 p-1 rounded-3 px-2 me-2" style="width: fit-content !important">
-                                            Promo
-                                        </div>
-                                        <div class="bg-light-warning fs-7 p-1 rounded-3 px-2" style="width: fit-content !important">
-                                            Hemat {{ numberFormat($item->price - $item->price_promo,0) }}
-                                        </div>
-                                    </div> --}}
                                     <div class="d-flex align-items-center">
                                         <div class="bg-light-warning text-small p-1 rounded-3 px-2 me-2" style="width: fit-content !important; height: fit-content !important;">
                                             <i data-feather="percent" class="text-warning" style="width: 12px"></i>
@@ -296,19 +276,12 @@
                         <hr style="opacity: 0.05 !important">
                     @endforeach
                     <button class="d-none" id="btn-submit" type="submit"></button>
+                    <input type="text" name="date" value="{{ isset($_GET['dateFilter']) ? $_GET['dateFilter'] : '' }}">
                     <textarea class="d-none" name="note" id="note"></textarea>
                 </form>
             </div>
             <div class="modal-footer border-0">
-                {{-- <label for="note" class="form-label opacity-75 text-small me-auto">Keterangan</label> --}}
-                {{-- <textarea class="form-control w-100 rounded-4 mb-2" placeholder="pedas/sedang/etc" id="note-temp"></textarea> --}}
-                {{-- <select name="note" id="note-temp" class="form-select rounded-4 mb-4">
-                    <option value="">Pedas/Sedang/Tidak Pedas</option>
-                    <option value="Pedas">Pedas</option>
-                    <option value="Sedang">Sedang</option>
-                    <option value="Tidak Pedas">Tidak Pedas</option>
-                </select> --}}
-                <button type="button" onclick="$('#note').val($('#note-temp').val());$('#btn-submit').trigger('click');" class="btn btn-warning text-white w-100 rounded-4 py-3">Tambah</button>
+                <button type="button" id="btn-form" onclick="$('#note').val($('#note-temp').val());$('#btn-submit').trigger('click');" class="btn btn-warning text-white w-100 rounded-4 py-3">Tambah</button>
             </div>
         </div>
     </div>
@@ -344,13 +317,13 @@
                 </a>
             </div>
             <div class="modal-body">
-                <form action="{{ route('sales.index') }}" method="get" id="form">
+                <form action="{{ route('sales.index') }}" method="get">
                     <input type="date" class="form-control rounded-4" value="{{ $dateFilter }}" name="dateFilter">
                     <button class="d-none" id="btn-submit-filter" type="submit"></button>
                 </form>
             </div>
             <div class="modal-footer border-0">
-                <button type="button" id="btn-submit" onclick="$('#btn-submit-filter').trigger('click')" class="btn btn-warning text-white w-100 rounded-4 py-3">Terapkan</button>
+                <button type="button" onclick="$('#btn-submit-filter').trigger('click')" class="btn btn-warning text-white w-100 rounded-4 py-3">Terapkan</button>
             </div>
         </div>
     </div>
@@ -364,7 +337,7 @@
     });
     document.getElementById("form").addEventListener("submit", function (e) {
         // e.preventDefault();
-        const btn = document.getElementById("btn-submit");
+        const btn = document.getElementById("btn-form");
         btn.disabled = true;
     });
     function minus(key){

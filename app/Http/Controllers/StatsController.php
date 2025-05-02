@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sales;
+use App\Models\SalesGroup;
 use App\Models\Stats;
 use App\Models\Stock;
 use App\Models\Transaction;
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,115 +24,147 @@ class StatsController extends Controller
     public function index(Request $request)
     {
         $page = 'Statistik';
-        if ($request->all() == []) {
-            $dates['dateEndFilter']      = date('Y-m-t');
-            $dates['dateStartFilter']    = date('Y-m-01');
-        } else {
-            $dates['dateEndFilter']      = $request->dateEndFilter;
-            $dates['dateStartFilter']    = $request->dateStartFilter;
-        }
-        $data['weekly'] = Sales::query()
+
+        $userID = getUserID();
+        $dateStart = $request->dateStartFilter ?? date('Y-m-01');
+        $dateEnd = $request->dateEndFilter ?? date('Y-m-t');
+
+        $dates = [
+            'dateStartFilter' => $dateStart,
+            'dateEndFilter' => $dateEnd,
+        ];
+
+        // Ambil semua sales sekaligus
+        $salesAll = Sales::query()
             ->join('menus as m', 'm.id', 'sales.id_menu')
-            ->orderBy('sales.date', 'DESC')
-            ->where('sales.id_user', getUserID())
-            ->whereBetween('sales.date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
-            ->get()
-            ->groupBy('date');
+            ->where('sales.id_user', $userID)
+            ->whereBetween('sales.date', [$dateStart, $dateEnd])
+            ->get();
+
+        $data['weekly'] = $salesAll->groupBy('date');
+
+        // Cari tanggal penjualan terbanyak
+        $maxDate = null;
+        $maxTotal = 0;
+        foreach ($data['weekly'] as $date => $sales) {
+            $totalSales = $sales->sum('qty');
+            if ($totalSales > $maxTotal) {
+                $maxTotal = $totalSales;
+                $maxDate = $date;
+            }
+        }
+        $data['top_sales_date'] = $maxDate;
+
+        // Weekly Transaction
         $data['weekly-transaction'] = Transaction::query()
             ->orderBy('transactions.date', 'DESC')
-            ->where('transactions.id_user', getUserID())
-            ->whereBetween('transactions.date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
+            ->where('transactions.id_user', $userID)
+            ->whereBetween('transactions.date', [$dateStart, $dateEnd])
             ->get()
             ->groupBy('date');
 
-        // $income = Sales::query()
-        //     ->where('id_user', getUserID())
-        //     ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
-        //     ->sum(DB::raw('qty * gross_profit'));
+        // Jumlah orderan
+        $data['orderan'] = SalesGroup::where('id_user', $userID)
+            ->whereBetween('date', [$dateStart, $dateEnd])
+            ->count();
 
-        // $trans_outcome = Transaction::where('status', 'out')
-        //     ->where('transactions.id_user', getUserID())
-        //     ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
-        //     ->sum('price');
-        // $trans_income = Transaction::where('status', 'in')
-        //     ->where('transactions.id_user', getUserID())
-        //     ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
-        //     ->sum('price');
-
-        $data['omset'] =  Transaction::where('status', 'in')
-            ->where('transactions.id_user', getUserID())
-            ->where('transactions.type', 9)
-            ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
+        // Omset
+        $data['omset'] = Transaction::where('status', 'in')
+            ->where('id_user', $userID)
+            ->where('type', 9)
+            ->whereBetween('date', [$dateStart, $dateEnd])
             ->sum('price');
 
-        $data['laba_kotor'] =  Sales::query()
-            ->where('id_user', getUserID())
-            ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
+        // Laba kotor
+        $data['laba_kotor'] = Sales::where('id_user', $userID)
+            ->whereBetween('date', [$dateStart, $dateEnd])
             ->sum(DB::raw('(qty * gross_profit) - (qty * net_profit)'));
 
-        $data['qty'] = Sales::query()
-            ->where('sales.id_user', getUserID())
-            ->whereBetween('sales.date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
-            ->sum('sales.qty');
+        // Total QTY
+        $data['qty'] = $salesAll->sum('qty');
+
+        // Menu Terlaris
         $data['menu'] = Sales::query()
             ->join('menus as m', 'm.id', 'sales.id_menu')
-            ->where('sales.id_user', getUserID())
+            ->where('sales.id_user', $userID)
+            ->whereBetween('sales.date', [$dateStart, $dateEnd])
             ->select('m.name', DB::raw('count(m.id) as total_terjual'))
             ->groupBy('m.name')
-            ->whereBetween('sales.date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
-            ->orderBy('total_terjual', 'DESC')
+            ->orderByDesc('total_terjual')
             ->get();
-        $shift = [
-            [
-                'shift' => ['00:00', '11:59'],
-            ],
-            [
-                'shift' => ['12:00', '14:59'],
-            ],
-            [
-                'shift' => ['15:00', '18:59'],
-            ],
-            [
-                'shift' => ['19:00', '22:59'],
-            ],
-            [
-                'shift' => ['23:00', '23:59'],
-            ],
+
+        // Shift Analysis
+        $shiftDefinitions = [
+            ['00:00', '11:59'],
+            ['12:00', '14:59'],
+            ['15:00', '18:59'],
+            ['19:00', '22:59'],
+            ['23:00', '23:59'],
         ];
-        $data['shift_1'] = Sales::query()
-            ->where('sales.id_user', getUserID())
-            ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
-            ->whereBetween(DB::raw('TIME(created_at)'), $shift[0]['shift'])
-            ->sum('qty');
-        $data['shift_2'] = Sales::query()
-            ->where('sales.id_user', getUserID())
-            ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
-            ->whereBetween(DB::raw('TIME(created_at)'), $shift[1]['shift'])
-            ->sum('qty');
-        $data['shift_3'] = Sales::query()
-            ->where('sales.id_user', getUserID())
-            ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
-            ->whereBetween(DB::raw('TIME(created_at)'), $shift[2]['shift'])
-            ->sum('qty');
-        $data['shift_4'] = Sales::query()
-            ->where('sales.id_user', getUserID())
-            ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
-            ->whereBetween(DB::raw('TIME(created_at)'), $shift[3]['shift'])
-            ->sum('qty');
-        $data['shift_5'] = Sales::query()
-            ->where('sales.id_user', getUserID())
-            ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
-            ->whereBetween(DB::raw('TIME(created_at)'), $shift[4]['shift'])
-            ->sum('qty');
 
-        $shift[0]['total_pembeli'] = $data['shift_1'];
-        $shift[1]['total_pembeli'] = $data['shift_2'];
-        $shift[2]['total_pembeli'] = $data['shift_3'];
-        $shift[3]['total_pembeli'] = $data['shift_4'];
-        $shift[4]['total_pembeli'] = $data['shift_5'];
+        foreach ($shiftDefinitions as $i => $timeRange) {
+            $shiftQty = Sales::query()
+                ->where('id_user', $userID)
+                ->whereBetween('date', [$dateStart, $dateEnd])
+                ->whereBetween(DB::raw('TIME(created_at)'), $timeRange)
+                ->sum('qty');
 
-        $data['stock'] = Stock::where('id_user', getUserID())->get();
-        return view('stats', compact('data', 'page', 'shift', 'dates'));
+            $data["shift_" . ($i + 1)] = $shiftQty;
+
+            $shift[$i] = [
+                'shift' => $timeRange,
+                'total_pembeli' => $shiftQty,
+            ];
+        }
+
+        // Stock
+        $data['stock'] = Stock::where('id_user', $userID)->get();
+
+        // Top Sales Group
+        $topSalesGroup = Sales::query()
+            ->where('sales.id_user', $userID)
+            ->whereBetween('sales.date', [$dateStart, $dateEnd])
+            ->select('sales.sales_group_id', DB::raw('SUM(qty) as total_qty'))
+            ->groupBy('sales.sales_group_id')
+            ->orderByDesc('total_qty')
+            ->first();
+
+        // Hitung jumlah hari buka dan tutup
+        // 1. Buat daftar semua tanggal dalam rentang filter
+        $allDates = collect();
+        $start = Carbon::parse($dateStart);
+        $end = Carbon::parse($dateEnd);
+        $end = Carbon::parse($dateEnd);
+        while ($start->lte($end)) {
+            $allDates->push($start->copy());
+            $start->addDay();
+        }
+        $activeDates = SalesGroup::where('id_user', $userID)
+            ->whereBetween('date', [$dateStart, $dateEnd])
+            ->select('date')
+            ->distinct()
+            ->pluck('date')
+            ->map(fn($date) => Carbon::parse($date)->format('Y-m-d'));
+
+        $jumlahBuka = 0;
+        $jumlahTutup = 0;
+        $jumlahBelumTahu = 0;
+
+        foreach ($allDates as $date) {
+            $dateStr = $date->format('Y-m-d');
+            if ($activeDates->contains($dateStr)) {
+                $jumlahBuka++;
+            } elseif ($date->isFuture()) {
+                $jumlahBelumTahu++;
+            } else {
+                $jumlahTutup++;
+            }
+        }
+
+        $data['jumlah_hari_buka'] = $jumlahBuka;
+        $data['jumlah_hari_tutup'] = $jumlahTutup;
+        $data['jumlah_hari_belum_tahu'] = $jumlahBelumTahu;
+        return view('stats', compact('data', 'page', 'shift', 'dates','topSalesGroup'));
     }
 
     /**

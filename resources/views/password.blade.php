@@ -20,10 +20,10 @@
     </a>
     <h4 class="fw-bold mb-0">{{ $page }}</h4>
 </div>
-<div style="height: 100px !important"></div>
+<div style="height: 80px !important"></div>
 {{-- END NAV BACK --}}
 
-<div class="px-4">
+<div class="px-4 mt-4">
     <form action="{{ route('account.updatePassword') }}" method="post" id="form">
         @csrf
         <div class="form-group mb-3">

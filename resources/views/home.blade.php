@@ -23,29 +23,8 @@
     $totalDays          = $start->diffInDays($end) + 1;
     $currentDays        = $start->diffInDays(min($now, $end)) + 1;;
     $progressPercent    = $totalDays > 0 ? round(($currentDays / $totalDays) * 100) : 0;
-
-    // $targetTime = Carbon::createFromTime(18, 0, 0); // jam 18:00
-    // $diffInMinutes = $now->diffInMinutes($targetTime, false); // bisa negatif
 @endphp
 @include('includes.alert')
-{{-- <div class="w-100 d-block mb-4">
-    <div class="bg-dark p-4 text-center" style="border-radius: 0px 0px 30px 30px">
-        <h4 class="fw-bold text-white mt-2">
-            @if (isOwner())
-                Halo Owner
-                {{ Auth::user()->name }}
-            @else
-                Halo
-                {{ Auth::user()->name }}
-            @endif
-        </h4>
-        @if ($diffInMinutes > 0 && $diffInMinutes <= 14)
-            <p class="text-white mb-2">📣 Jangan lupa sholat, agar diberikan kelancaran!</p>
-        @else
-            <p class="text-white mb-2">📣 Selalu jaga tempat kerja agar selalu bersih ya!</p>
-        @endif
-    </div>
-</div> --}}
 
 {{-- NAV BACK --}}
 <div id="nav-top" class="px-4 py-3 mb-3 fixed-top d-flex align-items-center justify-content-between bg-body-blur">
@@ -54,11 +33,11 @@
         <i data-feather="log-out"></i>
     </button>
 </div>
-<div style="height: 100px !important"></div>
+<div style="height: 80px !important"></div>
 {{-- END NAV BACK --}}
 
 <div class="px-4 mb-3">
-    <p class="fw-bold mb-3">Summary</p>
+    <p class="fw-bold mb-2">Summary</p>
     <div class="row">
         @if (isOwner())
             <div class="col-6 mb-3">
@@ -118,8 +97,8 @@
                 </div>
             </div>
         @endif
-        <div class="col-12 mb-3 mt-3">
-            <div class="mb-3 d-flex align-items-center justify-content-between">
+        <div class="col-12 mb-2 mt-2">
+            <div class="mb-2 d-flex align-items-center justify-content-between">
                 <p class="fw-bold mb-0">Counting Days</p>
                 <p class="fw-bold mb-0">{{ customDate($currentDays,'d') }} {{ customDate($dates['dateStartFilter'],'M Y') }} </p>
             </div>
@@ -140,7 +119,7 @@
                             </div>
                         </div>
                         <div class="col-10">
-                            <div class="progress mb-1 mt-2" role="progressbar" aria-label="Warning example" aria-valuenow="3{{ $progressPercent }}" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress mb-1 mt-2" role="progressbar" aria-label="Warning example" aria-valuenow="{{ $progressPercent }}" aria-valuemin="0" aria-valuemax="100">
                                 <div class="progress-bar text-bg-warning" style="width: {{ $progressPercent }}%"></div>
                             </div>
                             <div class="row justify-content-between">
@@ -151,17 +130,17 @@
                                 </div>
                                 <div class="col-auto">
                                     <p class="mb-0" style="font-size: .6rem">
-                                        day 7
+                                        day 8
                                     </p>
                                 </div>
                                 <div class="col-auto">
                                     <p class="mb-0" style="font-size: .6rem">
-                                        day 14
+                                        day 15
                                     </p>
                                 </div>
                                 <div class="col-auto">
                                     <p class="mb-0" style="font-size: .6rem">
-                                        day 21
+                                        day 22
                                     </p>
                                 </div>
                                 <div class="col-auto">
@@ -178,7 +157,7 @@
     </div>
 </div>
 <div class="px-4">
-    <p class="fw-bold mb-3">Main Menu</p>
+    <p class="fw-bold mb-2">Main Menu</p>
     <div class="row">
         @foreach ($menu as $value)
             @if (in_array(Auth::user()->role,$value['access']))
