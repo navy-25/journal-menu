@@ -34,7 +34,7 @@
 </div>
 <div class="px-4">
     @if (count($data) == 0)
-        <div class="py-5">
+        {{-- <div class="py-5">
             <center>
                 <img src="{{ asset('app-assets/images/boy.webp') }}" alt="wallet" class="mb-3" width="30%">
                 <br>
@@ -42,7 +42,7 @@
                     Belum ada <br> pengguna
                 </p>
             </center>
-        </div>
+        </div> --}}
     @else
         @foreach ($data as $key => $value)
             <textarea class="d-none" id="data{{ $key }}">{{ json_encode($value) }}</textarea>

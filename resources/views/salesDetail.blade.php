@@ -115,7 +115,7 @@
         <div class="col-12">
             <h6 class="fw-bold mb-3">Riwayat pesanan</h6>
             @if (count($data) == 0)
-                <div class="py-5">
+                {{-- <div class="py-5">
                     <center>
                         <img src="{{ asset('app-assets/images/shopping-bag.webp') }}" alt="wallet" class="mb-3" width="30%">
                         <br>
@@ -123,7 +123,7 @@
                             Belum ada pesanan <br> hari ini
                         </p>
                     </center>
-                </div>
+                </div> --}}
             @else
                 @php
                     $index = count($data);

@@ -119,7 +119,7 @@
         <div class="col-12">
             <h6 class="fw-bold mb-3">Daftar transaksi</h6>
             @if (count($data) == 0)
-                <div class="py-5">
+                {{-- <div class="py-5">
                     <center>
                         <img src="{{ asset('app-assets/images/wallet.webp') }}" alt="wallet" class="mb-3" width="30%">
                         <br>
@@ -127,7 +127,7 @@
                             Belum ada transaksi<br>hari ini
                         </p>
                     </center>
-                </div>
+                </div> --}}
             @else
                 @foreach ($data as $key => $item)
                     <div class="card bg-white text-dark rounded-4 border-0 mb-3">
