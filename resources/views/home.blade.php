@@ -158,12 +158,12 @@
 </div>
 <div class="px-4">
     <p class="fw-bold mb-2">Main Menu</p>
-    <div class="row">
+    <div class="row align-items-stretch">
         @foreach ($menu as $value)
             @if (in_array(Auth::user()->role,$value['access']))
                 <div class="col-4 d-flex justify-content-center align-items-center mb-3">
                     <a href="{{ $value['route'] == '' ? '#' : route($value['route']) }}"
-                        class="text-decoration-none text-dark text-center px-3 py-3 d-block bg-white border-0 w-100 rounded-5">
+                        class="text-decoration-none text-dark text-center px-3 py-3 d-block bg-white border-0 w-100 rounded-5 h-100">
                         <img class="mb-3" style="width: 50px;" src="{{ $value['icon'] }}" alt="">
                         <p class="text-small mb-0 fw-semibold">{{ $value['name'] }}</p>
                     </a>

@@ -59,12 +59,6 @@ class HomeController extends Controller
                 'route'     => 'menu.index',
                 'access'    => [1]
             ],
-            // [
-            //     'name'      => 'Bahan',
-            //     'icon'      => asset('app-assets/images/rolling-pin.webp'),
-            //     'route'     => 'stock.index',
-            //     'access'    => [1]
-            // ],
             [
                 'name'      => 'Katalog',
                 'icon'      => asset('app-assets/images/package.webp'),
@@ -95,6 +89,18 @@ class HomeController extends Controller
             //     'route'     => 'account.index',
             //     'access'    => [1,2]
             // ],
+            [
+                'name'      => 'Growth (Soon)',
+                'icon'      => asset('app-assets/images/financial-profit.webp'),
+                'route'     => 'home.index',
+                'access'    => [1]
+            ],
+            [
+                'name'      => 'Restock SM (Soon)',
+                'icon'      => asset('app-assets/images/calculator.webp'),
+                'route'     => 'home.index',
+                'access'    => [1]
+            ],
         ];
         return view('home', compact('data', 'page', 'dates', 'menu'));
     }
