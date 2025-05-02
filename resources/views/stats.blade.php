@@ -531,11 +531,11 @@
     data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalMenuLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
-            <div class="modal-header d-flex justify-content-start align-items-center">
-                <a href="#" data-bs-dismiss="modal" class="text-decoration-none text-dark me-3">
-                    <i data-feather="arrow-left" style="width: 18px"></i>
+            <div class="modal-header d-flex justify-content-between align-items-center border-0">
+                <p class="fs-4 m-0 fw-bold">Detail penjualan by menu</p>
+                <a href="#" data-bs-dismiss="modal" class="text-decoration-none text-dark">
+                    <i data-feather="x" style="width: 24px"></i>
                 </a>
-                <p class="fs-6 m-0 fw-bold">Detail penjualan by menu</p>
             </div>
             <div class="modal-body">
                 @foreach ($data['menu'] as $key => $value)

@@ -41,7 +41,7 @@
     </div>
 </nav>
 
-<div class="px-4 mb-3">
+<div class="px-4 mb-3 mt-4">
     <div class="row mb-4 px-0">
         <div class="col-12 d-flex align-items-center">
             <h6 class="fw-bold mb-2">Daftar {{ $page }}</h6>
@@ -51,13 +51,8 @@
 
 <div class="px-4">
     @foreach ($data as $key => $item)
-        <div class="row mb-3">
-            <div class="col-2 d-flex justify-content-center align-items-center">
-                <div class="w-100 h-100 bg-warning rounded-3 d-flex align-items-center justify-content-center text-uppercase fw-bold">
-                    {{ $item->name[0] }}{{ $item->name[1] }}
-                </div>
-            </div>
-            <div class="col-10 d-flex justify-content-start align-items-center ps-1">
+        <div class="card bg-white text-dark rounded-4 border-0 mb-3">
+            <div class="card-body">
                 <div class="w-100">
                     <div class="row">
                         <div class="col-6">
@@ -81,7 +76,6 @@
                 </div>
             </div>
         </div>
-        <hr style="opacity: 0.1">
     @endforeach
 </div>
 
@@ -121,6 +115,7 @@
             </div>
             <div class="modal-footer border-0">
                 <button
+                    id="btn-form"
                     type="button"
                     class="btn btn-warning text-white rounded-4 py-3 w-100"
                     onclick="$('#btn-submit-filter').trigger('click')"
@@ -134,10 +129,20 @@
 @endsection
 
 @section('script')
+<script src="{{ asset('js/jquery.mask.min.js') }}"></script>
 <script>
     $(document).ready(function () {
         // $('#padding-bottom').remove();
         $('#nav-bottom').remove();
+    });
+    $('.money').mask('000.000.000.000.000', {
+        reverse: true
+    });
+
+    document.getElementById("form").addEventListener("submit", function (e) {
+        // e.preventDefault();
+        const btn = document.getElementById("btn-form");
+        btn.disabled = true;
     });
 
     function create(){

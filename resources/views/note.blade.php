@@ -52,7 +52,7 @@
     @if (count($data) == 0)
         {{-- <div class="py-5">
             <center>
-                <img src="{{ asset('app-assets/images/empty-folder.png') }}" alt="wallet" class="mb-3" width="30%">
+                <img src="{{ asset('app-assets/images/empty-folder.webp') }}" alt="wallet" class="mb-3" width="30%">
                 <br>
                 <p class="fw-bold fs-4 text-secondary">
                     Belum ada catatan

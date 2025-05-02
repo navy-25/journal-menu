@@ -37,61 +37,61 @@ class HomeController extends Controller
         $menu = [
             [
                 'name'      => 'Statistik',
-                'icon'      => asset('app-assets/images/data-analysis.png'),
+                'icon'      => asset('app-assets/images/data-analysis.webp'),
                 'route'     => 'stats.index',
                 'access'    => [1,2]
             ],
             [
                 'name'      => 'Keuangan',
-                'icon'      => asset('app-assets/images/accounting.png'),
+                'icon'      => asset('app-assets/images/accounting.webp'),
                 'route'     => 'transaction.index',
                 'access'    => [1,2]
             ],
             [
                 'name'      => 'Kasir',
-                'icon'      => asset('app-assets/images/approved-order.png'),
+                'icon'      => asset('app-assets/images/approved-order.webp'),
                 'route'     => 'sales.index',
                 'access'    => [1,2]
             ],
             [
                 'name'      => 'Menu',
-                'icon'      => asset('app-assets/images/pizza-slice.png'),
+                'icon'      => asset('app-assets/images/pizza-slice.webp'),
                 'route'     => 'menu.index',
                 'access'    => [1]
             ],
             // [
             //     'name'      => 'Bahan',
-            //     'icon'      => asset('app-assets/images/rolling-pin.png'),
+            //     'icon'      => asset('app-assets/images/rolling-pin.webp'),
             //     'route'     => 'stock.index',
             //     'access'    => [1]
             // ],
             [
                 'name'      => 'Katalog',
-                'icon'      => asset('app-assets/images/package.png'),
+                'icon'      => asset('app-assets/images/package.webp'),
                 'route'     => 'material.index',
                 'access'    => [1]
             ],
             // [
             //     'name'      => 'Laporan',
-            //     'icon'      => asset('app-assets/images/folder.png'),
+            //     'icon'      => asset('app-assets/images/folder.webp'),
             //     'route'     => 'report.index',
             //     'access'    => [1,2]
             // ],
             [
                 'name'      => 'Laba Kotor',
-                'icon'      => asset('app-assets/images/investment-growth.png'),
+                'icon'      => asset('app-assets/images/investment-growth.webp'),
                 'route'     => 'profit.index',
                 'access'    => [1]
             ],
             [
                 'name'      => 'Catatan',
-                'icon'      => asset('app-assets/images/book.png'),
+                'icon'      => asset('app-assets/images/book.webp'),
                 'route'     => 'note.index',
                 'access'    => [1,2]
             ],
             // [
             //     'name'      => 'Akun',
-            //     'icon'      => asset('app-assets/images/data-analysis.png'),
+            //     'icon'      => asset('app-assets/images/data-analysis.webp'),
             //     'route'     => 'account.index',
             //     'access'    => [1,2]
             // ],

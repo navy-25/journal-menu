@@ -16,7 +16,7 @@
 @section('content')
 <div class="w-100 vh-100 d-flex align-items-end bg-dark"
     style="
-        background-image: url('{{ asset('app-assets/images/bg-login.png') }}');
+        background-image: url('{{ asset('app-assets/images/bg-login.webp') }}');
         object-position: center top;
         background-repeat: no-repeat;
         background-size: 100% auto;
@@ -24,7 +24,7 @@
     >
     <div class="w-100">
         <div class="text-center my-4">
-            <img src="{{ asset('app-assets/images/logo-pizza.png') }}" style="width: 100px" alt="" class="mb-5">
+            <img src="{{ asset('app-assets/images/logo-pizza.webp') }}" style="width: 100px" alt="" class="mb-5">
             <br><br><br><br>
             {{-- <div class="d-flex justify-content-center"><p class="mb-1 text-dark bg-white px-2 rounded-4">Selamat datang</p></div> --}}
             <p class="fw-bold text-warning text-title">Pizza Super <br> Merchant</p>

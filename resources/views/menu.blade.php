@@ -221,6 +221,7 @@
         $('#status').val(data.status).trigger('change')
 
         $('#is_promo').val(data.is_promo).trigger('change')
+        $('#form').attr('action','{{ route('menu.store') }}')
         if(data.is_promo == 1){
             $('#price_promo_form').removeClass('d-none')
             $('#price_promo').val(data.price_promo)

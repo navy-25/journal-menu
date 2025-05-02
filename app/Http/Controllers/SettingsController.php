@@ -27,11 +27,11 @@ class SettingsController extends Controller
             //     'route' => route('stock.index'),
             //     'icon'  => 'package',
             // ],
-            [
-                'name'  => 'Harga Bahan',
-                'route' => route('material.index'),
-                'icon'  => 'book',
-            ],
+            // [
+            //     'name'  => 'Harga Bahan',
+            //     'route' => route('material.index'),
+            //     'icon'  => 'book',
+            // ],
         ];
         $account = [
             [

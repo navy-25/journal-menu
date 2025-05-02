@@ -66,7 +66,7 @@
             <tbody>
                 <tr>
                     <td>
-                        <img src="http://pizzasuper.viproject.net/app-assets/images/logo-pizza-2.png" alt="" style="width: 80px">
+                        <img src="http://pizzasuper.viproject.net/app-assets/images/logo-pizza-2.webp" alt="" style="width: 80px">
                     </td>
                     <td class="px-4">
                         <p class="my-0 fw-bold fs-4">{{ Auth::user()->name }}</p>

@@ -19,7 +19,7 @@
 @section('content')
 <div class="w-100 vh-100 d-block">
     <div class="bg-warning d-flex align-items-center justify-content-center" style="height: calc(100% - 45%); border-radius: 0px 0px 50px 50px">
-        <img class="w-100" src="{{ asset('app-assets/images/pizza-ilust.png') }}" alt="">
+        <img class="w-100" src="{{ asset('app-assets/images/pizza-ilust.webp') }}" alt="">
     </div>
     <div class="w-100 px-4 py-5 bg-white" style="height: 45%;">
         <div class="mb-4">

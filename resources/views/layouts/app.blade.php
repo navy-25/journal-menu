@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $page }} - {{ config('app.name') }}</title>
 
-    <link rel="icon" type="image/x-icon" href="{{ asset('app-assets/images/logo-pizza.png') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('app-assets/images/logo-pizza.webp') }}">
 
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
 

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>403 - {{ config('app.name') }}</title>
 
-    <link rel="icon" type="image/x-icon" href="{{ asset('app-assets/images/logo-pizza.png') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('app-assets/images/logo-pizza.webp') }}">
 
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
 
@@ -30,7 +30,7 @@
     <div class="vh-100 vw-100 d-flex align-items-center justify-content-center">
         <div>
             <center>
-                <img src="{{ asset('app-assets/images/pizza.png') }}" alt="wallet" class="mb-3" width="40%">
+                <img src="{{ asset('app-assets/images/pizza.webp') }}" alt="wallet" class="mb-3" width="40%">
                 <br>
                 <p class="fw-bold fs-4 text-secondary">
                     Opps, 403 <br>
