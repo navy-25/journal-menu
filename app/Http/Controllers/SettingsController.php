@@ -22,15 +22,15 @@ class SettingsController extends Controller
                 'route' => route('menu.index'),
                 'icon'  => 'coffee',
             ],
+            [
+                'name'  => 'Harga Bahan',
+                'route' => route('material.index'),
+                'icon'  => 'book',
+            ],
             // [
             //     'name'  => 'Bahan',
             //     'route' => route('stock.index'),
             //     'icon'  => 'package',
-            // ],
-            // [
-            //     'name'  => 'Harga Bahan',
-            //     'route' => route('material.index'),
-            //     'icon'  => 'book',
             // ],
         ];
         $account = [

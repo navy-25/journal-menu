@@ -59,7 +59,7 @@
                             <p class="fw-bold fs-5 m-0 text-capitalize">{{ $item->name }}</p>
                         </div>
                         <div class="col-6 text-end">
-                            <p class="m-0 text-capitalize">IDR {{ numberFormat($item->price) }}</p>
+                            <p class="m-0 text-capitalize">IDR {{ numberFormat($item->price, 0) }}</p>
                         </div>
                     </div>
                     <div class="row mt-1">
@@ -118,7 +118,7 @@
                     id="btn-form"
                     type="button"
                     class="btn btn-warning text-white rounded-4 py-3 w-100"
-                    onclick="$('#btn-submit-filter').trigger('click')"
+                    onclick="$('#btn-submit').trigger('click')"
                 >
                     <span class="ms-2 fw-bold">Simpan</span>
                 </button>

@@ -12,6 +12,7 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\ProfitController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\RestockController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\StatsController;
@@ -127,6 +128,11 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/store', 'store')->name('store');
             Route::post('/update', 'update')->name('update');
             Route::get('/destroy', 'destroy')->name('destroy');
+        });
+
+        Route::controller(RestockController::class)->prefix('restock')->name('restock.')->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::post('/calculate', 'calculate')->name('calculate');
         });
     });
 });

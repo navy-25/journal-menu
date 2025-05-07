@@ -104,6 +104,7 @@
         #nav-top,
         /* .modal, */
         .swal2-container,
+        #button-calculate,
         #button-create {
             max-width: 450px !important;
             margin: 0 auto !important;

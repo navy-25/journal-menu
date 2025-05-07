@@ -264,11 +264,11 @@
                                 <input type="hidden" name="qty[]" value="0" id="qty{{ $key }}">
                             </div>
                             <div class="col-5 d-flex align-items-center justify-content-around">
-                                <button class="btn btn-dark rounded-4 text-white" onclick="minus('{{ $key }}')" style="width: 40px;height: 40px" type="button" id="min{{ $key }}">
+                                <button class="btn btn-dark rounded-3 text-white" onclick="minus('{{ $key }}')" style="width: 40px;height: 40px" type="button" id="min{{ $key }}">
                                     <i data-feather="minus" style="width: 12px"></i>
                                 </button>
                                 <p class="m-0" id="qty_text{{ $key }}">0</p>
-                                <button class="btn btn-warning rounded-4 text-white" onclick="plus('{{ $key }}')" style="width: 40px;height: 40px" type="button" id="min{{ $key }}">
+                                <button class="btn btn-warning rounded-3 text-white" onclick="plus('{{ $key }}')" style="width: 40px;height: 40px" type="button" id="min{{ $key }}">
                                     <i data-feather="plus" style="width: 12px"></i>
                                 </button>
                             </div>

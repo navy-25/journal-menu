@@ -161,13 +161,42 @@
     <div class="row align-items-stretch">
         @foreach ($menu as $value)
             @if (in_array(Auth::user()->role,$value['access']))
-                <div class="col-4 d-flex justify-content-center align-items-center mb-3">
-                    <a href="{{ $value['route'] == '' ? '#' : route($value['route']) }}"
-                        class="text-decoration-none text-dark text-center px-3 py-3 d-block bg-white border-0 w-100 rounded-5 h-100">
-                        <img class="mb-3" style="width: 50px;" src="{{ $value['icon'] }}" alt="">
-                        <p class="text-small mb-0 fw-semibold">{{ $value['name'] }}</p>
-                    </a>
-                </div>
+                @if ($value['label'] == 'soon')
+                    <div class="col-4 d-flex justify-content-center align-items-center mb-3">
+                        <button
+                            disabled
+                            class="btn btn-light text-center px-3 py-3 d-block border-0 w-100 rounded-5 h-100">
+
+                            <div class="position-relative d-inline-block mb-3">
+                                <img style="width: 50px; filter: grayscale(1)" class="mt-1" src="{{ $value['icon'] }}" alt="">
+                                @if ($value['label'] != '')
+                                    <span class="badge bg-dark position-absolute translate-middle rounded-pill" style="top: 5px; left: 0px">
+                                        {{ $value['label'] }}
+                                    </span>
+                                @endif
+                            </div>
+
+                            <p class="text-small mb-0 fw-semibold">{{ $value['name'] }}</p>
+                        </button>
+                    </div>
+                @else
+                    <div class="col-4 d-flex justify-content-center align-items-center mb-3">
+                        <a href="{{ $value['route'] == '' ? '#' : route($value['route']) }}"
+                            class="text-decoration-none text-dark text-center px-3 py-3 d-block bg-white border-0 w-100 rounded-5 h-100">
+
+                            <div class="position-relative d-inline-block mb-3">
+                                <img style="width: 50px;" class="mt-1" src="{{ $value['icon'] }}" alt="">
+                                @if ($value['label'] != '')
+                                    <span class="badge bg-warning position-absolute translate-middle rounded-pill" style="top: 5px; left: 0px">
+                                        {{ $value['label'] }}
+                                    </span>
+                                @endif
+                            </div>
+
+                            <p class="text-small mb-0 fw-semibold">{{ $value['name'] }}</p>
+                        </a>
+                    </div>
+                @endif
             @endif
         @endforeach
     </div>

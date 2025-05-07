@@ -36,69 +36,81 @@ class HomeController extends Controller
 
         $menu = [
             [
+                'name'      => 'Restock SM',
+                'icon'      => asset('app-assets/images/calculator.webp'),
+                'route'     => 'restock.index',
+                'label'     => 'new',
+                'access'    => [1]
+                // PERKEMBANGAN OMSET / KEUNTUNGAN DARI BULAN KE BULAN
+            ],
+            [
                 'name'      => 'Statistik',
                 'icon'      => asset('app-assets/images/data-analysis.webp'),
                 'route'     => 'stats.index',
+                'label'     => '',
                 'access'    => [1,2]
             ],
             [
                 'name'      => 'Keuangan',
                 'icon'      => asset('app-assets/images/accounting.webp'),
                 'route'     => 'transaction.index',
+                'label'     => '',
                 'access'    => [1,2]
             ],
             [
                 'name'      => 'Kasir',
                 'icon'      => asset('app-assets/images/approved-order.webp'),
                 'route'     => 'sales.index',
+                'label'     => '',
                 'access'    => [1,2]
             ],
-            [
-                'name'      => 'Menu',
-                'icon'      => asset('app-assets/images/pizza-slice.webp'),
-                'route'     => 'menu.index',
-                'access'    => [1]
-            ],
-            [
-                'name'      => 'Katalog',
-                'icon'      => asset('app-assets/images/package.webp'),
-                'route'     => 'material.index',
-                'access'    => [1]
-            ],
+            // [
+            //     'name'      => 'Menu',
+            //     'icon'      => asset('app-assets/images/pizza-slice.webp'),
+            //     'route'     => 'menu.index',
+            //     'label'     => '',
+            //     'access'    => [1]
+            // ],
             // [
             //     'name'      => 'Laporan',
             //     'icon'      => asset('app-assets/images/folder.webp'),
             //     'route'     => 'report.index',
+            //     'label'     => '',
             //     'access'    => [1,2]
             // ],
             [
                 'name'      => 'Laba Kotor',
                 'icon'      => asset('app-assets/images/investment-growth.webp'),
                 'route'     => 'profit.index',
+                'label'     => '',
                 'access'    => [1]
             ],
             [
                 'name'      => 'Catatan',
                 'icon'      => asset('app-assets/images/book.webp'),
                 'route'     => 'note.index',
+                'label'     => '',
                 'access'    => [1,2]
             ],
             // [
             //     'name'      => 'Akun',
             //     'icon'      => asset('app-assets/images/data-analysis.webp'),
             //     'route'     => 'account.index',
+            //     'label'     => '',
             //     'access'    => [1,2]
             // ],
+            // [
+            //     'name'      => 'Harga Bahan',
+            //     'icon'      => asset('app-assets/images/package.webp'),
+            //     'route'     => 'material.index',
+            //     'label'     => '',
+            //     'access'    => [1]
+            // ],
             [
-                'name'      => 'Growth (Soon)',
+                'name'      => 'Growth',
                 'icon'      => asset('app-assets/images/financial-profit.webp'),
                 'route'     => 'home.index',
-                'access'    => [1]
-            ],
-            [
-                'name'      => 'Restock SM (Soon)',
-                'icon'      => asset('app-assets/images/calculator.webp'),
-                'route'     => 'home.index',
+                'label'     => 'soon',
                 'access'    => [1]
             ],
         ];
