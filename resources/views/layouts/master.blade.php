@@ -93,6 +93,33 @@
         <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
         <script src="{{ asset('js/sweetalert2@11.js') }}"></script>
         @include('includes.globalJs')
+
+        <script>
+            let startY = 0;
+            let isPulled = false;
+
+            window.addEventListener('touchstart', function(e) {
+                if (window.scrollY === 0) {
+                    startY = e.touches[0].clientY;
+                    isPulled = true;
+                }
+            });
+
+            window.addEventListener('touchmove', function(e) {
+                if (!isPulled) return;
+
+                let currentY = e.touches[0].clientY;
+                if (currentY - startY > 250) { // jika ditarik lebih dari 80px
+                    isPulled = false;
+                    location.reload(); // reload halaman
+                }
+            });
+
+            window.addEventListener('touchend', function() {
+                isPulled = false;
+            });
+            </script>
+
         @yield('script')
     </body>
 </html>
