@@ -139,7 +139,8 @@
                                 class="form-control text-center rounded-3"
                                 name="qty[]" id="qty{{ $key }}"
                                 style="width: 70px; padding: 5px !important; height: 45px !important"
-                                value="{{ $qty_dummy }}" type="text"
+                                value="{{ $qty_dummy }}"
+                                type="number"
                             >
                             <button
                                 class="btn btn-warning rounded-3 text-white"
