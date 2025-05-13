@@ -129,6 +129,14 @@ class StatsController extends Controller
             ->orderByDesc('total_qty')
             ->first();
 
+        if ($topSalesGroup) {
+            $groupID = $topSalesGroup->sales_group_id;
+            $totalQty = $topSalesGroup->total_qty;
+        } else {
+            $groupID = null;
+            $totalQty = 0;
+        }
+
         // Hitung jumlah hari buka dan tutup
         // 1. Buat daftar semua tanggal dalam rentang filter
         $allDates = collect();
@@ -164,7 +172,7 @@ class StatsController extends Controller
         $data['jumlah_hari_buka'] = $jumlahBuka;
         $data['jumlah_hari_tutup'] = $jumlahTutup;
         $data['jumlah_hari_belum_tahu'] = $jumlahBelumTahu;
-        return view('stats', compact('data', 'page', 'shift', 'dates','topSalesGroup'));
+        return view('stats', compact('data', 'page', 'shift', 'dates','totalQty'));
     }
 
     /**

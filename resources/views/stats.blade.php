@@ -97,7 +97,7 @@
                         Top Order
                     </p>
                     <p class="mb-0 fs-5 fw-bold d-flex align-items-center">
-                        {{ $topSalesGroup->total_qty }} pcs
+                        {{ $totalQty }} pcs
                     </p>
                 </div>
             </div>
@@ -200,7 +200,7 @@
                         $index = 1;
                     @endphp
                     @if (count($data['weekly']) == 0)
-                        <center>belum ada data</center>
+                        {{-- <center>belum ada data</center> --}}
                     @else
                         <div class="row gx-2">
                             @foreach ($data['weekly'] as $key => $value)
@@ -267,7 +267,7 @@
                         $index = 1;
                     @endphp
                     @if (count($data['weekly-transaction']) == 0)
-                        <center>belum ada data</center>
+                        {{-- <center>belum ada data</center> --}}
                     @else
                         <div class="row gx-2">
                             @foreach ($data['weekly-transaction'] as $key => $value)
@@ -330,7 +330,7 @@
                         $index = 1;
                     @endphp
                     @if (count($data['menu']) == 0)
-                        <center>belum ada data</center>
+                        {{-- <center>belum ada data</center> --}}
                     @else
                         <div class="row gx-2">
                             @foreach ($data['menu'] as $key => $value)
@@ -372,32 +372,32 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row mt-2">
-        <div class="col-12">
-            <p class="fw-bold mb-2">Berdasarkan shift</p>
-        </div>
-        <div class="col-12">
-            @foreach ($shift as $key => $value)
-                <div class="card bg-white text-dark rounded-4 border-0 mb-2">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-8 d-flex justify-content-start align-items-center">
-                                <i data-feather="clock" class="me-2" style="width: 14px"></i>
-                                <span class="me-2">{{ $value['shift'][0] }} &nbsp; -</span>
+        <div class="row mt-2">
+            <div class="col-12">
+                <p class="fw-bold mb-2">Berdasarkan shift</p>
+            </div>
+            <div class="col-12">
+                @foreach ($shift as $key => $value)
+                    <div class="card bg-white text-dark rounded-4 border-0 mb-2">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-8 d-flex justify-content-start align-items-center">
+                                    <i data-feather="clock" class="me-2" style="width: 14px"></i>
+                                    <span class="me-2">{{ $value['shift'][0] }} &nbsp; -</span>
 
-                                <i data-feather="clock" class="me-2" style="width: 14px"></i>
-                                <span>{{ $value['shift'][1] }}</span>
-                            </div>
-                            <div class="col-4 d-flex justify-content-end align-items-center">
-                                <p class="m-0 fw-bold text-dark text-end">
-                                    {{ numberFormat($value['total_pembeli'],0) }} pcs
-                                </p>
+                                    <i data-feather="clock" class="me-2" style="width: 14px"></i>
+                                    <span>{{ $value['shift'][1] }}</span>
+                                </div>
+                                <div class="col-4 d-flex justify-content-end align-items-center">
+                                    <p class="m-0 fw-bold text-dark text-end">
+                                        {{ numberFormat($value['total_pembeli'],0) }} pcs
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            @endforeach
+                @endforeach
+            </div>
         </div>
     </div>
 </div>
