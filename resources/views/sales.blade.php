@@ -276,7 +276,7 @@
                         <hr style="opacity: 0.05 !important">
                     @endforeach
                     <button class="d-none" id="btn-submit" type="submit"></button>
-                    <input type="text" name="date" value="{{ isset($_GET['dateFilter']) ? $_GET['dateFilter'] : '' }}">
+                    <input type="hidden" name="date" value="{{ isset($_GET['dateFilter']) ? $_GET['dateFilter'] : '' }}">
                     <textarea class="d-none" name="note" id="note"></textarea>
                 </form>
             </div>
