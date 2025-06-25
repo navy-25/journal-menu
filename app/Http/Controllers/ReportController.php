@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PDF;
 
-date_default_timezone_set('Asia/Jakarta');
+
 class ReportController extends Controller
 {
     /**
@@ -21,13 +21,8 @@ class ReportController extends Controller
     {
         $page   = 'Laporan';
 
-        if ($request->all() == []) {
-            $dates['dateEndFilter']      = date('Y-m-d');
-            $dates['dateStartFilter']    = date('Y-m-d', strtotime('-1 month', strtotime($dates['dateEndFilter'])));
-        } else {
-            $dates['dateEndFilter']      = $request->dateEndFilter;
-            $dates['dateStartFilter']    = $request->dateStartFilter;
-        }
+        $dates['dateEndFilter']      = $request->dateEndFilter ?? date('Y-m-t');
+        $dates['dateStartFilter']    = $request->dateStartFilter ?? date('Y-m-01');
 
         $sales = Sales::query()
             ->join('menus as m', 'm.id', 'sales.id_menu')

@@ -8,7 +8,7 @@
 
 @section('content')
 @php
-    date_default_timezone_set('Asia/Jakarta');
+
 @endphp
 <div class="px-4 mb-3">
     <div style="position: fixed;bottom:120px;right:20px;z-index:999">
@@ -36,7 +36,7 @@
                     {{ date('D, d M Y') }}
                 @endif
             </p>
-            <h3 class="fw-bold mb-0">IDR {{ numberFormat($total) }}</h3>
+            <h3 class="fw-bold mb-0">Rp {{ numberFormat($total) }}</h3>
         </div>
     </div>
 </div>

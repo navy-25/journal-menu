@@ -4,7 +4,7 @@ use App\Models\Stock;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-date_default_timezone_set('Asia/Jakarta');
+
 
 if (!function_exists('isOwner')) {
     function isOwner()

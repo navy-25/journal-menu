@@ -8,7 +8,7 @@
 
 @section('content')
 @php
-    date_default_timezone_set('Asia/Jakarta');
+
 @endphp
 @include('includes.alert')
 
@@ -57,7 +57,7 @@
                                 Sisa Kas
                             </p>
                             <p class="mb-0 fs-4 fw-bold d-flex align-items-center justify-content-end">
-                                IDR {{ numberFormat($income-$outcome, 0) }}
+                                Rp {{ numberFormat($income-$outcome, 0) }}
                             </p>
                         </div>
                     </div>

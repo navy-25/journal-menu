@@ -155,9 +155,9 @@
                                     <td>{{ $item->name }}</td>
                                     <td class="text-end">
                                         @if($item->status == 'in')
-                                            <span>IDR {{ numberFormat($item->price,0) }}</span>
+                                            <span>Rp {{ numberFormat($item->price,0) }}</span>
                                         @else
-                                            <span class="text-danger">(IDR {{ numberFormat($item->price,0) }})</span>
+                                            <span class="text-danger">(Rp {{ numberFormat($item->price,0) }})</span>
                                         @endif
                                     </td>
                                 </tr>
@@ -171,7 +171,7 @@
                             @endforeach
                             <tr>
                                 <td class="fw-bold">Total keseluruhan</td>
-                                <td class="fw-bold text-end">IDR {{ numberFormat($total,0) }}</td>
+                                <td class="fw-bold text-end">Rp {{ numberFormat($total,0) }}</td>
                             </tr>
                         </tbody>
                     </table>

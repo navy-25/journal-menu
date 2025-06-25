@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-date_default_timezone_set('Asia/Jakarta');
+
 class StatsController extends Controller
 {
     /**

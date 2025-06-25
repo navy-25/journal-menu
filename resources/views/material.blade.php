@@ -10,7 +10,7 @@
 
 @section('content')
 @php
-    date_default_timezone_set('Asia/Jakarta');
+
 @endphp
 
 @include('includes.alert')
@@ -59,7 +59,7 @@
                             <p class="fw-bold fs-5 m-0 text-capitalize">{{ $item->name }}</p>
                         </div>
                         <div class="col-6 text-end">
-                            <p class="m-0 text-capitalize">IDR {{ numberFormat($item->price, 0) }}</p>
+                            <p class="m-0 text-capitalize">Rp {{ numberFormat($item->price, 0) }}</p>
                         </div>
                     </div>
                     <div class="row mt-1">

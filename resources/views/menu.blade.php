@@ -10,7 +10,7 @@
 
 @section('content')
 @php
-    date_default_timezone_set('Asia/Jakarta');
+
 @endphp
 @include('includes.alert')
 
@@ -64,10 +64,10 @@
                             </div>
                             <p class="m-0">
                                 @if ($item->is_promo == 1)
-                                    IDR {{ numberFormat($item->price_promo,0) }} &nbsp;
-                                    <span class="text-danger"><s>(IDR {{ numberFormat($item->price,0) }})</s></span>
+                                    Rp {{ numberFormat($item->price_promo,0) }} &nbsp;
+                                    <span class="text-danger"><s>(Rp {{ numberFormat($item->price,0) }})</s></span>
                                 @else
-                                    IDR {{ numberFormat($item->price,0) }}
+                                    Rp {{ numberFormat($item->price,0) }}
                                 @endif
                             </p>
                             <textarea  class="d-none" id="data{{ $key }}" cols="30" rows="10">{{ $item }}</textarea>

@@ -10,7 +10,7 @@
 
 @section('content')
 @php
-    date_default_timezone_set('Asia/Jakarta');
+
 @endphp
 <div class="px-4 mb-3 pt-5">
     <small>Hola!</small>

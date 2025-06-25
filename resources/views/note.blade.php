@@ -10,7 +10,7 @@
 
 @section('content')
 @php
-    date_default_timezone_set('Asia/Jakarta');
+
 @endphp
 
 @include('includes.alert')

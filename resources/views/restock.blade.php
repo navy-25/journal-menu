@@ -13,7 +13,7 @@
 
 @section('content')
 @php
-    date_default_timezone_set('Asia/Jakarta');
+
 @endphp
 @include('includes.alert')
 
@@ -38,7 +38,7 @@
                         </div>
                         <div class="col-7">
                             <p class="mb-1 text-end">
-                                IDR {{ numberFormat($calculate['total_bahan'],0) }}
+                                Rp {{ numberFormat($calculate['total_bahan'],0) }}
                             </p>
                         </div>
                     </div>
@@ -48,7 +48,7 @@
                         </div>
                         <div class="col-7">
                             <p class="mb-1 text-end">
-                                IDR {{ numberFormat($calculate['total_pengiriman'],0) }}
+                                Rp {{ numberFormat($calculate['total_pengiriman'],0) }}
                             </p>
                         </div>
                     </div>
@@ -59,7 +59,7 @@
                         </div>
                         <div class="col-7">
                             <p class="mb-1 fs-3 text-end fw-semibold">
-                                IDR {{ numberFormat($calculate['grand_total'],0) }}
+                                Rp {{ numberFormat($calculate['grand_total'],0) }}
                             </p>
                         </div>
                     </div>
@@ -121,7 +121,7 @@
                         <div class="col-5">
                             <p class="fw-bold fs-6 m-0 text-capitalize">{{ $item->name }}</p>
                             <div class="d-flex">
-                                <p class="m-0">IDR {{ numberFormat($item->price,0) }}</p>
+                                <p class="m-0">Rp {{ numberFormat($item->price,0) }}</p>
                             </div>
                             <input type="hidden" name="material_id[]" value="{{ $item->id }}">
                         </div>

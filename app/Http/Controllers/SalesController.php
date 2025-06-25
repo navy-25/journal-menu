@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-date_default_timezone_set('Asia/Jakarta');
+
 class SalesController extends Controller
 {
     /**
@@ -173,7 +173,7 @@ class SalesController extends Controller
             'type'      => 9,
             'id_user'   => getUserID(),
             'status'    => 'in',
-            'note'      => 'Laba kotor : IDR ' . numberFormat($laba_kotor, 0),
+            'note'      => 'Laba kotor : Rp ' . numberFormat($laba_kotor, 0),
             'date'      => $dateFilter,
         ]);
 

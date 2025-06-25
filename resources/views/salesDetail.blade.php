@@ -25,7 +25,7 @@
 
 @section('content')
 @php
-    date_default_timezone_set('Asia/Jakarta');
+
 @endphp
 @include('includes.alert')
 {{-- NAV BACK --}}
@@ -91,13 +91,13 @@
                     <div class="row">
                         <div class="col-6">
                             <small class="m-0">Total pizza</small>
-                            <p class="fw-bold fs-6">{{ numberFormat($qty) }} pizza</p>
+                            <p class="fw-bold fs-6">{{ numberFormat($qty,0) }} pizza</p>
                             <small class="m-0">Total Pesanan</small>
                             <p class="fw-bold fs-6 mb-0">{{ count($data) }} pesanan</p>
                         </div>
                         <div class="col-6">
                             <small class="m-0">Omset Penjualan</small>
-                            <p class="fw-bold fs-6">IDR {{ numberFormat($gross_profit) }}</p>
+                            <p class="fw-bold fs-6">Rp {{ numberFormat($gross_profit,0) }}</p>
                             @php
                                 if($net_profit == 0 || $gross_profit == 0){
                                     $percentase = 0;
@@ -106,7 +106,7 @@
                                 }
                             @endphp
                             <small class="m-0">Total Keuntungan ({{ numberFormat($percentase,0) }}%)</small>
-                            <p class="fw-bold fs-6 mb-0">IDR {{ numberFormat($net_profit,0) }}</p>
+                            <p class="fw-bold fs-6 mb-0">Rp {{ numberFormat($net_profit,0) }}</p>
                         </div>
                     </div>
                 </div>
@@ -164,7 +164,7 @@
                                                                         <p class="mb-0">{{ numberFormat($item->gross_profit, 0) }} @ {{ $item->qty }} </p>
                                                                     </div>
                                                                     <div class="col-6">
-                                                                        <p class="mb-0 text-end">IDR {{ numberFormat($item->gross_profit*$item->qty, 0) }} </p>
+                                                                        <p class="mb-0 text-end">Rp {{ numberFormat($item->gross_profit*$item->qty, 0) }} </p>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -183,7 +183,7 @@
                                                     <small>{{ date('d M Y', strtotime($date)) }}</small>
                                                 </div>
                                                 <div class="col-6">
-                                                    <p class="fw-bold text-end mb-0">IDR {{ numberFormat($total, 0) }}</p>
+                                                    <p class="fw-bold text-end mb-0">Rp {{ numberFormat($total, 0) }}</p>
                                                 </div>
                                             </div>
                                         </div>

@@ -25,7 +25,7 @@
 
 @section('content')
 @php
-    date_default_timezone_set('Asia/Jakarta');
+
 @endphp
 @include('includes.alert')
 {{-- NAV BACK --}}
@@ -79,7 +79,7 @@
                         </div>
                         <div class="col-9 text-end">
                             <p class="mb-0 fs-4 fw-bold d-flex align-items-center justify-content-end">
-                                IDR {{ number_format($total,0,',','.') }}
+                                Rp {{ number_format($total,0,',','.') }}
                             </p>
                             <p class="mb-0 text-small">
                                 Total {{ $qty }} pizza
@@ -182,7 +182,7 @@
                                                                         <p class="mb-0">{{ numberFormat($item->gross_profit, 0) }} @ {{ $item->qty }} </p>
                                                                     </div>
                                                                     <div class="col-6">
-                                                                        <p class="mb-0 text-end">IDR {{ numberFormat($item->gross_profit*$item->qty, 0) }} </p>
+                                                                        <p class="mb-0 text-end">Rp {{ numberFormat($item->gross_profit*$item->qty, 0) }} </p>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -198,7 +198,7 @@
                                         </div>
                                     </div>
                                     <div class="d-flex align-items-center justify-content-between pt-2">
-                                        <p class="fw-bold text-start fs-5 mb-0">IDR {{ numberFormat($total, 0) }}</p>
+                                        <p class="fw-bold text-start fs-5 mb-0">Rp {{ numberFormat($total, 0) }}</p>
 
                                         {{-- <a href="#" class="text-dark ms-auto text-decoration-none me-4"  data-bs-toggle="modal" data-bs-target="#modalDetail" onclick="note('{{ $note }}')">Catatan</a> --}}
                                         <a href="#" class="text-small btn btn-warning text-white text-decoration-none rounded-3" onclick="alert_confirm('{{ route('sales.destroy',['id'=>$key]) }}','Hapus pesanan ke {{ $index }}')">
@@ -250,14 +250,14 @@
                                 @endif
                                 <div class="d-flex">
                                     @if ($item->is_promo == 1)
-                                        <p class="m-0 me-2">IDR {{ numberFormat($item->price_promo,0) }}</p>
+                                        <p class="m-0 me-2">Rp {{ numberFormat($item->price_promo,0) }}</p>
                                         <p class="m-0 text-danger">
                                             <strike>
-                                                IDR {{ numberFormat($item->price,0) }}
+                                                Rp {{ numberFormat($item->price,0) }}
                                             </strike>
                                         </p>
                                     @else
-                                        <p class="m-0">IDR {{ numberFormat($item->price,0) }}</p>
+                                        <p class="m-0">Rp {{ numberFormat($item->price,0) }}</p>
                                     @endif
                                 </div>
                                 <input type="hidden" name="menu_id[]" value="{{ $item->id }}">

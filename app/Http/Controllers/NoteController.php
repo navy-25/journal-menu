@@ -6,7 +6,7 @@ use App\Models\Note;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-date_default_timezone_set('Asia/Jakarta');
+
 class NoteController extends Controller
 {
     /**

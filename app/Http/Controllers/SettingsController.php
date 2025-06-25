@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-date_default_timezone_set('Asia/Jakarta');
+
 class SettingsController extends Controller
 {
     /**
@@ -56,11 +56,11 @@ class SettingsController extends Controller
                 'route' => route('note.index'),
                 'icon'  => 'file-text',
             ],
-            [
-                'name'  => 'S&K',
-                'route' => '#',
-                'icon'  => 'file-text',
-            ],
+            // [
+            //     'name'  => 'S&K',
+            //     'route' => '#',
+            //     'icon'  => 'file-text',
+            // ],
         ];
         return view('settings', compact('page', 'stock_menu', 'more', 'account'));
     }

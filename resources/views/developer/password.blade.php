@@ -10,7 +10,7 @@
 
 @section('content')
 @php
-    date_default_timezone_set('Asia/Jakarta');
+
 @endphp
 {{-- NAV BACK --}}
 <div class="px-4 py-4 mb-3 bg-white shadow-mini fixed-top d-flex align-items-center">

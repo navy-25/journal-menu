@@ -10,7 +10,7 @@
 
 @section('content')
 @php
-    date_default_timezone_set('Asia/Jakarta');
+
 @endphp
 @include('includes.alert')
 
@@ -74,7 +74,7 @@
                             Total Keuntungan
                         </p>
                         <p class="mb-0 fs-5 fw-bold d-flex align-items-center">
-                            IDR {{ numberFormat($data['laba_kotor'],0) }}
+                            Rp {{ numberFormat($data['laba_kotor'],0) }}
                         </p>
                     </div>
                 </div>
@@ -174,9 +174,9 @@
             <div class="form-group">
                 <select id="stats" onchange="getChartType()" class="form-select rounded-3 border-0"
                     style="padding:7px 15px !important;font-size:14px !important">
-                    <option class="fs-7" value="penjualan">Penjualan</option>
-                    <option class="fs-7" value="transaksi">Transaksi</option>
                     <option class="fs-7" value="menu">Menu</option>
+                    {{-- <option class="fs-7" value="penjualan">Penjualan</option> --}}
+                    <option class="fs-7" value="transaksi">Transaksi</option>
                 </select>
             </div>
         </div>
@@ -372,31 +372,33 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-2">
-            <div class="col-12">
-                <p class="fw-bold mb-2">Berdasarkan shift</p>
-            </div>
-            <div class="col-12">
-                @foreach ($shift as $key => $value)
-                    <div class="card bg-white text-dark rounded-4 border-0 mb-2">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-8 d-flex justify-content-start align-items-center">
-                                    <i data-feather="clock" class="me-2" style="width: 14px"></i>
-                                    <span class="me-2">{{ $value['shift'][0] }} &nbsp; -</span>
+        <div class="col-12">
+            <div class="row mt-2">
+                <div class="col-12">
+                    <p class="fw-bold mb-2">Berdasarkan shift</p>
+                </div>
+                <div class="col-12">
+                    @foreach ($shift as $key => $value)
+                        <div class="card bg-white text-dark rounded-4 border-0 mb-2">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-8 d-flex justify-content-start align-items-center">
+                                        <i data-feather="clock" class="me-2" style="width: 14px"></i>
+                                        <span class="me-2">{{ $value['shift'][0] }} &nbsp; -</span>
 
-                                    <i data-feather="clock" class="me-2" style="width: 14px"></i>
-                                    <span>{{ $value['shift'][1] }}</span>
-                                </div>
-                                <div class="col-4 d-flex justify-content-end align-items-center">
-                                    <p class="m-0 fw-bold text-dark text-end">
-                                        {{ numberFormat($value['total_pembeli'],0) }} pcs
-                                    </p>
+                                        <i data-feather="clock" class="me-2" style="width: 14px"></i>
+                                        <span>{{ $value['shift'][1] }}</span>
+                                    </div>
+                                    <div class="col-4 d-flex justify-content-end align-items-center">
+                                        <p class="m-0 fw-bold text-dark text-end">
+                                            {{ numberFormat($value['total_pembeli'],0) }} pcs
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
             </div>
         </div>
     </div>
@@ -439,10 +441,10 @@
                         <div class="col-6 d-flex justify-content-end">
                             <div class="m-0 text-end">
                                 <p class="mb-0" style="font-size: 12px" class="me-2">Omset</p>
-                                <p>IDR  {{ numberFormat($total,0) }}</p>
+                                <p>Rp  {{ numberFormat($total,0) }}</p>
                                 @if (isOwner())
                                     <p class="mt-2 mb-0" style="font-size: 12px" class="me-2">Keuntungan</p>
-                                    <p class="fw-bold text-success">IDR  {{ numberFormat($profit,0) }}</p>
+                                    <p class="fw-bold text-success">Rp  {{ numberFormat($profit,0) }}</p>
                                 @endif
                             </div>
                         </div>
@@ -454,10 +456,10 @@
                 <div class="w-100 d-flex justify-content-between align-content-start">
                     @if (isOwner())
                         <p class="fw-bold mb-0">Total Keuntungan</p>
-                        <p class="fw-bold mb-0 fs-3">IDR {{ numberFormat($total_weekly,0) }}</p>
+                        <p class="fw-bold mb-0 fs-3">Rp {{ numberFormat($total_weekly,0) }}</p>
                     @else
                         <p class="fw-bold mb-0">Total Penjualan</p>
-                        <p class="fw-bold mb-0 fs-3">IDR {{ numberFormat($total_omset,0) }}</p>
+                        <p class="fw-bold mb-0 fs-3">Rp {{ numberFormat($total_omset,0) }}</p>
                     @endif
                 </div>
                 <div class="alert bg-warning text-white rounded-4 text-center w-100">
@@ -504,25 +506,27 @@
                         </div>
                         <div class="col-6 d-flex justify-content-end">
                             <p class="m-0 text-end">
-                                <small class="text-success">(IDR  {{ numberFormat($in,0) }})</small><br>
-                                <small class="text-danger">(IDR {{ numberFormat($out,0) }})</small><br><br>
+                                <small class="text-success">(Rp  {{ numberFormat($in,0) }})</small><br>
+                                <small class="text-danger">(Rp {{ numberFormat($out,0) }})</small><br><br>
                                 <small>Selisih</small><br>
-                                <span class="fw-bold {{ $diff < 0 ? 'text-danger' : '' }}">IDR  {{ numberFormat($diff,0) }}</span>
+                                <span class="fw-bold {{ $diff < 0 ? 'text-danger' : '' }}">Rp  {{ numberFormat($diff,0) }}</span>
                             </p>
                         </div>
                     </div>
                     <hr class="py-1 my-2" style="opacity: 0.05 !important">
                 @endforeach
             </div>
-            <div class="modal-footer">
-                <div class="w-100 d-flex justify-content-between align-content-start">
-                    <p class="fw-bold mb-0">Sisa Uang Kas</p>
-                    <p class="fw-bold mb-0 fs-3">IDR {{ numberFormat($total_weekly_transaction,0) }}</p>
+            @if (isOwner())
+                <div class="modal-footer">
+                    <div class="w-100 d-flex justify-content-between align-content-start">
+                        <p class="fw-bold mb-0">Sisa Uang Kas</p>
+                        <p class="fw-bold mb-0 fs-3">Rp {{ numberFormat($total_weekly_transaction,0) }}</p>
+                    </div>
+                    <div class="alert bg-warning text-white rounded-4 text-center w-100">
+                        Belum dikurangi modal bahan
+                    </div>
                 </div>
-                <div class="alert bg-warning text-white rounded-4 text-center w-100">
-                    Belum dikurangi modal bahan
-                </div>
-            </div>
+            @endif
         </div>
     </div>
 </div>

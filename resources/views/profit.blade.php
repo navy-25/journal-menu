@@ -5,7 +5,7 @@
 
 @section('content')
 @php
-    date_default_timezone_set('Asia/Jakarta');
+
 @endphp
 @include('includes.alert')
 {{-- NAV BACK --}}
@@ -61,7 +61,7 @@
                             <h6 class="fw-bold">Rangkuman</h6>
                         </div>
                         <div class="col-12">
-                            <table class="table table-striped w-100 mx-0">
+                            <table class="table table-borderless table-striped w-100 mx-0">
                                 <thead>
                                     <tr>
                                         <td style="width: 30%">#</td>
@@ -111,7 +111,7 @@
                             <h6 class="fw-bold">Detail Kas</h6>
                         </div>
                         <div class="col-12">
-                            <table id="table-cash" class="table table-striped w-100 mx-0">
+                            <table id="table-cash" class="table table-borderless table-striped w-100 mx-0">
                                 <thead>
                                     <tr>
                                         <td class="fw-bold">Deskripsi</td>
@@ -154,15 +154,15 @@
                                             var nominal = '{{ numberFormat($temp_balance,0) }}'.replaceAll('-','')
                                             if(funds == 0 ){
                                                 $('#finance-status').text('EMPTY')
-                                                $('#finance-value').text('IDR '+nominal)
+                                                $('#finance-value').text('Rp '+nominal)
                                             }else if(funds > 0 ){
                                                 $('#finance-status').text('PROFIT')
-                                                $('#finance-value').text('IDR '+nominal)
+                                                $('#finance-value').text('Rp '+nominal)
                                                 $('#finance-status').addClass('text-success')
                                                 $('#finance-value').addClass('text-success')
                                             }else{
                                                 $('#finance-status').text('MINUS')
-                                                $('#finance-value').text('IDR '+nominal)
+                                                $('#finance-value').text('Rp '+nominal)
                                                 $('#finance-status').addClass('text-danger')
                                                 $('#finance-value').addClass('text-danger')
                                             }
@@ -182,7 +182,7 @@
                             <h6 class="fw-bold">Perhitungan Penjualan</h6>
                         </div>
                         <div class="col-12">
-                            <table id="table-profit" class="table table-striped w-100 mx-0">
+                            <table id="table-profit" class="table  table-borderless table-striped w-100 mx-0">
                                 <thead>
                                     <tr>
                                         <td class="fw-bold">ID</td>
@@ -286,9 +286,9 @@
             searching: false,
             info: false,
         });
-        $('#laba-kotor-value').text('IDR {{ numberFormat($total_clean,0) }}')
-        $('#omset-value').text('IDR {{ numberFormat($total,0) }}')
-        $('#omset-status').text('IDR {{ numberFormat($total_hpp,0) }} (HPP)')
+        $('#laba-kotor-value').text('Rp {{ numberFormat($total_clean,0) }}')
+        $('#omset-value').text('Rp {{ numberFormat($total,0) }}')
+        $('#omset-status').text('Rp {{ numberFormat($total_hpp,0) }} (HPP)')
     });
 </script>
 @endsection

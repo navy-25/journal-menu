@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{{ $page }} - {{ config('app.name') }}</title>
 
-        <link rel="icon" type="image/x-icon" href="{{ asset('app-assets/images/meta.png') }}">
+        <link rel="icon" type="image/x-icon" href="{{ asset('app-assets/images/logo-pizza-2.png') }}">
 
         <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
 
@@ -95,29 +95,29 @@
         @include('includes.globalJs')
 
         <script>
-            let startY = 0;
-            let isPulled = false;
+            // let startY = 0;
+            // let isPulled = false;
 
-            window.addEventListener('touchstart', function(e) {
-                if (window.scrollY === 0) {
-                    startY = e.touches[0].clientY;
-                    isPulled = true;
-                }
-            });
+            // window.addEventListener('touchstart', function(e) {
+            //     if (window.scrollY === 0) {
+            //         startY = e.touches[0].clientY;
+            //         isPulled = true;
+            //     }
+            // });
 
-            window.addEventListener('touchmove', function(e) {
-                if (!isPulled) return;
+            // window.addEventListener('touchmove', function(e) {
+            //     if (!isPulled) return;
 
-                let currentY = e.touches[0].clientY;
-                if (currentY - startY > 250) { // jika ditarik lebih dari 80px
-                    isPulled = false;
-                    location.reload(); // reload halaman
-                }
-            });
+            //     let currentY = e.touches[0].clientY;
+            //     if (currentY - startY > 250) { // jika ditarik lebih dari 80px
+            //         isPulled = false;
+            //         location.reload(); // reload halaman
+            //     }
+            // });
 
-            window.addEventListener('touchend', function() {
-                isPulled = false;
-            });
+            // window.addEventListener('touchend', function() {
+            //     isPulled = false;
+            // });
             </script>
 
         @yield('script')

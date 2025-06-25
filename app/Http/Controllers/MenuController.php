@@ -7,7 +7,7 @@ use App\Models\Sales;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-date_default_timezone_set('Asia/Jakarta');
+
 class MenuController extends Controller
 {
     /**
@@ -18,7 +18,7 @@ class MenuController extends Controller
     public function index()
     {
         $page = 'Menu';
-        $data = Menu::orderBy('id', 'DESC')->where('id_user', getUserID())->get();
+        $data = Menu::orderBy('is_promo', 'DESC')->orderBy('name', 'ASC')->where('id_user', getUserID())->get();
         return view('menu', compact('data', 'page'));
     }
 

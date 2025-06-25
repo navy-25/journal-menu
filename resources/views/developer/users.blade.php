@@ -15,7 +15,7 @@
 
 @section('content')
 @php
-    date_default_timezone_set('Asia/Jakarta');
+
 @endphp
 <div style="position: fixed;bottom:120px;right:20px;z-index:999">
     <button type="button" class="btn btn-warning text-dark d-flex align-items-center justify-content-center"

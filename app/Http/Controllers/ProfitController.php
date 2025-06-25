@@ -6,7 +6,7 @@ use App\Models\Sales;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 
-date_default_timezone_set('Asia/Jakarta');
+
 class ProfitController extends Controller
 {
     /**

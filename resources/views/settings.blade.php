@@ -8,7 +8,7 @@
 
 @section('content')
 @php
-    date_default_timezone_set('Asia/Jakarta');
+
 @endphp
 <div class="px-4 mb-4">
     {{-- <h4 class="fw-bold mb-4">{{ $page }}</h4>

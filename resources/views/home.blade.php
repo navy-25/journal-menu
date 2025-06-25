@@ -13,7 +13,7 @@
 
 @section('content')
 @php
-    date_default_timezone_set('Asia/Jakarta');
+
     use Carbon\Carbon;
 
     $start  = Carbon::parse($dates['dateStartFilter']);
@@ -37,9 +37,11 @@
 {{-- END NAV BACK --}}
 
 <div class="px-4 mb-3">
-    <p class="fw-bold mb-2">Summary</p>
     <div class="row">
         @if (isOwner())
+            <div class="col-12">
+                <p class="fw-bold mb-2">Summary</p>
+            </div>
             <div class="col-6 mb-3">
                 <div class="card bg-warning text-white rounded-4 border-0">
                     <div class="card-body">
@@ -51,7 +53,7 @@
                             {{ month((int)date('m')) }}
                         </p>
                         <p class="mb-0 fs-5 fw-bold d-flex align-items-center">
-                            IDR {{ numberFormat($data['month'],0) }}
+                            Rp {{ numberFormat($data['month'],0) }}
                         </p>
                     </div>
                 </div>
@@ -68,11 +70,11 @@
                             </div>
                             <div class="col-9 text-end">
                                 <p class="mb-1 text-small">
-                                    Kas Bulan
-                                    {{ month((int)date('m')) }}
+                                    Kas Hari ini:
+                                    {{ date('d M Y') }}
                                 </p>
                                 <p class="mb-0 fs-5 fw-bold d-flex align-items-center justify-content-end">
-                                    IDR {{ numberFormat($data['month'],0) }}
+                                    Rp {{ numberFormat($data['today'],0) }}
                                 </p>
                             </div>
                         </div>
@@ -91,7 +93,7 @@
                         </div>
                         <p class="mb-1 text-small">Sisa Kas</p>
                         <p class="mb-0 fs-5 fw-bold d-flex align-items-center">
-                            IDR  {{ numberFormat($data['sisa']) }}
+                            Rp  {{ numberFormat($data['sisa'],0) }}
                         </p>
                     </div>
                 </div>

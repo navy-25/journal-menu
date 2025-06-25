@@ -8,6 +8,7 @@ use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
@@ -31,6 +32,21 @@ class HomeController extends Controller
             ->whereBetween('date', [$dates['dateStartFilter'], $dates['dateEndFilter']])
             ->sum('price');
 
+        $trans_out_today = Transaction::where('status', 'out')
+            ->where('transactions.id_user', getUserID())
+            ->whereDate('date', Carbon::today())
+            ->sum('price');
+
+        $sales_in_today = Sales::query()
+            ->join('menus as m', 'm.id', 'sales.id_menu')
+            ->where('sales.date', Carbon::today())
+            ->where('sales.id_user', getUserID())
+            ->select(
+                'sales.*',
+                'm.name',
+            )->sum(DB::raw('gross_profit * qty'));
+
+        $data['today'] = $sales_in_today - $trans_out_today;
         $data['month'] = $trans_in_this_month;
         $data['sisa'] = $trans_in_this_month - $trans_out_this_month;
 
@@ -71,13 +87,13 @@ class HomeController extends Controller
             //     'label'     => '',
             //     'access'    => [1]
             // ],
-            // [
-            //     'name'      => 'Laporan',
-            //     'icon'      => asset('app-assets/images/folder.webp'),
-            //     'route'     => 'report.index',
-            //     'label'     => '',
-            //     'access'    => [1,2]
-            // ],
+            [
+                'name'      => 'Laporan',
+                'icon'      => asset('app-assets/images/folder.webp'),
+                'route'     => 'report.index',
+                'label'     => '',
+                'access'    => [1]
+            ],
             [
                 'name'      => 'Laba Kotor',
                 'icon'      => asset('app-assets/images/investment-growth.webp'),

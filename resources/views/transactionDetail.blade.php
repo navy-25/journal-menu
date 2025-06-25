@@ -25,7 +25,7 @@
 
 @section('content')
 @php
-    date_default_timezone_set('Asia/Jakarta');
+
 @endphp
 @include('includes.alert')
 {{-- NAV BACK --}}
@@ -95,8 +95,8 @@
                             <small class="m-0">Total pengeluaran</small> <br>
                         </div>
                         <div class="col-6 mb-2">
-                            <p class="fw-bold fs-6 mb-0 text-end">IDR {{ numberFormat($income) }}</p>
-                            <p class="fw-bold fs-6 mb-0 text-end text-danger">(IDR {{ numberFormat($outcome) }})</p>
+                            <p class="fw-bold fs-6 mb-0 text-end">Rp {{ numberFormat($income) }}</p>
+                            <p class="fw-bold fs-6 mb-0 text-end text-danger">(Rp {{ numberFormat($outcome) }})</p>
                         </div>
                         <center>
                             <hr class="m-0 my-2 p-0" style="width: 100%;opacity: 10%">
@@ -105,7 +105,7 @@
                             <small class="m-0">Total keseluruhan</small>
                         </div>
                         <div class="col-6 mb-2">
-                            <p class="fw-bold fs-5 mb-0 text-end">IDR {{ numberFormat($income - $outcome) }}</p>
+                            <p class="fw-bold fs-5 mb-0 text-end">Rp {{ numberFormat($income - $outcome) }}</p>
                         </div>
                     </div>
                 </div>

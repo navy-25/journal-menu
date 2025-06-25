@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Spend;
 use Illuminate\Http\Request;
 
-date_default_timezone_set('Asia/Jakarta');
+
 
 class SpendController extends Controller
 {
