@@ -175,7 +175,9 @@
                 <select id="stats" onchange="getChartType()" class="form-select rounded-3 border-0"
                     style="padding:7px 15px !important;font-size:14px !important">
                     <option class="fs-7" value="menu">Menu</option>
-                    {{-- <option class="fs-7" value="penjualan">Penjualan</option> --}}
+                    @if (isOwner())
+                        <option class="fs-7" value="penjualan">Penjualan</option>
+                    @endif
                     <option class="fs-7" value="transaksi">Transaksi</option>
                 </select>
             </div>
