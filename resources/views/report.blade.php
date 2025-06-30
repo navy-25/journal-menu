@@ -157,10 +157,18 @@
                     </table>
                     <div class="row">
                         <div class="col-6">
+                            Jumlah keseluruhan
+                        </div>
+                        <div class="col-6 fw-bold">
+                            {{ numberFormat($qty_total,0) }} pcs
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
                             Total keseluruhan
                         </div>
-                        <div class="col-6 fw-bold fs-5">
-                            {{ numberFormat($qty_total,0) }} pcs
+                        <div class="col-6 fw-bold">
+                            Rp {{ numberFormat($omset,0) }}
                         </div>
                     </div>
                 </div>
@@ -179,7 +187,8 @@
                             <tr>
                                 <td class="fw-bold" style="width: 60px">Tgl</td>
                                 <td class="fw-bold">Deskripsi</td>
-                                <td class="fw-bold">Jumlah</td>
+                                <td class="fw-bold" style="width: 100px !important">Jumlah</td>
+                                <td class="fw-bold" style="width: 5px !important"></td>
                             </tr>
                         </thead>
                         <tbody>
@@ -188,14 +197,23 @@
                             @endphp
                             @foreach ($transaction as  $key => $item)
                                 <tr>
-                                    <td class=" small">{{ customDate($item->date, 'y/m/d') }}</td>
-                                    <td class=" small">{{ $item->name }}</td>
+                                    <td class="small">{{ customDate($item->date, 'y/m/d') }}</td>
+                                    <td class="small">{{ $item->name }}</td>
                                     <td class="text-end small">
                                         @if($item->status == 'in')
                                             <span>Rp {{ numberFormat($item->price,0) }}</span>
                                         @else
                                             <span class="text-danger">(Rp {{ numberFormat($item->price,0) }})</span>
                                         @endif
+                                    </td>
+                                    <td class="text-end small">
+                                        <div class="d-none">
+                                            @if($item->status == 'in')
+                                                <span>{{ $item->price }}</span>
+                                            @else
+                                                <span class="text-danger">-{{ $item->price }}</span>
+                                            @endif
+                                        </div>
                                     </td>
                                 </tr>
                                 @php
@@ -278,6 +296,9 @@
             order: [[0, 'desc']],
             searching: false,
             info: false,
+            columnDefs: [
+                { targets: [2], orderable: false }
+            ]
         });
     } );
 </script>
